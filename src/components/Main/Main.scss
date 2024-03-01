@@ -1,0 +1,29 @@
+@import "../../styles/mixins";
+
+.main {
+  margin: 2rem 2rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__header {
+    margin: 0;
+
+    @include respond-to(large) {
+      font-weight: 400;
+      font-size: 24px;
+    }
+  }
+
+  &__arrow-btn {
+    align-self: baseline;
+    border: none;
+    border-radius: 50%;
+
+    @include respond-to(medium) {
+      align-self: center;
+      margin: 1rem 0;
+      transform: rotate(90deg);
+    }
+  }
+}
