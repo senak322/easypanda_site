@@ -1,50 +1,52 @@
 import "./Currency.scss";
 import { Select, Input } from "antd";
-// import { useWindowWidth } from "../hooks/useWindowWidth";
+import CurrencyTitle from "../CurrencyTitle/CurrencyTitle";
+import CurrencySelect from "../CurrencySelect/CurrencySelect";
+import { useWindowWidth } from "../../hooks/useWindowWidth";
 
 interface CurrencyProps {
     title: string,
-
 }
 
 function Currency({title}: CurrencyProps) {
+    const windowWidth = useWindowWidth();
     return (
         <div className="currency">
           <div className="d-flex justify-content-between mb-3">
-            {/* {title === "You give" ? (
+            {title === "You give" ? (
               <>
                 <CurrencyTitle title={title} />
-                <CurrencySelect
-                  selectedCurrency={selectedCurrency}
-                  onCurrencyChange={onCurrencyChange}
-                  allCurrencies={allCurrencies}
-                  disabledCurrency={disabledCurrency}
-                />
+                {/* <CurrencySelect
+                //   selectedCurrency={selectedCurrency}
+                //   onCurrencyChange={onCurrencyChange}
+                //   allCurrencies={allCurrencies}
+                //   disabledCurrency={disabledCurrency}
+                /> */}
               </>
             ) : windowWidth >= 700 ? (
               <>
-                <CurrencySelect
+                {/* <CurrencySelect
                   selectedCurrency={selectedCurrency}
                   onCurrencyChange={onCurrencyChange}
                   allCurrencies={allCurrencies}
                   disabledCurrency={disabledCurrency}
-                />
+                /> */}
                 <CurrencyTitle title={title} />
               </>
             ) : (
               <>
                 <CurrencyTitle title={title} />
-                <CurrencySelect
+                {/* <CurrencySelect
                   selectedCurrency={selectedCurrency}
                   onCurrencyChange={onCurrencyChange}
                   allCurrencies={allCurrencies}
                   disabledCurrency={disabledCurrency}
-                />
+                /> */}
               </>
             )}
           </div>
           <div className="d-flex justify-content-between p-3 currency__container">
-            <Input
+            {/* <Input
               type="number"
               value={sum}
               onChange={(e) => changeSum(e.target.value)}
@@ -63,7 +65,7 @@ function Currency({title}: CurrencyProps) {
             <Select
               value={selectedBank}
               onChange={onBankChange}
-              options={correctBanks.map((bank) => ({
+              options={correctBanks.map((bank: string) => ({
                 key: bank,
                 value: bank,
                 label: bank,
