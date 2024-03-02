@@ -2,7 +2,7 @@ import "./Header.scss";
 import logo from "../../images/panda_logo.jpg";
 import { Select } from "antd";
 import { MailOutlined } from "@ant-design/icons";
-import { useWindowWidth } from "../../hooks/useWindowWidth.ts";
+import { useWindowWidth } from "../../hooks/useWindowWidth";
 import tg from "../../images/tg.svg";
 
 function Header() {
@@ -12,7 +12,9 @@ function Header() {
     <>
       <header className="header">
         <div className="header__wrapper">
-          <div className="header__logo"><img className="header__img" src={logo} alt="easypandamoney logo" /></div>
+          <div className="header__logo">
+            <img className="header__img" src={logo} alt="easypandamoney logo" />
+          </div>
           <h2 className="header__title">Easy Panda Money</h2>
         </div>
         <div className="header__container">
