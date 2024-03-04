@@ -48,6 +48,12 @@ const currencySlice = createSlice({
     setBankReceive: (state, action: PayloadAction<string>) => {
       state.bankReceive = action.payload;
     },
+    setSumGive: (state, action: PayloadAction<number>) => {
+      state.sumGive = action.payload;
+    },
+    setSumReceive: (state, action: PayloadAction<number>) => {
+      state.sumReceive = action.payload;
+    },
 
     // ... другие редьюсеры для обновления состояния
   },
@@ -59,6 +65,8 @@ export const {
   reverseCurrencies,
   setBankGive,
   setBankReceive,
+  setSumGive,
+  setSumReceive,
 } = currencySlice.actions;
 
 // export const {currencyGive} = currencySlice.

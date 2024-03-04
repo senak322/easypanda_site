@@ -1,5 +1,5 @@
+import React, { useCallback } from "react";
 import "./Currency.scss";
-
 import { Select, Input } from "antd";
 import CurrencyTitle from "../CurrencyTitle/CurrencyTitle";
 import CurrencySelect from "../CurrencySelect/CurrencySelect";
@@ -11,10 +11,26 @@ interface CurrencyProps {
   onCurrencyChange: (value: string) => void;
   selectedCurrency: string;
   disabledCurrency: string;
+  sum: number,
+  changeSum: (value: number) => void,
+  banks: {
+    [key: string]: string[];
+  },
+  onBankChange: (value: string) => void,
+  selectedBank: string,
+  setBank: (value: string) => void
 }
 
-function Currency({ title, onCurrencyChange, selectedCurrency, disabledCurrency }: CurrencyProps) {
+function Currency({ title, onCurrencyChange, selectedCurrency, disabledCurrency, sum, changeSum, banks, onBankChange, selectedBank, setBank }: CurrencyProps) {
   const windowWidth = useWindowWidth();
+
+  const allCurrencies = ["RUB", "CNY", "IDR", "GEL"];
+  const handleChangeSum = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const valueNumber = parseFloat(e.target.value)
+    if(!isNaN) {
+      changeSum(valueNumber)
+    }
+  }, [changeSum])
   
   return (
     <div className="currency">
@@ -55,7 +71,7 @@ function Currency({ title, onCurrencyChange, selectedCurrency, disabledCurrency 
         <Input
           type="number"
           value={sum}
-          onChange={(e) => changeSum(e.target.value)}
+          onChange={handleChangeSum}
           prefix={
             selectedCurrency === "RUB"
               ? "₽"
@@ -68,7 +84,7 @@ function Currency({ title, onCurrencyChange, selectedCurrency, disabledCurrency 
               : ""
           }
         />
-        <Select
+        {/* <Select
           value={selectedBank}
           onChange={onBankChange}
           options={correctBanks.map((bank: string) => ({
@@ -76,7 +92,7 @@ function Currency({ title, onCurrencyChange, selectedCurrency, disabledCurrency 
             value: bank,
             label: bank,
           }))}
-        ></Select>
+        ></Select> */}
       </div>
     </div>
   );
