@@ -1,10 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface CurrencyState {
+export interface CurrencyState {
   currencyGive: string;
   currencyReceive: string;
   sumGive: number;
   sumReceive: number;
+  bankGive: string;
+  bankReceive: string;
   // типы для других полей состояния
 }
 
@@ -13,6 +15,8 @@ const initialState: CurrencyState = {
   currencyReceive: "CNY",
   sumGive: 0,
   sumReceive: 0,
+  bankGive: "",
+  bankReceive: "",
 };
 
 const currencySlice = createSlice({
@@ -23,6 +27,13 @@ const currencySlice = createSlice({
   reducers: {
     setCurrencyGive: (state, action: PayloadAction<string>) => {
       state.currencyGive = action.payload;
+      state.sumGive = 0;
+      state.sumReceive = 0;
+    },
+    setCurrencyReceive: (state, action: PayloadAction<string>) => {
+      state.currencyReceive = action.payload;
+      state.sumGive = 0;
+      state.sumReceive = 0;
     },
     reverseCurrencies: (state) => {
       const temp = state.currencyGive;
@@ -31,10 +42,25 @@ const currencySlice = createSlice({
       state.sumGive = 0;
       state.sumReceive = 0;
     },
+    setBankGive: (state, action: PayloadAction<string>) => {
+      state.bankGive = action.payload;
+    },
+    setBankReceive: (state, action: PayloadAction<string>) => {
+      state.bankReceive = action.payload;
+    },
+
     // ... другие редьюсеры для обновления состояния
   },
 });
 
-export const { setCurrencyGive, reverseCurrencies } = currencySlice.actions;
+export const {
+  setCurrencyGive,
+  setCurrencyReceive,
+  reverseCurrencies,
+  setBankGive,
+  setBankReceive,
+} = currencySlice.actions;
+
+// export const {currencyGive} = currencySlice.
 
 export default currencySlice.reducer;
