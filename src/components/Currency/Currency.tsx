@@ -4,6 +4,7 @@ import { Select, Input } from "antd";
 import CurrencyTitle from "../CurrencyTitle/CurrencyTitle";
 import CurrencySelect from "../CurrencySelect/CurrencySelect";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
+import { Banks } from "../../types/types";
 
 
 interface CurrencyProps {
@@ -13,9 +14,7 @@ interface CurrencyProps {
   disabledCurrency: string;
   sum: number,
   changeSum: (value: number) => void,
-  banks: {
-    [key: string]: string[];
-  },
+  banks: Banks,
   onBankChange: (value: string) => void,
   selectedBank: string,
   setBank: (value: string) => void
@@ -84,7 +83,7 @@ function Currency({ title, onCurrencyChange, selectedCurrency, disabledCurrency,
               : ""
           }
         />
-        {/* <Select
+        <Select
           value={selectedBank}
           onChange={onBankChange}
           options={correctBanks.map((bank: string) => ({
@@ -92,7 +91,7 @@ function Currency({ title, onCurrencyChange, selectedCurrency, disabledCurrency,
             value: bank,
             label: bank,
           }))}
-        ></Select> */}
+        ></Select>
       </div>
     </div>
   );

@@ -1,6 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { banks } from "../../utils/config";
+// import { Banks } from "../../types/types";
 
 export interface CurrencyState {
+  instances: {
+    [key: string]: {
+      selectedCurrency: string;
+      correctBanks: string[];
+      selectedBank: string;
+    };
+  };
   currencyGive: string;
   currencyReceive: string;
   sumGive: number;
@@ -11,6 +20,18 @@ export interface CurrencyState {
 }
 
 const initialState: CurrencyState = {
+  instances: {
+    give: {
+      selectedCurrency: "RUB",
+      correctBanks: banks.rub,
+      selectedBank: "sber",
+    },
+    receive: {
+      selectedCurrency: "CNY",
+      correctBanks: banks.cny,
+      selectedBank: "alipay",
+    },
+  },
   currencyGive: "RUB",
   currencyReceive: "CNY",
   sumGive: 0,

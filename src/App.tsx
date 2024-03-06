@@ -20,24 +20,20 @@ import PaymentDetails from "./components/PaymentDetails/PaymentDetails";
 import CurrencyConverter from "./components/CurrencyConverter/CurrencyConverter";
 import Currency from "./components/Currency/Currency";
 import { RootState } from "./store/store";
+import { Banks } from "./types/types";
 
 function App() {
-
-  type Banks = {
-    [key: string]: string[];
-  };
-
   const banks: Banks = {
-    rub: ["sber",],
+    rub: ["sber"],
     cny: ["alipay", "wechat"],
     gel: ["bog"],
     idr: ["mega"],
   };
 
-  const {currencyGive, currencyReceive, bankGive, bankReceive} = useSelector(
+  const { currencyGive, currencyReceive, bankGive, bankReceive } = useSelector(
     (state: RootState) => state.currency
   );
- 
+
   const sumGive = useSelector((state: RootState) => state.currency.sumGive);
   const sumReceive = useSelector(
     (state: RootState) => state.currency.sumReceive
@@ -94,7 +90,7 @@ function App() {
   );
 
   const changeGive = useCallback(
-    (value: number):void => {
+    (value: number): void => {
       appDispatch(setSumGive(value));
       const rate = getExchangeRate(currencyGive, currencyReceive);
       appDispatch(setSumReceive(Math.floor(value * 1.15 * rate)));
@@ -103,7 +99,7 @@ function App() {
   );
 
   const changeReceive = useCallback(
-    (value: number):void => {
+    (value: number): void => {
       appDispatch(setSumReceive(value));
       const rate = getExchangeRate(currencyGive, currencyReceive);
       appDispatch(setSumGive(Math.floor(value * 1.15 * rate)));
