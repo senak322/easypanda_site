@@ -1,36 +1,71 @@
 import React, { useCallback } from "react";
+import { useSelector } from "react-redux";
 import "./Currency.scss";
 import { Select, Input } from "antd";
 import CurrencyTitle from "../CurrencyTitle/CurrencyTitle";
 import CurrencySelect from "../CurrencySelect/CurrencySelect";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
 import { Banks } from "../../types/types";
-
+import { RootState } from "../../store/store";
+import { allCurrencies } from "../../utils/config";
 
 interface CurrencyProps {
   title: string;
+  instanceId: string;
   onCurrencyChange: (value: string) => void;
   selectedCurrency: string;
   disabledCurrency: string;
-  sum: number,
-  changeSum: (value: number) => void,
-  banks: Banks,
-  onBankChange: (value: string) => void,
-  selectedBank: string,
-  setBank: (value: string) => void
+  sum: number;
+  changeSum: (value: number) => void;
+  banks: Banks;
+  onBankChange: (value: string) => void;
+  selectedBank: string;
+  setBank: (value: string) => void;
 }
 
-function Currency({ title, onCurrencyChange, selectedCurrency, disabledCurrency, sum, changeSum, banks, onBankChange, selectedBank, setBank }: CurrencyProps) {
+function Currency({
+  title,
+  instanceId,
+  onCurrencyChange,
+  selectedCurrency,
+  disabledCurrency,
+  sum,
+  changeSum,
+  banks,
+  onBankChange,
+  selectedBank,
+  setBank,
+}: CurrencyProps) {
   const windowWidth = useWindowWidth();
+  const {
+    currencyGive,
+    currencyReceive,
+    bankGive,
+    bankReceive,
+    sumGive,
+    sumReceive,
+    instances,
+  } = useSelector((state: RootState) => state.currency);
+  const { selectedCurrency, correctBanks, selectedBank } = instances.instanceId;
 
-  const allCurrencies = ["RUB", "CNY", "IDR", "GEL"];
-  const handleChangeSum = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const valueNumber = parseFloat(e.target.value)
-    if(!isNaN) {
-      changeSum(valueNumber)
-    }
-  }, [changeSum])
-  
+  const handleChangeSum = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const valueNumber = parseFloat(e.target.value);
+      if (!isNaN) {
+        changeSum(valueNumber);
+      }
+    },
+    [changeSum]
+  );
+
+  const correctBanks = () => {
+    const { selectedCurrency, correctBanks, selectedBank } =
+      instances.instanceId;
+    // selectedCurrency={currencyGive}
+    // disabledCurrency={currencyReceive}
+    // banks
+  };
+
   return (
     <div className="currency">
       <div className="d-flex justify-content-between mb-3">

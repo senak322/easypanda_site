@@ -3,8 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "./hooks/useAppDispatch";
 import {
-  setCurrencyGive,
-  setCurrencyReceive,
+  setCurrency,
   reverseCurrencies,
   setBankGive,
   setBankReceive,
@@ -30,14 +29,14 @@ function App() {
     idr: ["mega"],
   };
 
-  const { currencyGive, currencyReceive, bankGive, bankReceive } = useSelector(
+  const { currencyGive, currencyReceive, bankGive, bankReceive, sumGive, sumReceive } = useSelector(
     (state: RootState) => state.currency
   );
 
-  const sumGive = useSelector((state: RootState) => state.currency.sumGive);
-  const sumReceive = useSelector(
-    (state: RootState) => state.currency.sumReceive
-  );
+  // const sumGive = useSelector((state: RootState) => state.currency.sumGive);
+  // const sumReceive = useSelector(
+  //   (state: RootState) => state.currency.sumReceive
+  // );
 
   const appDispatch = useAppDispatch();
 
@@ -77,14 +76,14 @@ function App() {
 
   const onCurrencyChangeGive = useCallback(
     (value: string) => {
-      appDispatch(setCurrencyGive(value));
+      appDispatch(setCurrency({instanceId: 'give', currency: value}));
     },
     [appDispatch]
   );
 
   const onCurrencyChangeReceive = useCallback(
     (value: string) => {
-      appDispatch(setCurrencyReceive(value));
+      appDispatch(setCurrency({instanceId: 'recieve', currency: value}));
     },
     [appDispatch]
   );
@@ -118,6 +117,7 @@ function App() {
               <CurrencyConverter>
                 <Currency
                   title="You give"
+                  instanceId="give"
                   onCurrencyChange={onCurrencyChangeGive}
                   selectedCurrency={currencyGive}
                   disabledCurrency={currencyReceive}
@@ -137,6 +137,7 @@ function App() {
                 </button>
                 <Currency
                   title="You receive"
+                  instanceId="receive"
                   onCurrencyChange={onCurrencyChangeReceive}
                   selectedCurrency={currencyReceive}
                   disabledCurrency={currencyGive}

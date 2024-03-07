@@ -10,12 +10,8 @@ export interface CurrencyState {
       selectedBank: string;
     };
   };
-  currencyGive: string;
-  currencyReceive: string;
   sumGive: number;
   sumReceive: number;
-  bankGive: string;
-  bankReceive: string;
   // типы для других полей состояния
 }
 
@@ -32,12 +28,8 @@ const initialState: CurrencyState = {
       selectedBank: "alipay",
     },
   },
-  currencyGive: "RUB",
-  currencyReceive: "CNY",
   sumGive: 0,
   sumReceive: 0,
-  bankGive: "",
-  bankReceive: "",
 };
 
 const currencySlice = createSlice({
@@ -46,20 +38,41 @@ const currencySlice = createSlice({
   // ... другие связанные состояния
 
   reducers: {
-    setCurrencyGive: (state, action: PayloadAction<string>) => {
-      state.currencyGive = action.payload;
-      state.sumGive = 0;
-      state.sumReceive = 0;
+    setCurrency: (
+      state,
+      action: PayloadAction<{ instanceId: string; currency: string }>
+    ) => {
+      const { instanceId, currency } = action.payload;
+      const lowerCurrency = currency.toLowerCase() as keyof typeof banks; // Утверждение типа
+      const instance = state.instances[instanceId];
+      if (instance && banks[lowerCurrency]) {
+        // Проверка на наличие ключа
+        instance.selectedCurrency = currency;
+        instance.correctBanks = banks[lowerCurrency];
+        instance.selectedBank = instance.correctBanks[0];
+        state.sumGive = 0;
+        state.sumReceive = 0;
+      }
     },
-    setCurrencyReceive: (state, action: PayloadAction<string>) => {
-      state.currencyReceive = action.payload;
-      state.sumGive = 0;
-      state.sumReceive = 0;
-    },
+    
     reverseCurrencies: (state) => {
-      const temp = state.currencyGive;
-      state.currencyGive = state.currencyReceive;
-      state.currencyReceive = temp;
+      // Сохраняем текущие значения для инстанса "give"
+      const giveCurrency = state.instances.give.selectedCurrency;
+      const giveBanks = state.instances.give.correctBanks;
+      const giveBank = state.instances.give.selectedBank;
+
+      // Обновляем инстанс "give" значениями из инстанса "receive"
+      state.instances.give.selectedCurrency =
+        state.instances.receive.selectedCurrency;
+      state.instances.give.correctBanks = state.instances.receive.correctBanks;
+      state.instances.give.selectedBank = state.instances.receive.selectedBank;
+
+      // Обновляем инстанс "receive" сохраненными ранее значениями инстанса "give"
+      state.instances.receive.selectedCurrency = giveCurrency;
+      state.instances.receive.correctBanks = giveBanks;
+      state.instances.receive.selectedBank = giveBank;
+
+      // Обнуляем суммы
       state.sumGive = 0;
       state.sumReceive = 0;
     },
@@ -81,8 +94,7 @@ const currencySlice = createSlice({
 });
 
 export const {
-  setCurrencyGive,
-  setCurrencyReceive,
+  setCurrency,
   reverseCurrencies,
   setBankGive,
   setBankReceive,
