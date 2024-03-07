@@ -12,7 +12,6 @@ export interface CurrencyState {
   };
   sumGive: number;
   sumReceive: number;
-  // типы для других полей состояния
 }
 
 const initialState: CurrencyState = {
@@ -76,12 +75,13 @@ const currencySlice = createSlice({
       state.sumGive = 0;
       state.sumReceive = 0;
     },
-    setBankGive: (state, action: PayloadAction<string>) => {
-      state.bankGive = action.payload;
+    setBank: (
+      state,
+      action: PayloadAction<{ instanceId: string; bank: string }>
+    ) => {
+      state.instances.instanceId.selectedBank = action.payload.bank;
     },
-    setBankReceive: (state, action: PayloadAction<string>) => {
-      state.bankReceive = action.payload;
-    },
+    
     setSumGive: (state, action: PayloadAction<number>) => {
       state.sumGive = action.payload;
     },
@@ -96,8 +96,7 @@ const currencySlice = createSlice({
 export const {
   setCurrency,
   reverseCurrencies,
-  setBankGive,
-  setBankReceive,
+  setBank,
   setSumGive,
   setSumReceive,
 } = currencySlice.actions;

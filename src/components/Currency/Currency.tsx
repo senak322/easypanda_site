@@ -20,33 +20,26 @@ interface CurrencyProps {
   banks: Banks;
   onBankChange: (value: string) => void;
   selectedBank: string;
-  setBank: (value: string) => void;
+  // setBank: (instanceId: string, bank: string) => void;
 }
 
 function Currency({
   title,
   instanceId,
   onCurrencyChange,
-  selectedCurrency,
+  // selectedCurrency,
   disabledCurrency,
   sum,
   changeSum,
-  banks,
   onBankChange,
-  selectedBank,
-  setBank,
 }: CurrencyProps) {
   const windowWidth = useWindowWidth();
-  const {
-    currencyGive,
-    currencyReceive,
-    bankGive,
-    bankReceive,
-    sumGive,
-    sumReceive,
-    instances,
-  } = useSelector((state: RootState) => state.currency);
-  const { selectedCurrency, correctBanks, selectedBank } = instances.instanceId;
+  const { sumGive, sumReceive, instances } = useSelector(
+    (state: RootState) => state.currency
+  );
+  const selectedCurrency = instances[instanceId].selectedCurrency;
+  const selectedBank = instances[instanceId].selectedBank;
+  const correctBanks: string[] = instances[instanceId].correctBanks;
 
   const handleChangeSum = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,13 +51,13 @@ function Currency({
     [changeSum]
   );
 
-  const correctBanks = () => {
-    const { selectedCurrency, correctBanks, selectedBank } =
-      instances.instanceId;
-    // selectedCurrency={currencyGive}
-    // disabledCurrency={currencyReceive}
-    // banks
-  };
+  // const correctBanks = () => {
+  //   const { selectedCurrency, correctBanks, selectedBank } =
+  //     instances.instanceId;
+  //   // selectedCurrency={currencyGive}
+  //   // disabledCurrency={currencyReceive}
+  //   // banks
+  // };
 
   return (
     <div className="currency">

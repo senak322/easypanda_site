@@ -5,8 +5,7 @@ import { useAppDispatch } from "./hooks/useAppDispatch";
 import {
   setCurrency,
   reverseCurrencies,
-  setBankGive,
-  setBankReceive,
+  setBank,
   setSumGive,
   setSumReceive,
 } from "./store/slices/currencySlice";
@@ -29,14 +28,9 @@ function App() {
     idr: ["mega"],
   };
 
-  const { currencyGive, currencyReceive, bankGive, bankReceive, sumGive, sumReceive } = useSelector(
+  const { instances, sumGive, sumReceive } = useSelector(
     (state: RootState) => state.currency
   );
-
-  // const sumGive = useSelector((state: RootState) => state.currency.sumGive);
-  // const sumReceive = useSelector(
-  //   (state: RootState) => state.currency.sumReceive
-  // );
 
   const appDispatch = useAppDispatch();
 
@@ -62,14 +56,14 @@ function App() {
 
   const onGiveBankChange = useCallback(
     (value: string) => {
-      appDispatch(setBankGive(value));
+      appDispatch(setBank({instanceId: "give", bank: value}));
     },
     [appDispatch]
   );
 
   const onReceiveBankChange = useCallback(
     (value: string) => {
-      appDispatch(setBankReceive(value));
+      appDispatch(setBank({instanceId: "receive", bank: value}));
     },
     [appDispatch]
   );
@@ -83,7 +77,7 @@ function App() {
 
   const onCurrencyChangeReceive = useCallback(
     (value: string) => {
-      appDispatch(setCurrency({instanceId: 'recieve', currency: value}));
+      appDispatch(setCurrency({instanceId: 'receive', currency: value}));
     },
     [appDispatch]
   );
@@ -91,19 +85,19 @@ function App() {
   const changeGive = useCallback(
     (value: number): void => {
       appDispatch(setSumGive(value));
-      const rate = getExchangeRate(currencyGive, currencyReceive);
+      const rate = getExchangeRate(instances.give.selectedCurrency, instances.receive.selectedCurrency);
       appDispatch(setSumReceive(Math.floor(value * 1.15 * rate)));
     },
-    [appDispatch, currencyGive, currencyReceive, getExchangeRate]
+    [appDispatch, instances, getExchangeRate]
   );
 
   const changeReceive = useCallback(
     (value: number): void => {
       appDispatch(setSumReceive(value));
-      const rate = getExchangeRate(currencyGive, currencyReceive);
+      const rate = getExchangeRate(instances.give.selectedCurrency, instances.receive.selectedCurrency);
       appDispatch(setSumGive(Math.floor(value * 1.15 * rate)));
     },
-    [appDispatch, currencyGive, currencyReceive, getExchangeRate]
+    [appDispatch, instances, getExchangeRate]
   );
 
   return (
@@ -119,14 +113,14 @@ function App() {
                   title="You give"
                   instanceId="give"
                   onCurrencyChange={onCurrencyChangeGive}
-                  selectedCurrency={currencyGive}
-                  disabledCurrency={currencyReceive}
+                  selectedCurrency={instances.give.selectedCurrency}
+                  disabledCurrency={instances.receive.selectedCurrency}
                   sum={sumGive}
                   changeSum={changeGive}
                   banks={banks}
-                  selectedBank={bankGive}
+                  selectedBank={instances.give.selectedBank}
                   onBankChange={onGiveBankChange}
-                  setBank={setBankGive}
+                  
                 />
                 <button
                   onClick={reverseCurrency}
@@ -139,14 +133,14 @@ function App() {
                   title="You receive"
                   instanceId="receive"
                   onCurrencyChange={onCurrencyChangeReceive}
-                  selectedCurrency={currencyReceive}
-                  disabledCurrency={currencyGive}
+                  selectedCurrency={instances.receive.selectedCurrency}
+                  disabledCurrency={instances.give.selectedCurrency}
                   sum={sumReceive}
                   changeSum={changeReceive}
                   banks={banks}
-                  selectedBank={bankReceive}
+                  selectedBank={instances.receive.selectedBank}
                   onBankChange={onReceiveBankChange}
-                  setBank={setBankReceive}
+                  
                 />
               </CurrencyConverter>
             </Main>
