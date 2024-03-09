@@ -27,14 +27,13 @@ function Currency({
   title,
   instanceId,
   onCurrencyChange,
-  // selectedCurrency,
   disabledCurrency,
   sum,
   changeSum,
   onBankChange,
 }: CurrencyProps) {
   const windowWidth = useWindowWidth();
-  const { sumGive, sumReceive, instances } = useSelector(
+  const { instances } = useSelector(
     (state: RootState) => state.currency
   );
   const selectedCurrency = instances[instanceId].selectedCurrency;
