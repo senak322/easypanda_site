@@ -43,7 +43,9 @@ function Currency({
   const handleChangeSum = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const valueNumber = parseFloat(e.target.value);
-      if (!isNaN) {
+      
+      if (!isNaN(valueNumber)) {
+        console.log("ya tut");
         changeSum(valueNumber);
       }
     },
@@ -96,6 +98,7 @@ function Currency({
       <div className="d-flex justify-content-between p-3 currency__container">
         <Input
           type="number"
+          className="mx-1 currency__input"
           value={sum}
           onChange={handleChangeSum}
           prefix={
