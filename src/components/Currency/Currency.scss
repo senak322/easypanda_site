@@ -12,7 +12,7 @@
     width: 80%;
   }
   @include respond-to(small) {
-    width: 80%;
+    width: 100%;
   }
 
   &__container {

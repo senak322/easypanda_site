@@ -19,12 +19,12 @@ const initialState: CurrencyState = {
     give: {
       selectedCurrency: "RUB",
       correctBanks: banks.rub,
-      selectedBank: "sber",
+      selectedBank: "SBER",
     },
     receive: {
       selectedCurrency: "CNY",
       correctBanks: banks.cny,
-      selectedBank: "alipay",
+      selectedBank: "AliPay",
     },
   },
   sumGive: 0,
@@ -79,7 +79,7 @@ const currencySlice = createSlice({
       state,
       action: PayloadAction<{ instanceId: string; bank: string }>
     ) => {
-      state.instances.instanceId.selectedBank = action.payload.bank;
+      state.instances[action.payload.instanceId].selectedBank = action.payload.bank;
     },
     
     setSumGive: (state, action: PayloadAction<number>) => {
