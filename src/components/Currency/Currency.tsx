@@ -45,7 +45,6 @@ function Currency({
       const valueNumber = parseFloat(e.target.value);
       
       if (!isNaN(valueNumber)) {
-        console.log("ya tut");
         changeSum(valueNumber);
       }
     },

@@ -9,3 +9,5 @@ export const banks: {
 };
 
 export const allCurrencies = ["RUB", "CNY", "IDR", "GEL"];
+
+export const baseCurrencyUrl = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/"

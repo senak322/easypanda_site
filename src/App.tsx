@@ -19,6 +19,7 @@ import CurrencyConverter from "./components/CurrencyConverter/CurrencyConverter"
 import Currency from "./components/Currency/Currency";
 import { RootState } from "./store/store";
 import { Banks } from "./types/types";
+import { getExchangeRate } from "./utils/api";
 
 function App() {
   const banks: Banks = {
@@ -86,7 +87,10 @@ function App() {
     (value: number): void => {
       appDispatch(setSumGive(value));
       const rate = getExchangeRate(instances.give.selectedCurrency, instances.receive.selectedCurrency);
-      appDispatch(setSumReceive(Math.floor(value * 1.15 * rate)));
+      const rateWithComission = rate * (1 - 0.05)
+      const sumWithComission = value * rateWithComission
+      // const sumWithComission = initalSum * 0.05
+      appDispatch(setSumReceive(Math.floor(sumWithComission)));
     },
     [appDispatch, instances, getExchangeRate]
   );
@@ -94,8 +98,10 @@ function App() {
   const changeReceive = useCallback(
     (value: number): void => {
       appDispatch(setSumReceive(value));
-      const rate = getExchangeRate(instances.give.selectedCurrency, instances.receive.selectedCurrency);
-      appDispatch(setSumGive(Math.floor(value * 1.15 * rate)));
+      const rate = getExchangeRate(instances.receive.selectedCurrency, instances.give.selectedCurrency);
+      const rateWithComission = rate * (1 + 0.05)
+      const sumWithComission = value * rateWithComission
+      appDispatch(setSumGive(Math.floor(sumWithComission)));
     },
     [appDispatch, instances, getExchangeRate]
   );
