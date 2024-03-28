@@ -1,5 +1,5 @@
 import axios from "axios";
-import { baseCurrencyUrl } from "./config.js";
+import { baseCurrencyUrl } from "./config";
 
 export async function getExchangeRate(
   sendCurrency: string,

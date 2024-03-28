@@ -29,27 +29,11 @@ function App() {
     idr: ["mega"],
   };
 
-  const { instances, sumGive, sumReceive } = useSelector(
+  const { instances, sumGive, sumReceive, inputError } = useSelector(
     (state: RootState) => state.currency
   );
 
   const appDispatch = useAppDispatch();
-
-  const getExchangeRate = useCallback(
-    (currencyFrom: string, currencyTo: string): number => {
-      // Здесь реализована логика получения обменного курса
-      // Например, 1 RUB = 0,082011 CNY
-      if (currencyFrom === "RUB" && currencyTo === "CNY") {
-        return 0.082011;
-      }
-      // Обратный курс
-      if (currencyFrom === "CNY" && currencyTo === "RUB") {
-        return 12.19;
-      }
-      return 1;
-    },
-    []
-  );
 
   const reverseCurrency = useCallback(() => {
     appDispatch(reverseCurrencies());
@@ -84,27 +68,40 @@ function App() {
   );
 
   const changeGive = useCallback(
-    (value: number): void => {
+   async (value: number): Promise<void> => {
       appDispatch(setSumGive(value));
-      const rate = getExchangeRate(instances.give.selectedCurrency, instances.receive.selectedCurrency);
+      const rate = await getExchangeRate(instances.give.selectedCurrency, instances.receive.selectedCurrency);
       const rateWithComission = rate * (1 - 0.05)
       const sumWithComission = value * rateWithComission
-      // const sumWithComission = initalSum * 0.05
       appDispatch(setSumReceive(Math.floor(sumWithComission)));
     },
-    [appDispatch, instances, getExchangeRate]
+    [appDispatch, instances]
   );
 
   const changeReceive = useCallback(
-    (value: number): void => {
+    async (value: number): Promise<void> => {
       appDispatch(setSumReceive(value));
-      const rate = getExchangeRate(instances.receive.selectedCurrency, instances.give.selectedCurrency);
+      const rate = await getExchangeRate(instances.receive.selectedCurrency, instances.give.selectedCurrency);
       const rateWithComission = rate * (1 + 0.05)
       const sumWithComission = value * rateWithComission
       appDispatch(setSumGive(Math.floor(sumWithComission)));
     },
-    [appDispatch, instances, getExchangeRate]
+    [appDispatch, instances]
   );
+
+  const howMuchComission = useCallback(():number => {
+    let comission: number = 0
+
+    if(sumGive <= 0) {
+
+      return 
+    }
+    
+    if(instances.give.selectedCurrency === "RUB") {
+      
+    }
+    return comission
+  }, [instances.give.selectedCurrency])
 
   return (
     <div className="App">

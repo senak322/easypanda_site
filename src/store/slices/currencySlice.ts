@@ -12,6 +12,7 @@ export interface CurrencyState {
   };
   sumGive: number;
   sumReceive: number;
+  inputError: string;
 }
 
 const initialState: CurrencyState = {
@@ -29,6 +30,7 @@ const initialState: CurrencyState = {
   },
   sumGive: 0,
   sumReceive: 0,
+  inputError: "",
 };
 
 const currencySlice = createSlice({
@@ -53,7 +55,7 @@ const currencySlice = createSlice({
         state.sumReceive = 0;
       }
     },
-    
+
     reverseCurrencies: (state) => {
       // Сохраняем текущие значения для инстанса "give"
       const giveCurrency = state.instances.give.selectedCurrency;
@@ -79,16 +81,19 @@ const currencySlice = createSlice({
       state,
       action: PayloadAction<{ instanceId: string; bank: string }>
     ) => {
-      state.instances[action.payload.instanceId].selectedBank = action.payload.bank;
+      state.instances[action.payload.instanceId].selectedBank =
+        action.payload.bank;
     },
-    
+
     setSumGive: (state, action: PayloadAction<number>) => {
       state.sumGive = action.payload;
     },
     setSumReceive: (state, action: PayloadAction<number>) => {
       state.sumReceive = action.payload;
     },
-
+    setInputError: (state, action: PayloadAction<string>) => {
+      state.inputError = action.payload;
+    }
     // ... другие редьюсеры для обновления состояния
   },
 });
