@@ -8,6 +8,8 @@ export interface CurrencyState {
       selectedCurrency: string;
       correctBanks: string[];
       selectedBank: string;
+      limitFrom: number;
+      limitTo: number;
     };
   };
   sumGive: number;
@@ -21,11 +23,15 @@ const initialState: CurrencyState = {
       selectedCurrency: "RUB",
       correctBanks: banks.rub,
       selectedBank: "SBER",
+      limitFrom: 5000,
+      limitTo: 300000,
     },
     receive: {
       selectedCurrency: "CNY",
       correctBanks: banks.cny,
       selectedBank: "AliPay",
+      limitFrom: 400,
+      limitTo: 25000,
     },
   },
   sumGive: 0,
@@ -93,7 +99,7 @@ const currencySlice = createSlice({
     },
     setInputError: (state, action: PayloadAction<string>) => {
       state.inputError = action.payload;
-    }
+    },
     // ... другие редьюсеры для обновления состояния
   },
 });
@@ -104,6 +110,7 @@ export const {
   setBank,
   setSumGive,
   setSumReceive,
+  setInputError,
 } = currencySlice.actions;
 
 // export const {currencyGive} = currencySlice.

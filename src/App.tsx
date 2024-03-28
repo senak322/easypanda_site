@@ -8,6 +8,7 @@ import {
   setBank,
   setSumGive,
   setSumReceive,
+  setInputError,
 } from "./store/slices/currencySlice";
 import "./fonts/fonts.css";
 import "./App.css";
@@ -89,11 +90,11 @@ function App() {
     [appDispatch, instances]
   );
 
-  const howMuchComission = useCallback(():number => {
+  const howMuchComission = useCallback(():number | void => {
     let comission: number = 0
 
     if(sumGive <= 0) {
-
+      setInputError(`Укажите сумму от ${instances.receive.limitFrom} до ${instances.receive.limitTo}`)
       return 
     }
     
@@ -101,7 +102,7 @@ function App() {
       
     }
     return comission
-  }, [instances.give.selectedCurrency])
+  }, [])
 
   return (
     <div className="App">
