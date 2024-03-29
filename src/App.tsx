@@ -39,6 +39,7 @@ function App() {
   const howMuchComission = useCallback(
     (way: string, amount: number): number => {
       let comission: number = 0;
+      const errMessage = `Укажите сумму от ${instances[way].limitFrom} до ${instances[way].limitTo}`
       if (sumGive <= 0) {
         setInputError(
           `Укажите сумму от ${instances[way].limitFrom} до ${instances[way].limitTo}`
@@ -55,7 +56,7 @@ function App() {
           comission = 0.06;
         } else {
           setInputError(
-            `Укажите сумму от ${instances[way].limitFrom} до ${instances[way].limitTo}`
+            give, `Укажите сумму от ${instances[way].limitFrom} до ${instances[way].limitTo}`
           );
           return 0;
         }
@@ -71,7 +72,7 @@ function App() {
           comission = 0.03
         } else {
           setInputError(
-            `Укажите сумму от ${instances[way].limitFrom} до ${instances[way].limitTo}`
+            give, `Укажите сумму от ${instances[way].limitFrom} до ${instances[way].limitTo}`
           );
           return 0;
         }

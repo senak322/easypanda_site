@@ -40,22 +40,18 @@ function Currency({
 
   const handleChangeSum = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const valueNumber = parseFloat(e.target.value);
+      // Получаем значение из инпута
+      const value = e.target.value;
 
-      if (!isNaN(valueNumber)) {
-        changeSum(valueNumber);
-      }
+      // Проверяем, пустая ли строка, и приводим к 0, если да.
+      // Если нет, преобразуем строку в число
+      const numberValue = value === "" ? 0 : parseFloat(value);
+
+      // Обновляем состояние с помощью значения numberValue
+      changeSum(numberValue);
     },
     [changeSum]
   );
-
-  // const correctBanks = () => {
-  //   const { selectedCurrency, correctBanks, selectedBank } =
-  //     instances.instanceId;
-  //   // selectedCurrency={currencyGive}
-  //   // disabledCurrency={currencyReceive}
-  //   // banks
-  // };
 
   return (
     <div className="currency">

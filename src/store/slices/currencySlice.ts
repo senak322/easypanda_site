@@ -10,11 +10,11 @@ export interface CurrencyState {
       selectedBank: string;
       limitFrom: number;
       limitTo: number;
+      inputError: string;
     };
   };
   sumGive: number;
   sumReceive: number;
-  inputError: string;
 }
 
 const initialState: CurrencyState = {
@@ -25,6 +25,7 @@ const initialState: CurrencyState = {
       selectedBank: "SBER",
       limitFrom: 5000,
       limitTo: 300000,
+      inputError: "",
     },
     receive: {
       selectedCurrency: "CNY",
@@ -32,11 +33,11 @@ const initialState: CurrencyState = {
       selectedBank: "AliPay",
       limitFrom: 400,
       limitTo: 25000,
+      inputError: "",
     },
   },
   sumGive: 0,
   sumReceive: 0,
-  inputError: "",
 };
 
 const currencySlice = createSlice({
@@ -97,8 +98,8 @@ const currencySlice = createSlice({
     setSumReceive: (state, action: PayloadAction<number>) => {
       state.sumReceive = action.payload;
     },
-    setInputError: (state, action: PayloadAction<string>) => {
-      state.inputError = action.payload;
+    setInputError: (state, action: PayloadAction<{instanceId: string; message: string}>) => {
+      state.instances[action.payload.instanceId].inputError = action.payload.message;
     },
     // ... другие редьюсеры для обновления состояния
   },
