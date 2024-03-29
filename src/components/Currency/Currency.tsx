@@ -33,9 +33,7 @@ function Currency({
   onBankChange,
 }: CurrencyProps) {
   const windowWidth = useWindowWidth();
-  const { instances } = useSelector(
-    (state: RootState) => state.currency
-  );
+  const { instances } = useSelector((state: RootState) => state.currency);
   const selectedCurrency = instances[instanceId].selectedCurrency;
   const selectedBank = instances[instanceId].selectedBank;
   const correctBanks: string[] = instances[instanceId].correctBanks;
@@ -43,7 +41,7 @@ function Currency({
   const handleChangeSum = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const valueNumber = parseFloat(e.target.value);
-      
+
       if (!isNaN(valueNumber)) {
         changeSum(valueNumber);
       }
@@ -105,10 +103,12 @@ function Currency({
               ? "₽"
               : selectedCurrency === "CNY"
               ? "¥"
-              : selectedCurrency === "IDR"
-              ? "Rp"
-              : selectedCurrency === "GEL"
-              ? "₾"
+              : // : selectedCurrency === "IDR"
+              // ? "Rp"
+              // : selectedCurrency === "GEL"
+              // ? "₾"
+              selectedCurrency === "UAH"
+              ? "₴"
               : ""
           }
         />

@@ -6,9 +6,10 @@ export async function getExchangeRate(
   receiveCurrency: string
 ) {
   try {
-    const response = await axios.get(`${baseCurrencyUrl + sendCurrency}.json`);
-    const rate = response.data[sendCurrency][receiveCurrency];
-    console.log(rate);
+    const toLowerSend = sendCurrency.toLowerCase()
+    const toLowerReceive = receiveCurrency.toLowerCase()
+    const response = await axios.get(`${baseCurrencyUrl + toLowerSend}.json`);
+    const rate = response.data[toLowerSend][toLowerReceive];
     return rate;
   } catch (error) {
     console.error("Error fetching exchange rate:", error);
