@@ -36,6 +36,26 @@ function App() {
 
   const appDispatch = useAppDispatch();
 
+  const howMuchComission = useCallback((way: string):number => {
+    let comission: number = 0
+    const amount = sumGive
+      if(sumGive <= 0) {
+        setInputError(`Укажите сумму от ${instances[way].limitFrom} до ${instances[way].limitTo}`)
+        return 0
+      }
+    
+    if(instances.give.selectedCurrency === "RUB") {
+      if (5000 <= amount && amount < 30000) {
+        comission = 0.08 
+      } else if (30000 <= amount && amount <= 50000) {
+        comission = 0.07
+      } else if (50000 <= amount && amount <= 300000) {
+        comission = 0.06
+      }
+    }
+    return comission
+  }, [instances, sumGive])
+
   const reverseCurrency = useCallback(() => {
     appDispatch(reverseCurrencies());
   }, [appDispatch]);
@@ -72,11 +92,14 @@ function App() {
    async (value: number): Promise<void> => {
       appDispatch(setSumGive(value));
       const rate = await getExchangeRate(instances.give.selectedCurrency, instances.receive.selectedCurrency);
-      const rateWithComission = rate * (1 - 0.05)
+      const comission = howMuchComission("give")
+      const rateWithComission = rate * (1 - comission)
       const sumWithComission = value * rateWithComission
+      console.log(sumWithComission);
+      
       appDispatch(setSumReceive(Math.floor(sumWithComission)));
     },
-    [appDispatch, instances]
+    [appDispatch, instances, howMuchComission]
   );
 
   const changeReceive = useCallback(
@@ -90,19 +113,7 @@ function App() {
     [appDispatch, instances]
   );
 
-  const howMuchComission = useCallback(():number | void => {
-    let comission: number = 0
-
-    if(sumGive <= 0) {
-      setInputError(`Укажите сумму от ${instances.receive.limitFrom} до ${instances.receive.limitTo}`)
-      return 
-    }
-    
-    if(instances.give.selectedCurrency === "RUB") {
-      
-    }
-    return comission
-  }, [])
+  
 
   return (
     <div className="App">
