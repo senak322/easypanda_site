@@ -58,6 +58,23 @@ const currencySlice = createSlice({
         instance.selectedCurrency = currency;
         instance.correctBanks = banks[lowerCurrency];
         instance.selectedBank = instance.correctBanks[0];
+        instance.limitFrom =
+          currency === "RUB"
+            ? 5000
+            : currency === "CNY"
+            ? 400
+            : currency === "UAH"
+            ? 2000
+            : 0;
+        instance.limitTo =
+          currency === "RUB"
+            ? 300000
+            : currency === "CNY"
+            ? 25000
+            : currency === "UAH"
+            ? 50000
+            : 0;
+        instance.inputError = "";
         state.sumGive = 0;
         state.sumReceive = 0;
       }
@@ -85,7 +102,7 @@ const currencySlice = createSlice({
       state.instances.receive.correctBanks = giveBanks;
       state.instances.receive.selectedBank = giveBank;
       state.instances.receive.limitFrom = giveLimitFrom;
-      state.instances.receive.limitTo = giveLimitTO
+      state.instances.receive.limitTo = giveLimitTO;
       state.instances.receive.inputError = "";
 
       // Обнуляем суммы

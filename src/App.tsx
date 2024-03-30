@@ -76,14 +76,27 @@ function App() {
         } else if (10000 <= amount && amount <= 25000) {
           comission = 0.03;
           setError("give", "");
-        } else if (400 > amount || amount < 25000) {
+        } else if (400 > amount || amount > 25000) {
+          setError("give", errMessage);
+          appDispatch(setSumReceive(0));
+          return 0;
+        }
+      }
+      if (instances.give.selectedCurrency === "UAH") {
+        if (2000 <= amount && amount < 20000) {
+          comission = 0.1;
+          setError("give", "");
+        } else if (20000 <= amount && amount <= 50000) {
+          comission = 0.09;
+          setError("give", "");
+        } else if (2000 > amount || amount > 50000) {
           setError("give", errMessage);
           appDispatch(setSumReceive(0));
           return 0;
         }
       }
       console.log(comission);
-      
+
       return comission;
     },
     [instances, setError, appDispatch]
@@ -129,7 +142,8 @@ function App() {
         instances.receive.selectedCurrency
       );
       const comission = howMuchComission("give", value);
-      if (comission === 0) { // Если появилась ошибка, и комиссия не была рассчитана
+      if (comission === 0) {
+        // Если появилась ошибка, и комиссия не была рассчитана
         appDispatch(setSumReceive(0)); // Установим sumReceive в 0
         return; // Выход из функции, чтобы не продолжать дальнейшие расчеты
       }
@@ -148,9 +162,10 @@ function App() {
         instances.receive.selectedCurrency,
         instances.give.selectedCurrency
       );
-      const valueToComission = value / rate
+      const valueToComission = value / rate;
       const comission = howMuchComission("receive", valueToComission);
-      if (comission === 0) { // Если появилась ошибка, и комиссия не была рассчитана
+      if (comission === 0) {
+        // Если появилась ошибка, и комиссия не была рассчитана
         appDispatch(setSumGive(0)); // Установим sumGive в 0
         return; // Выход из функции, чтобы не продолжать дальнейшие расчеты
       }
