@@ -158,21 +158,30 @@ function App() {
   const changeReceive = useCallback(
     async (value: number): Promise<void> => {
       appDispatch(setSumReceive(value));
-      const rate = await getExchangeRate(
-        instances.receive.selectedCurrency,
-        instances.give.selectedCurrency
+      const rate:number = await getExchangeRate(
+        instances.give.selectedCurrency,
+        instances.receive.selectedCurrency
       );
       const valueToComission = value / rate;
+      console.log(valueToComission);
+
       const comission = howMuchComission("receive", valueToComission);
       if (comission === 0) {
+        console.log("ошибка");
         // Если появилась ошибка, и комиссия не была рассчитана
         appDispatch(setSumGive(0)); // Установим sumGive в 0
         return; // Выход из функции, чтобы не продолжать дальнейшие расчеты
       }
-      const initialReceiveSum = rate * value;
-      const sumWithComission =
-        initialReceiveSum - initialReceiveSum * comission;
-      appDispatch(setSumGive(Math.floor(sumWithComission)));
+      const receiveSum = value / (rate * (1 - comission));
+      console.log(receiveSum > 0.000000);
+      
+      // const sumWithComission =
+      //   initialReceiveSum + initialReceiveSum * comission;
+      if(receiveSum > 0.000000) {
+        console.log("ya tut");
+        appDispatch(setSumGive(Math.floor(receiveSum)));
+      }
+      
     },
     [appDispatch, instances, howMuchComission]
   );
