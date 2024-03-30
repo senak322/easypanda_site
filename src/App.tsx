@@ -36,51 +36,57 @@ function App() {
 
   const appDispatch = useAppDispatch();
 
+  const setError = useCallback(
+    (id: string, errMessage: string) => {
+      appDispatch(setInputError({ instanceId: id, message: errMessage }));
+    },
+    [appDispatch]
+  );
+
   const howMuchComission = useCallback(
     (way: string, amount: number): number => {
       let comission: number = 0;
-      const errMessage = `Укажите сумму от ${instances[way].limitFrom} до ${instances[way].limitTo}`
-      if (sumGive <= 0) {
-        setInputError(
-          `Укажите сумму от ${instances[way].limitFrom} до ${instances[way].limitTo}`
-        );
-        return 0;
-      }
+      const errMessage = `Укажите сумму от ${instances[way].limitFrom} до ${instances[way].limitTo}`;
 
       if (instances.give.selectedCurrency === "RUB") {
         if (5000 <= amount && amount < 30000) {
           comission = 0.08;
+          setError("give", "");
         } else if (30000 <= amount && amount <= 50000) {
           comission = 0.07;
+          setError("give", "");
         } else if (50000 <= amount && amount <= 300000) {
           comission = 0.06;
-        } else {
-          setInputError(
-            give, `Укажите сумму от ${instances[way].limitFrom} до ${instances[way].limitTo}`
-          );
+          setError("give", "");
+        } else if (5000 > amount || amount > 300000) {
+          setError("give", errMessage);
           return 0;
         }
       }
       if (instances.give.selectedCurrency === "CNY") {
-        if (0 < amount && amount < 1000) {
-          comission = 0.06
+        if (400 <= amount && amount < 1000) {
+          comission = 0.06;
+          setError("give", "");
         } else if (1000 <= amount && amount < 3500) {
-          comission = 0.05
+          comission = 0.05;
+          setError("give", "");
         } else if (3500 <= amount && amount < 10000) {
-          comission = 0.04
+          comission = 0.04;
+          setError("give", "");
         } else if (10000 <= amount && amount <= 25000) {
-          comission = 0.03
-        } else {
-          setInputError(
-            give, `Укажите сумму от ${instances[way].limitFrom} до ${instances[way].limitTo}`
-          );
+          comission = 0.03;
+          setError("give", "");
+        } else if (400 > amount || amount < 25000) {
+          setError("give", errMessage);
+          appDispatch(setSumReceive(0));
           return 0;
         }
       }
-
+      console.log(comission);
+      
       return comission;
     },
-    [instances, sumGive]
+    [instances, setError, appDispatch]
   );
 
   const reverseCurrency = useCallback(() => {
@@ -123,6 +129,10 @@ function App() {
         instances.receive.selectedCurrency
       );
       const comission = howMuchComission("give", value);
+      if (comission === 0) { // Если появилась ошибка, и комиссия не была рассчитана
+        appDispatch(setSumReceive(0)); // Установим sumReceive в 0
+        return; // Выход из функции, чтобы не продолжать дальнейшие расчеты
+      }
       const initialReceiveSum = rate * value;
       const sumWithComission =
         initialReceiveSum - initialReceiveSum * comission;
@@ -138,11 +148,18 @@ function App() {
         instances.receive.selectedCurrency,
         instances.give.selectedCurrency
       );
-      const rateWithComission = rate * (1 + 0.05);
-      const sumWithComission = value * rateWithComission;
+      const valueToComission = value / rate
+      const comission = howMuchComission("receive", valueToComission);
+      if (comission === 0) { // Если появилась ошибка, и комиссия не была рассчитана
+        appDispatch(setSumGive(0)); // Установим sumGive в 0
+        return; // Выход из функции, чтобы не продолжать дальнейшие расчеты
+      }
+      const initialReceiveSum = rate * value;
+      const sumWithComission =
+        initialReceiveSum - initialReceiveSum * comission;
       appDispatch(setSumGive(Math.floor(sumWithComission)));
     },
-    [appDispatch, instances]
+    [appDispatch, instances, howMuchComission]
   );
 
   return (

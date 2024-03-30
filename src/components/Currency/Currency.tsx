@@ -20,7 +20,6 @@ interface CurrencyProps {
   banks: Banks;
   onBankChange: (value: string) => void;
   selectedBank: string;
-  // setBank: (instanceId: string, bank: string) => void;
 }
 
 function Currency({
@@ -38,6 +37,8 @@ function Currency({
   const selectedBank = instances[instanceId].selectedBank;
   const correctBanks: string[] = instances[instanceId].correctBanks;
 
+  // console.log(instances[instanceId].inputError);
+  
   const handleChangeSum = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       // Получаем значение из инпута
@@ -117,7 +118,9 @@ function Currency({
             label: bank,
           }))}
         ></Select>
+        
       </div>
+      {instances[instanceId].inputError && <span>{instances[instanceId].inputError}</span>}
     </div>
   );
 }

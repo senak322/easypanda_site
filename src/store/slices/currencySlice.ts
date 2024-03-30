@@ -68,17 +68,25 @@ const currencySlice = createSlice({
       const giveCurrency = state.instances.give.selectedCurrency;
       const giveBanks = state.instances.give.correctBanks;
       const giveBank = state.instances.give.selectedBank;
+      const giveLimitFrom = state.instances.give.limitFrom;
+      const giveLimitTO = state.instances.give.limitTo;
 
       // Обновляем инстанс "give" значениями из инстанса "receive"
       state.instances.give.selectedCurrency =
         state.instances.receive.selectedCurrency;
       state.instances.give.correctBanks = state.instances.receive.correctBanks;
       state.instances.give.selectedBank = state.instances.receive.selectedBank;
+      state.instances.give.limitFrom = state.instances.receive.limitFrom;
+      state.instances.give.limitTo = state.instances.receive.limitTo;
+      state.instances.give.inputError = "";
 
       // Обновляем инстанс "receive" сохраненными ранее значениями инстанса "give"
       state.instances.receive.selectedCurrency = giveCurrency;
       state.instances.receive.correctBanks = giveBanks;
       state.instances.receive.selectedBank = giveBank;
+      state.instances.receive.limitFrom = giveLimitFrom;
+      state.instances.receive.limitTo = giveLimitTO
+      state.instances.receive.inputError = "";
 
       // Обнуляем суммы
       state.sumGive = 0;
@@ -98,8 +106,12 @@ const currencySlice = createSlice({
     setSumReceive: (state, action: PayloadAction<number>) => {
       state.sumReceive = action.payload;
     },
-    setInputError: (state, action: PayloadAction<{instanceId: string; message: string}>) => {
-      state.instances[action.payload.instanceId].inputError = action.payload.message;
+    setInputError: (
+      state,
+      action: PayloadAction<{ instanceId: string; message: string }>
+    ) => {
+      state.instances[action.payload.instanceId].inputError =
+        action.payload.message;
     },
     // ... другие редьюсеры для обновления состояния
   },
