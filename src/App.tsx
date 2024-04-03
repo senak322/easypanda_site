@@ -166,14 +166,15 @@ function App() {
       console.log(valueToComission);
 
       const comission = howMuchComission("receive", valueToComission);
+      const receiveSum = value / (rate * (1 - comission));
+      console.log(receiveSum > 0.000000);
       if (comission === 0) {
         console.log("ошибка");
         // Если появилась ошибка, и комиссия не была рассчитана
         appDispatch(setSumGive(0)); // Установим sumGive в 0
         return; // Выход из функции, чтобы не продолжать дальнейшие расчеты
       }
-      const receiveSum = value / (rate * (1 - comission));
-      console.log(receiveSum > 0.000000);
+      
       
       // const sumWithComission =
       //   initialReceiveSum + initialReceiveSum * comission;
