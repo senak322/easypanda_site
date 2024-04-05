@@ -46,57 +46,44 @@ function App() {
   const howMuchComission = useCallback(
     (way: string, amount: number): number => {
       let comission: number = 0;
-      const errMessage = `Укажите сумму от ${instances[way].limitFrom} до ${instances[way].limitTo}`;
 
       if (instances.give.selectedCurrency === "RUB") {
         if (5000 <= amount && amount < 30000) {
-          comission = 0.08;
-          setError("give", "");
-        } else if (30000 <= amount && amount <= 50000) {
           comission = 0.07;
-          setError("give", "");
-        } else if (50000 <= amount && amount <= 300000) {
+        } else if (30000 <= amount && amount <= 50000) {
           comission = 0.06;
-          setError("give", "");
+        } else if (50000 <= amount && amount <= 300000) {
+          comission = 0.05;
         } else if (5000 > amount || amount > 300000) {
-          setError("give", errMessage);
           return 0;
         }
       }
       if (instances.give.selectedCurrency === "CNY") {
-        if (400 <= amount && amount < 1000) {
-          comission = 0.06;
-          setError("give", "");
-        } else if (1000 <= amount && amount < 3500) {
+        if (350 <= amount && amount < 1000) {
           comission = 0.05;
-          setError("give", "");
-        } else if (3500 <= amount && amount < 10000) {
+        } else if (1000 <= amount && amount < 3500) {
           comission = 0.04;
-          setError("give", "");
+        } else if (3500 <= amount && amount < 10000) {
+          comission = 0.025;
         } else if (10000 <= amount && amount <= 25000) {
-          comission = 0.03;
-          setError("give", "");
+          comission = 0.02;
         } else if (400 > amount || amount > 25000) {
-          setError("give", errMessage);
           return 0;
         }
       }
       if (instances.give.selectedCurrency === "UAH") {
         if (2000 <= amount && amount < 20000) {
           comission = 0.1;
-          setError("give", "");
         } else if (20000 <= amount && amount <= 50000) {
           comission = 0.09;
-          setError("give", "");
         } else if (2000 > amount || amount > 50000) {
-          setError("give", errMessage);
           return 0;
         }
       }
 
       return comission;
     },
-    [instances, setError]
+    [instances]
   );
 
   const reverseCurrency = useCallback(() => {
@@ -133,6 +120,7 @@ function App() {
 
   const changeGive = useCallback(
     async (value: number): Promise<void> => {
+      const errMessage = `Укажите сумму от ${instances.give.limitFrom} до ${instances.give.limitTo}`;
       appDispatch(setSumGive(value));
       const rate = await getExchangeRate(
         instances.give.selectedCurrency,
@@ -142,44 +130,49 @@ function App() {
       if (comission === 0) {
         // Если появилась ошибка, и комиссия не была рассчитана
         appDispatch(setSumReceive(0)); // Установим sumReceive в 0
+        setError("give", errMessage);
         return; // Выход из функции, чтобы не продолжать дальнейшие расчеты
       }
+      setError("give", "");
+
       const initialReceiveSum = rate * value;
-      const sumWithComission =
-        initialReceiveSum - initialReceiveSum * comission;
+      const sumWithComission = Math.floor(
+        initialReceiveSum - initialReceiveSum * comission
+      );
       appDispatch(setSumReceive(Math.floor(sumWithComission)));
     },
-    [appDispatch, instances, howMuchComission]
+    [appDispatch, instances, howMuchComission, setError]
   );
 
   const changeReceive = useCallback(
     async (value: number): Promise<void> => {
+      const errMessage = `Укажите сумму от ${instances.receive.limitFrom} до ${instances.receive.limitTo}`;
       appDispatch(setSumReceive(value));
       const rate: number = await getExchangeRate(
         instances.give.selectedCurrency,
         instances.receive.selectedCurrency
       );
       const valueToComission = value / rate;
-      console.log(valueToComission);
 
       const comission = howMuchComission("receive", valueToComission);
-      const receiveSum = value / (rate * (1 - comission));
+      const receiveSum = Math.floor(value / (rate * (1 - comission)));
 
       if (comission === 0) {
         console.log("ошибка");
+        setError("receive", errMessage);
         // Если появилась ошибка, и комиссия не была рассчитана
         appDispatch(setSumGive(0)); // Установим sumGive в 0
         return; // Выход из функции, чтобы не продолжать дальнейшие расчеты
       } else {
+        setError("receive", "");
         console.log("ya tut");
         appDispatch(setSumGive(Math.floor(receiveSum)));
       }
 
       // const sumWithComission =
       //   initialReceiveSum + initialReceiveSum * comission;
-      
     },
-    [appDispatch, instances, howMuchComission]
+    [appDispatch, instances, howMuchComission, setError]
   );
 
   return (
