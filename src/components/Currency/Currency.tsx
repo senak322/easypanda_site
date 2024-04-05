@@ -120,7 +120,9 @@ function Currency({
         ></Select>
         
       </div>
-      {instances[instanceId].inputError && <span>{instances[instanceId].inputError}</span>}
+      <span className={`currency__input-error ${instances[instanceId].inputError ? 'currency__input-error_show' : ''}`}>
+        {instances[instanceId].inputError}
+      </span>
     </div>
   );
 }
