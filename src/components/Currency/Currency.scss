@@ -26,21 +26,40 @@
     color: red;
     margin-left: 1.5rem;
     font-size: 0.9rem;
-    @include keyframes(slideDown) {
-      0% {
-        transform: translateY(-10px);
-        opacity: 0;
-      }
-      100% {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+
     &_show {
+      max-height: 50px; // предполагаемая максимальная высота сообщения об ошибке
+      opacity: 1;
       visibility: visible;
-      @include animation(slideDown); // использование миксина анимации
+      animation: slideDown 0.3s ease forwards;
+    }
+    &_hide {
+      max-height: 0;
+      opacity: 0;
+      visibility: hidden;
+      animation: slideUp 0.3s ease forwards;
+    }
+  }
+  @include keyframes(slideDown) {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 
-  
+  @include keyframes(slideUp) {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
 }

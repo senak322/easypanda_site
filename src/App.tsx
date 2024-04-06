@@ -134,7 +134,7 @@ function App() {
         return; // Выход из функции, чтобы не продолжать дальнейшие расчеты
       }
       setError("give", "");
-
+      setError("receive", "");
       const initialReceiveSum = rate * value;
       const sumWithComission = Math.floor(
         initialReceiveSum - initialReceiveSum * comission
@@ -158,14 +158,14 @@ function App() {
       const receiveSum = Math.floor(value / (rate * (1 - comission)));
 
       if (comission === 0) {
-        console.log("ошибка");
         setError("receive", errMessage);
         // Если появилась ошибка, и комиссия не была рассчитана
         appDispatch(setSumGive(0)); // Установим sumGive в 0
         return; // Выход из функции, чтобы не продолжать дальнейшие расчеты
       } else {
+        setError("give", "");
         setError("receive", "");
-        console.log("ya tut");
+
         appDispatch(setSumGive(Math.floor(receiveSum)));
       }
 
