@@ -9,10 +9,12 @@ import {
   setSumGive,
   setSumReceive,
   setInputError,
+  setStep,
 } from "./store/slices/currencySlice";
 import "./fonts/fonts.css";
 import "./App.css";
 import { SwapOutlined } from "@ant-design/icons";
+// import Button from "@mui/material/Button";
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
 import PaymentDetails from "./components/PaymentDetails/PaymentDetails";
@@ -30,7 +32,7 @@ function App() {
     idr: ["mega"],
   };
 
-  const { instances, sumGive, sumReceive } = useSelector(
+  const { instances, sumGive, sumReceive, step } = useSelector(
     (state: RootState) => state.currency
   );
 
@@ -174,6 +176,9 @@ function App() {
     },
     [appDispatch, instances, howMuchComission, setError]
   );
+  const handleNextStep = useCallback(() => {
+    appDispatch(setStep(step + 1));
+  }, [appDispatch, step]);
 
   return (
     <div className="App">
@@ -183,7 +188,7 @@ function App() {
           path="/"
           element={
             <Main>
-              <CurrencyConverter>
+              <CurrencyConverter sumGive={sumGive} sumReceive={sumReceive} handleNextStep={handleNextStep}>
                 <Currency
                   title="You give"
                   instanceId="give"
@@ -216,10 +221,12 @@ function App() {
                   onBankChange={onReceiveBankChange}
                 />
               </CurrencyConverter>
+              
+              {(step === 2 || step === 3) && <PaymentDetails />}
             </Main>
           }
         />
-        <Route path="/payment-details" element={<PaymentDetails />} />
+        {/* <Route path="/payment-details" element={<PaymentDetails />} /> */}
       </Routes>
     </div>
   );

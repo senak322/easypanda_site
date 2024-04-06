@@ -15,6 +15,7 @@ export interface CurrencyState {
   };
   sumGive: number;
   sumReceive: number;
+  step: number;
 }
 
 const initialState: CurrencyState = {
@@ -38,6 +39,7 @@ const initialState: CurrencyState = {
   },
   sumGive: 0,
   sumReceive: 0,
+  step: 1,
 };
 
 const currencySlice = createSlice({
@@ -130,6 +132,10 @@ const currencySlice = createSlice({
       state.instances[action.payload.instanceId].inputError =
         action.payload.message;
     },
+    setStep: (state, action: PayloadAction<number>) => {
+      state.step = action.payload;
+    },
+
     // ... другие редьюсеры для обновления состояния
   },
 });
@@ -141,6 +147,7 @@ export const {
   setSumGive,
   setSumReceive,
   setInputError,
+  setStep,
 } = currencySlice.actions;
 
 // export const {currencyGive} = currencySlice.
