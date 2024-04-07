@@ -1,4 +1,9 @@
+@import "../../styles/mixins";
+
 .next-btn {
-    font-family: 'Montserrat', sans-serif, Arial, Helvetica !important;
-    align-self: flex-start;
+  font-family: "Montserrat", sans-serif, Arial, Helvetica !important;
+  align-self: flex-start;
+  @include respond-to(medium) {
+    font-size: 0.7rem !important;
+  }
 }
