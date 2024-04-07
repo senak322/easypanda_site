@@ -1,3 +1,4 @@
+import "./PaymentDetails.scss";
 import { Button, TextField } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
@@ -29,12 +30,14 @@ function PaymentDetails() {
       : "";
 
   return (
-    <section>
-      <div>
+    <section className="payment">
+      <div className="payment__container">
         <h4>Укажите реквизиты получателя</h4>
-        <div>
-          <TextField id="outlined-basic" label="Имя" variant="outlined" />
-          <TextField id="outlined-basic" label="Фамилия" variant="outlined" />
+        <div className="my-3 d-flex p-2 justify-content-between">
+          <div className="d-flex p-2 justify-content-between">
+            <TextField id="outlined-basic" label="Имя" variant="outlined" />
+            <TextField id="outlined-basic" label="Фамилия" variant="outlined" />
+          </div>
           {accountData && (
             <TextField
               id="outlined-basic"
@@ -42,16 +45,18 @@ function PaymentDetails() {
               variant="outlined"
             />
           )}
-          <Button
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon />}
-          >
-            Загрузить QR
-            <VisuallyHiddenInput type="file" />
-          </Button>
+          {instances.receive.selectedCurrency === "CNY" && (
+            <Button
+              component="label"
+              role={undefined}
+              variant="contained"
+              tabIndex={-1}
+              startIcon={<CloudUploadIcon />}
+            >
+              Загрузить QR
+              <VisuallyHiddenInput type="file" />
+            </Button>
+          )}
         </div>
       </div>
     </section>
