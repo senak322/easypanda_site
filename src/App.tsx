@@ -188,7 +188,7 @@ function App() {
           path="/"
           element={
             <Main>
-              <CurrencyConverter sumGive={sumGive} sumReceive={sumReceive} handleNextStep={handleNextStep}>
+              <CurrencyConverter sumGive={sumGive} sumReceive={sumReceive} handleNextStep={handleNextStep} step={step}>
                 <Currency
                   title="You give"
                   instanceId="give"

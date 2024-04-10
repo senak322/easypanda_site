@@ -9,9 +9,9 @@ function Rools() {
   
   return (
     <section className="rools">
-      <h3 className="rools__title">Правила обмена</h3>
+      <h3 className="rools__title mx-3">Правила обмена</h3>
       <ul className="rools__container">
-        <li>
+        <li className="rools__li">
           Укажите валюты обмена, сумму и удобный способ отправки и получения
         </li>
         <li>

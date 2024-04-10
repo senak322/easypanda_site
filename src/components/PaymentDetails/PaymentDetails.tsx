@@ -32,31 +32,34 @@ function PaymentDetails() {
   return (
     <section className="payment">
       <div className="payment__container">
-        <h4>Укажите реквизиты получателя</h4>
-        <div className="my-3 d-flex p-2 justify-content-between">
-          <div className="d-flex p-2 justify-content-between">
+        <h4 className="mb-4">Укажите реквизиты получателя</h4>
+        <div className="payment__wrapper">
+          <div className="payment__input-container">
             <TextField id="outlined-basic" label="Имя" variant="outlined" />
             <TextField id="outlined-basic" label="Фамилия" variant="outlined" />
           </div>
-          {accountData && (
-            <TextField
-              id="outlined-basic"
-              label={accountData}
-              variant="outlined"
-            />
-          )}
-          {instances.receive.selectedCurrency === "CNY" && (
-            <Button
-              component="label"
-              role={undefined}
-              variant="contained"
-              tabIndex={-1}
-              startIcon={<CloudUploadIcon />}
-            >
-              Загрузить QR
-              <VisuallyHiddenInput type="file" />
-            </Button>
-          )}
+          <div className="payment__input-container">
+            {accountData && (
+              <TextField
+                id="outlined-basic"
+                label={accountData}
+                variant="outlined"
+              />
+            )}
+            {accountData && <p>или</p>}
+            {instances.receive.selectedCurrency === "CNY" && (
+              <Button
+                component="label"
+                role={undefined}
+                variant="contained"
+                tabIndex={-1}
+                startIcon={<CloudUploadIcon />}
+              >
+                Загрузить QR
+                <VisuallyHiddenInput type="file" />
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </section>

@@ -8,14 +8,15 @@ interface CurrencyConverterProps {
   sumGive: number;
   sumReceive: number;
   handleNextStep: () => void;
+  step: number;
 }
 
-function CurrencyConverter({ children, sumGive, sumReceive, handleNextStep }: CurrencyConverterProps) {
+function CurrencyConverter({ children, sumGive, sumReceive, handleNextStep, step }: CurrencyConverterProps) {
   return (
     <section>
       <div className="converter">{children} </div>
       <Rools />
-      <NextStepBtn sumGive={sumGive} sumReceive={sumReceive} handleNextStep={handleNextStep}/>
+      <NextStepBtn sumGive={sumGive} sumReceive={sumReceive} handleNextStep={handleNextStep} isDisabled={step > 1}/>
     </section>
   );
 }
