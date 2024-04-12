@@ -1,9 +1,4 @@
 import "./Rools.scss";
-// import { useSelector } from "react-redux";
-// import { RootState } from "../../store/store";
-// import { Button } from "antd";
-// import Button from "@mui/material/Button";
-// import { Link } from "react-router-dom";
 
 function Rools() {
   

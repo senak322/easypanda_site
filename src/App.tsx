@@ -180,6 +180,11 @@ function App() {
     appDispatch(setStep(step + 1));
   }, [appDispatch, step]);
 
+  
+
+  const isCurrencyNextDisabled = sumGive > 0 && sumReceive > 0 && step === 1
+  const isDetailsNextDisabled = sumGive > 0 && sumReceive > 0 && step > 1
+
   return (
     <div className="App">
       <Header />
@@ -188,7 +193,7 @@ function App() {
           path="/"
           element={
             <Main>
-              <CurrencyConverter sumGive={sumGive} sumReceive={sumReceive} handleNextStep={handleNextStep} step={step}>
+              <CurrencyConverter isDisabled={!isCurrencyNextDisabled} handleNextStep={handleNextStep} >
                 <Currency
                   title="You give"
                   instanceId="give"
@@ -222,7 +227,7 @@ function App() {
                 />
               </CurrencyConverter>
               
-              {(step === 2 || step === 3) && <PaymentDetails />}
+              {(step === 2 || step === 3) && <PaymentDetails handleNextStep={handleNextStep}isDisabled={isDetailsNextDisabled}/>}
             </Main>
           }
         />

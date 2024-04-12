@@ -4,8 +4,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
+import NextStepBtn from "../NextStepBtn/NextStepBtn";
 
-function PaymentDetails() {
+interface PaymentDetailsProps {
+  isDisabled: boolean;
+  handleNextStep: () => void;
+}
+
+function PaymentDetails({ isDisabled, handleNextStep }: PaymentDetailsProps) {
   const { instances } = useSelector((state: RootState) => state.currency);
 
   const VisuallyHiddenInput = styled("input")({
@@ -29,15 +35,20 @@ function PaymentDetails() {
       ? "Аккаунт Alipay"
       : "";
 
+  const discriptionData =
+    accountData === "Аккаунт Alipay"
+      ? "12345678 (номер Alipay) или example@live.cn (почта Alipay)"
+      : "9876543217654321";
+
   return (
     <section className="payment">
       <div className="payment__container">
         <h4 className="mb-4">Укажите реквизиты получателя</h4>
         <div className="payment__wrapper">
-          <div className="payment__input-container">
-            <TextField id="outlined-basic" label="Имя" variant="outlined" />
-            <TextField id="outlined-basic" label="Фамилия" variant="outlined" />
-          </div>
+          {/* <div className="payment__input-container"> */}
+          <TextField id="outlined-basic" label="Имя" variant="outlined" />
+          <TextField id="outlined-basic" label="Фамилия" variant="outlined" />
+          {/* </div> */}
           <div className="payment__input-container">
             {accountData && (
               <TextField
@@ -61,6 +72,25 @@ function PaymentDetails() {
             )}
           </div>
         </div>
+        <section>
+          <h5>Примечание</h5>
+          <ul>
+            <li>
+              Пожалуйста, укажите корректные данные получателя в формате Ivan
+              Ivanov или на языке страны получения
+            </li>
+            {accountData && (
+              <li>
+                Укажите {accountData} в формате {discriptionData}
+              </li>
+            )}
+          </ul>
+        </section>
+        <NextStepBtn
+          handleNextStep={handleNextStep}
+          isDisabled={isDisabled}
+          title="Создать заявку"
+        />
       </div>
     </section>
   );

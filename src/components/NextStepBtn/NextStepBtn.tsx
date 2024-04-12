@@ -2,28 +2,27 @@ import { Button } from "@mui/material";
 import "./NextStepBtn.scss";
 
 interface NextStepBtnProps {
-  sumGive: number;
-  sumReceive: number;
+  
   handleNextStep: () => void;
   isDisabled: boolean
+  title: string
 }
 
 function NextStepBtn({
-  sumGive,
-  sumReceive,
   handleNextStep,
-  isDisabled
+  isDisabled,
+  title,
 }: NextStepBtnProps) {
   return (
     <Button
       className="next-btn"
       variant="contained"
-      disabled={sumGive <= 0 || sumReceive <= 0 || isDisabled}
+      disabled={isDisabled}
       color="primary"
       onClick={handleNextStep}
-      
+      title="Следующий шаг"
     >
-      Следующий шаг
+     {title}
     </Button>
   );
 }
