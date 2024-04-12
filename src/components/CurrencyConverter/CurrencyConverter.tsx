@@ -1,20 +1,28 @@
-
 import NextStepBtn from "../NextStepBtn/NextStepBtn";
 import Rools from "../Rools/Rools";
 import "./CurrencyConverter.scss";
+import { roolsLi } from "../../utils/config";
 
 interface CurrencyConverterProps {
   children: React.ReactNode;
   handleNextStep: () => void;
-  isDisabled: boolean
+  isDisabled: boolean;
 }
 
-function CurrencyConverter({ children, handleNextStep, isDisabled }: CurrencyConverterProps) {
+function CurrencyConverter({
+  children,
+  handleNextStep,
+  isDisabled,
+}: CurrencyConverterProps) {
   return (
     <section>
       <div className="converter">{children} </div>
-      <Rools />
-      <NextStepBtn handleNextStep={handleNextStep} isDisabled={isDisabled} title="Следующий шаг"/>
+      <Rools title="Правила обмена" list={roolsLi} />
+      <NextStepBtn
+        handleNextStep={handleNextStep}
+        isDisabled={isDisabled}
+        title="Следующий шаг"
+      />
     </section>
   );
 }

@@ -5,6 +5,8 @@ import { RootState } from "../../store/store";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import NextStepBtn from "../NextStepBtn/NextStepBtn";
+import Rools from "../Rools/Rools";
+import { paymentLi } from "../../utils/config";
 
 interface PaymentDetailsProps {
   isDisabled: boolean;
@@ -72,20 +74,20 @@ function PaymentDetails({ isDisabled, handleNextStep }: PaymentDetailsProps) {
             )}
           </div>
         </div>
-        <section>
-          <h5>Примечание</h5>
-          <ul>
-            <li>
-              Пожалуйста, укажите корректные данные получателя в формате Ivan
-              Ivanov или на языке страны получения
-            </li>
-            {accountData && (
+        <Rools
+          title="Примечание"
+          list={paymentLi}
+          account={
+            accountData ? (
               <li>
                 Укажите {accountData} в формате {discriptionData}
               </li>
-            )}
-          </ul>
-        </section>
+            ) : (
+              ""
+            )
+          }
+        />
+        
         <NextStepBtn
           handleNextStep={handleNextStep}
           isDisabled={isDisabled}

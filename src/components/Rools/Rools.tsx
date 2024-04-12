@@ -1,28 +1,21 @@
 import "./Rools.scss";
 
-function Rools() {
-  
+interface RoolsProps {
+  title: string;
+  list: string[];
+  account?: React.ReactNode;
+}
+
+function Rools({ title, list, account }: RoolsProps) {
   return (
     <section className="rools">
-      <h3 className="rools__title mx-3">Правила обмена</h3>
+      <h3 className="rools__title mx-3">{title}</h3>
       <ul className="rools__container">
-        <li className="rools__li">
-          Укажите валюты обмена, сумму и удобный способ отправки и получения
-        </li>
-        <li>
-          После указания всех данных нажмите кнопку "Следующий шаг", чтобы
-          указать данные получателя и получить реквизиты для оплаты.
-        </li>
-        <li>
-          Внесите указанную Вами сумму по полученным реквизитам и прикрепите
-          скриншот об оплате.
-        </li>
-        <li>
-          Нажмите кнопку "Оплачено" и ожидайте получение средств после
-          подтверждения от Администратора
-        </li>
+        {list.map((el) => {
+          return <li className="rools__li">{el}</li>;
+        })}
+        {account}
       </ul>
-     
     </section>
   );
 }
