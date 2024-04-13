@@ -15,5 +15,9 @@
     &__input-container {
         display: flex;
         gap: 1rem;
+        align-items: center;
+    }
+    &__or {
+        margin: 0;
     }
 }

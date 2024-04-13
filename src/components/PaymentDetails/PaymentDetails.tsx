@@ -11,10 +11,14 @@ import { paymentLi } from "../../utils/config";
 interface PaymentDetailsProps {
   isDisabled: boolean;
   handleNextStep: () => void;
+  handleChangeFirstName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeLastName: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function PaymentDetails({ isDisabled, handleNextStep }: PaymentDetailsProps) {
-  const { instances } = useSelector((state: RootState) => state.currency);
+function PaymentDetails({ isDisabled, handleNextStep, handleChangeFirstName, handleChangeLastName }: PaymentDetailsProps) {
+  const { instances, firstName, lastName } = useSelector(
+    (state: RootState) => state.currency
+  );
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -48,8 +52,20 @@ function PaymentDetails({ isDisabled, handleNextStep }: PaymentDetailsProps) {
         <h4 className="mb-4">Укажите реквизиты получателя</h4>
         <div className="payment__wrapper">
           {/* <div className="payment__input-container"> */}
-          <TextField id="outlined-basic" label="Имя" variant="outlined" />
-          <TextField id="outlined-basic" label="Фамилия" variant="outlined" />
+          <TextField
+            id="outlined-basic"
+            label="Имя"
+            variant="outlined"
+            value={firstName}
+            onChange={handleChangeFirstName}
+          />
+          <TextField
+            id="outlined-basic"
+            label="Фамилия"
+            variant="outlined"
+            value={lastName}
+            onChange={handleChangeLastName}
+          />
           {/* </div> */}
           <div className="payment__input-container">
             {accountData && (
@@ -59,7 +75,7 @@ function PaymentDetails({ isDisabled, handleNextStep }: PaymentDetailsProps) {
                 variant="outlined"
               />
             )}
-            {accountData && <p>или</p>}
+            {accountData && <p className="payment__or">или</p>}
             {instances.receive.selectedCurrency === "CNY" && (
               <Button
                 component="label"
@@ -87,7 +103,7 @@ function PaymentDetails({ isDisabled, handleNextStep }: PaymentDetailsProps) {
             )
           }
         />
-        
+
         <NextStepBtn
           handleNextStep={handleNextStep}
           isDisabled={isDisabled}

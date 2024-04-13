@@ -10,6 +10,7 @@ import {
   setSumReceive,
   setInputError,
   setStep,
+  setName,
 } from "./store/slices/currencySlice";
 import "./fonts/fonts.css";
 import "./App.css";
@@ -37,6 +38,9 @@ function App() {
   );
 
   const appDispatch = useAppDispatch();
+
+  const isCurrencyNextDisabled = sumGive > 0 && sumReceive > 0 && step === 1
+  const isDetailsNextDisabled = sumGive > 0 && sumReceive > 0 && step > 1
 
   const setError = useCallback(
     (id: string, errMessage: string) => {
@@ -180,10 +184,15 @@ function App() {
     appDispatch(setStep(step + 1));
   }, [appDispatch, step]);
 
-  
+  const handleChangeFirstName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const valueFromInput = String(e.target.value)
+appDispatch(setName({witch:"first", value: valueFromInput}))
+  }, [appDispatch])
 
-  const isCurrencyNextDisabled = sumGive > 0 && sumReceive > 0 && step === 1
-  const isDetailsNextDisabled = sumGive > 0 && sumReceive > 0 && step > 1
+  const handleChangeLastName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const valueFromInput = String(e.target.value)
+    appDispatch(setName({witch:"last", value: valueFromInput}))
+      }, [appDispatch])
 
   return (
     <div className="App">
@@ -227,7 +236,7 @@ function App() {
                 />
               </CurrencyConverter>
               
-              {(step === 2 || step === 3) && <PaymentDetails handleNextStep={handleNextStep}isDisabled={isDetailsNextDisabled}/>}
+              {(step === 2 || step === 3) && <PaymentDetails handleNextStep={handleNextStep}isDisabled={isDetailsNextDisabled} handleChangeFirstName={handleChangeFirstName} handleChangeLastName={handleChangeLastName}/>}
             </Main>
           }
         />

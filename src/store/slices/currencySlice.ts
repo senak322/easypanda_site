@@ -16,6 +16,8 @@ export interface CurrencyState {
   sumGive: number;
   sumReceive: number;
   step: number;
+  firstName: string;
+  lastName: string;
 }
 
 const initialState: CurrencyState = {
@@ -40,6 +42,8 @@ const initialState: CurrencyState = {
   sumGive: 0,
   sumReceive: 0,
   step: 1,
+  firstName: "",
+  lastName: "",
 };
 
 const currencySlice = createSlice({
@@ -135,6 +139,16 @@ const currencySlice = createSlice({
     setStep: (state, action: PayloadAction<number>) => {
       state.step = action.payload;
     },
+    setFirstName: (state, action: PayloadAction<string>) => {
+      state.firstName = action.payload;
+    },
+    setName: (state, action: PayloadAction<{witch: string; value: string}>) => {
+      if(action.payload.witch === "first") {
+        state.firstName = action.payload.value
+      } else if(action.payload.witch === "last") {
+        state.lastName = action.payload.value
+      }
+    }
 
     // ... другие редьюсеры для обновления состояния
   },
@@ -148,6 +162,7 @@ export const {
   setSumReceive,
   setInputError,
   setStep,
+  setName,
 } = currencySlice.actions;
 
 // export const {currencyGive} = currencySlice.

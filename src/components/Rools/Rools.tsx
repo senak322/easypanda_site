@@ -11,8 +11,8 @@ function Rools({ title, list, account }: RoolsProps) {
     <section className="rools">
       <h3 className="rools__title mx-3">{title}</h3>
       <ul className="rools__container">
-        {list.map((el) => {
-          return <li className="rools__li">{el}</li>;
+        {list.map((el, index) => {
+          return <li className="rools__li" key={index}>{el}</li>;
         })}
         {account}
       </ul>
