@@ -13,10 +13,11 @@ interface PaymentDetailsProps {
   handleNextStep: () => void;
   handleChangeFirstName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleChangeLastName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChangeBankAccount: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function PaymentDetails({ isDisabled, handleNextStep, handleChangeFirstName, handleChangeLastName }: PaymentDetailsProps) {
-  const { instances, firstName, lastName } = useSelector(
+function PaymentDetails({ isDisabled, handleNextStep, handleChangeFirstName, handleChangeLastName, handleChangeBankAccount }: PaymentDetailsProps) {
+  const { instances, firstName, lastName, bankAccount } = useSelector(
     (state: RootState) => state.currency
   );
 
@@ -73,9 +74,11 @@ function PaymentDetails({ isDisabled, handleNextStep, handleChangeFirstName, han
                 id="outlined-basic"
                 label={accountData}
                 variant="outlined"
+                value={bankAccount}
+                onChange={handleChangeBankAccount}
               />
             )}
-            {accountData && <p className="payment__or">или</p>}
+            {accountData && accountData !== "Номер карты" && <p className="payment__or">или</p>}
             {instances.receive.selectedCurrency === "CNY" && (
               <Button
                 component="label"

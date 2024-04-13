@@ -18,6 +18,7 @@ export interface CurrencyState {
   step: number;
   firstName: string;
   lastName: string;
+  bankAccount?: string | number;
 }
 
 const initialState: CurrencyState = {
@@ -44,6 +45,7 @@ const initialState: CurrencyState = {
   step: 1,
   firstName: "",
   lastName: "",
+  bankAccount: "",
 };
 
 const currencySlice = createSlice({
@@ -139,16 +141,19 @@ const currencySlice = createSlice({
     setStep: (state, action: PayloadAction<number>) => {
       state.step = action.payload;
     },
-    setFirstName: (state, action: PayloadAction<string>) => {
-      state.firstName = action.payload;
-    },
-    setName: (state, action: PayloadAction<{witch: string; value: string}>) => {
-      if(action.payload.witch === "first") {
-        state.firstName = action.payload.value
-      } else if(action.payload.witch === "last") {
-        state.lastName = action.payload.value
+    setName: (
+      state,
+      action: PayloadAction<{ witch: string; value: string }>
+    ) => {
+      if (action.payload.witch === "first") {
+        state.firstName = action.payload.value;
+      } else if (action.payload.witch === "last") {
+        state.lastName = action.payload.value;
       }
-    }
+    },
+    setBankAccount: (state, action: PayloadAction<string | number>) => {
+      state.bankAccount = action.payload;
+    },
 
     // ... другие редьюсеры для обновления состояния
   },
@@ -163,6 +168,7 @@ export const {
   setInputError,
   setStep,
   setName,
+  setBankAccount,
 } = currencySlice.actions;
 
 // export const {currencyGive} = currencySlice.

@@ -11,6 +11,7 @@ import {
   setInputError,
   setStep,
   setName,
+  setBankAccount
 } from "./store/slices/currencySlice";
 import "./fonts/fonts.css";
 import "./App.css";
@@ -39,8 +40,8 @@ function App() {
 
   const appDispatch = useAppDispatch();
 
-  const isCurrencyNextDisabled = sumGive > 0 && sumReceive > 0 && step === 1
-  const isDetailsNextDisabled = sumGive > 0 && sumReceive > 0 && step > 1
+  const isCurrencyNextDisabled = sumGive > 0 && sumReceive > 0 && step === 1;
+  const isDetailsNextDisabled = sumGive > 0 && sumReceive > 0 && step > 1;
 
   const setError = useCallback(
     (id: string, errMessage: string) => {
@@ -184,15 +185,25 @@ function App() {
     appDispatch(setStep(step + 1));
   }, [appDispatch, step]);
 
-  const handleChangeFirstName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const valueFromInput = String(e.target.value)
-appDispatch(setName({witch:"first", value: valueFromInput}))
-  }, [appDispatch])
+  const handleChangeFirstName = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const valueFromInput = String(e.target.value);
+      appDispatch(setName({ witch: "first", value: valueFromInput }));
+    },
+    [appDispatch]
+  );
 
-  const handleChangeLastName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const valueFromInput = String(e.target.value)
-    appDispatch(setName({witch:"last", value: valueFromInput}))
-      }, [appDispatch])
+  const handleChangeLastName = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const valueFromInput = String(e.target.value);
+      appDispatch(setName({ witch: "last", value: valueFromInput }));
+    },
+    [appDispatch]
+  );
+
+  const handleChangeBankAccount = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    appDispatch(setBankAccount(e.target.value))
+  }, [appDispatch])
 
   return (
     <div className="App">
@@ -202,7 +213,10 @@ appDispatch(setName({witch:"first", value: valueFromInput}))
           path="/"
           element={
             <Main>
-              <CurrencyConverter isDisabled={!isCurrencyNextDisabled} handleNextStep={handleNextStep} >
+              <CurrencyConverter
+                isDisabled={!isCurrencyNextDisabled}
+                handleNextStep={handleNextStep}
+              >
                 <Currency
                   title="You give"
                   instanceId="give"
@@ -235,8 +249,16 @@ appDispatch(setName({witch:"first", value: valueFromInput}))
                   onBankChange={onReceiveBankChange}
                 />
               </CurrencyConverter>
-              
-              {(step === 2 || step === 3) && <PaymentDetails handleNextStep={handleNextStep}isDisabled={isDetailsNextDisabled} handleChangeFirstName={handleChangeFirstName} handleChangeLastName={handleChangeLastName}/>}
+
+              {(step === 2 || step === 3) && (
+                <PaymentDetails
+                  handleNextStep={handleNextStep}
+                  isDisabled={isDetailsNextDisabled}
+                  handleChangeFirstName={handleChangeFirstName}
+                  handleChangeLastName={handleChangeLastName}
+                  handleChangeBankAccount={handleChangeBankAccount}
+                />
+              )}
             </Main>
           }
         />
