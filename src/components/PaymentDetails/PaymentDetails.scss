@@ -1,7 +1,10 @@
 @import "../../styles/variables";
 
 .payment {
-    margin-top: $section-mrgin;
+    margin-top: $section-margin;
+    max-width: $max-width;
+    width: 100%;
+
     &__container {
         display: flex;
         flex-direction: column;

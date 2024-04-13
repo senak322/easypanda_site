@@ -1,14 +1,21 @@
 @import "../../styles/mixins";
+@import "../../styles/variables";
 
 .converter {
   display: flex;
-  max-width: 1024px;
-  width: 100%;
-  margin-top: 2rem;
-  justify-content: space-between;
+  max-width: $max-width;
+  flex-direction: column;
+  align-items: center;
 
   @include respond-to(medium) {
     flex-direction: column;
     align-items: center;
+  }
+
+  &__wrapper {
+    display: flex;
+    width: 100%;
+    margin-top: 2rem;
+    justify-content: space-between;
   }
 }

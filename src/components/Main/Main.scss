@@ -8,6 +8,7 @@
 
   &__header {
     margin: 0;
+    align-self: center;
 
     @include respond-to(large) {
       font-weight: 400;

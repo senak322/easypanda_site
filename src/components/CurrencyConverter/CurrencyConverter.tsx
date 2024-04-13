@@ -15,8 +15,8 @@ function CurrencyConverter({
   isDisabled,
 }: CurrencyConverterProps) {
   return (
-    <section>
-      <div className="converter">{children} </div>
+    <section className="converter">
+      <div className="converter__wrapper">{children} </div>
       <Rools title="Правила обмена" list={roolsLi} />
       <NextStepBtn
         handleNextStep={handleNextStep}
