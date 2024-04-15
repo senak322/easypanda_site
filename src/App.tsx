@@ -13,9 +13,10 @@ import {
   setName,
   setBankAccount,
   setUploadedFileDetails,
+  setAlert,
 } from "./store/slices/currencySlice";
 import "./fonts/fonts.css";
-import "./App.css";
+import "./App.scss";
 import { SwapOutlined } from "@ant-design/icons";
 // import Button from "@mui/material/Button";
 import Header from "./components/Header/Header";
@@ -26,8 +27,12 @@ import Currency from "./components/Currency/Currency";
 import { RootState } from "./store/store";
 import { Banks } from "./types/types";
 import { getExchangeRate } from "./utils/api";
+import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from "./utils/config";
+
+
 
 function App() {
+  
   const banks: Banks = {
     rub: ["sber"],
     cny: ["alipay", "wechat"],
@@ -35,14 +40,21 @@ function App() {
     idr: ["mega"],
   };
 
-  const { instances, sumGive, sumReceive, step, firstName, lastName, bankAccount } = useSelector(
-    (state: RootState) => state.currency
-  );
+  const {
+    instances,
+    sumGive,
+    sumReceive,
+    step,
+    firstName,
+    lastName,
+    bankAccount,
+  } = useSelector((state: RootState) => state.currency);
 
   const appDispatch = useAppDispatch();
 
   const isCurrencyNextDisabled = sumGive > 0 && sumReceive > 0 && step === 1;
-  const isDetailsNextDisabled = firstName.length > 0 && lastName.length > 0 && step > 1 && bankAccount;
+  const isDetailsNextDisabled =
+    firstName.length > 0 && lastName.length > 0 && step > 1 && bankAccount;
 
   const setError = useCallback(
     (id: string, errMessage: string) => {
@@ -202,24 +214,48 @@ function App() {
     [appDispatch]
   );
 
-  const handleChangeBankAccount = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    appDispatch(setBankAccount(e.target.value))
-  }, [appDispatch])
+  const handleChangeBankAccount = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      appDispatch(setBankAccount(e.target.value));
+    },
+    [appDispatch]
+  );
 
-  const handleFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>)=> {
-    const file = event.target.files ? event.target.files[0] : undefined;
-    console.log(file);
-    if (file) {
-      const fileDetails = {
-        name: file.name,
-        size: file.size,
-        lastModified: file.lastModified
-      };
-      appDispatch(setUploadedFileDetails(fileDetails));
-    } else {
-      appDispatch(setUploadedFileDetails(undefined));
-    }
-  }, [appDispatch])
+  const handleFileChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files ? event.target.files[0] : undefined;
+      console.log(file);
+      if (file) {
+        if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+          appDispatch(setAlert({
+            message: "Недопустимый формат файла. Поддерживаются только PNG, JPEG и JPG.",
+            severity: "error",
+          }))
+          appDispatch(setUploadedFileDetails(undefined));
+          return;
+        }
+        if (file.size > MAX_FILE_SIZE) {
+          appDispatch(setAlert({
+            message: `Файл слишком большой. Максимальный размер файла: ${MAX_FILE_SIZE / 1024 / 1024} MB.`,
+            severity: "error",
+          }))
+          appDispatch(setUploadedFileDetails(undefined));
+          return;
+        }
+        const fileDetails = {
+          name: file.name,
+          size: file.size,
+          lastModified: file.lastModified,
+        };
+        appDispatch(setAlert({message: "", severity: "success",}))
+        appDispatch(setUploadedFileDetails(fileDetails));
+      } else {
+        
+        appDispatch(setUploadedFileDetails(undefined));
+      }
+    },
+    [appDispatch]
+  );
 
   return (
     <div className="App">
@@ -274,7 +310,6 @@ function App() {
                   handleChangeLastName={handleChangeLastName}
                   handleChangeBankAccount={handleChangeBankAccount}
                   handleFileChange={handleFileChange}
-                 
                 />
               )}
             </Main>
@@ -282,6 +317,7 @@ function App() {
         />
         {/* <Route path="/payment-details" element={<PaymentDetails />} /> */}
       </Routes>
+      
     </div>
   );
 }

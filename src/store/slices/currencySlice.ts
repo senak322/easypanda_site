@@ -26,6 +26,8 @@ export interface CurrencyState {
   lastName: string;
   bankAccount?: string | number;
   uploadedFileDetails?: FileDetails;
+  alertMessage?: string
+  alertSeverity?: 'error' | 'info' | 'success' | 'warning'
 }
 
 const initialState: CurrencyState = {
@@ -54,6 +56,8 @@ const initialState: CurrencyState = {
   lastName: "",
   bankAccount: "",
   uploadedFileDetails: undefined,
+  alertMessage: "",
+  alertSeverity: "error"
 };
 
 const currencySlice = createSlice({
@@ -165,7 +169,10 @@ const currencySlice = createSlice({
     setUploadedFileDetails: (state, action: PayloadAction<FileDetails | undefined>) => {
       state.uploadedFileDetails = action.payload;
     },
-
+    setAlert: (state, action: PayloadAction<{message: string, severity: "error" | "info" | "success" | "warning"}>) => {
+      state.alertMessage = action.payload.message;
+      state.alertSeverity = action.payload.severity;
+    },
     // ... другие редьюсеры для обновления состояния
   },
 });
@@ -181,6 +188,7 @@ export const {
   setName,
   setBankAccount,
   setUploadedFileDetails,
+  setAlert,
 } = currencySlice.actions;
 
 // export const {currencyGive} = currencySlice.

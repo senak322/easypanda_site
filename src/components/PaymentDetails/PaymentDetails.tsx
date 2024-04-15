@@ -1,5 +1,5 @@
 import "./PaymentDetails.scss";
-import { Button, TextField } from "@mui/material";
+import { Alert, Button, TextField } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -25,7 +25,7 @@ function PaymentDetails({
   handleChangeBankAccount,
   handleFileChange,
 }: PaymentDetailsProps) {
-  const { instances, firstName, lastName, bankAccount, uploadedFileDetails } = useSelector(
+  const { instances, firstName, lastName, bankAccount, uploadedFileDetails, alertMessage, alertSeverity } = useSelector(
     (state: RootState) => state.currency
   );
 
@@ -102,13 +102,15 @@ function PaymentDetails({
               </Button>
               
             )}
-            {uploadedFileDetails && (
-                <div className="file-details">
+            
+          </div>
+          {uploadedFileDetails && (
+                <div className="payment__file-details">
                   <p>Имя файла: {uploadedFileDetails.name}</p>
                   <p>Размер файла: {uploadedFileDetails.size} байт</p>
                 </div>
               )}
-          </div>
+              {alertMessage && <Alert severity={alertSeverity}>{alertMessage}</Alert>}
         </div>
         <Rools
           title="Примечание"
