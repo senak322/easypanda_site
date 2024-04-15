@@ -2,6 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { banks } from "../../utils/config";
 // import { Banks } from "../../types/types";
 
+interface FileDetails {
+  name: string;
+  size: number;
+  lastModified: number;
+}
+
 export interface CurrencyState {
   instances: {
     [key: string]: {
@@ -19,6 +25,7 @@ export interface CurrencyState {
   firstName: string;
   lastName: string;
   bankAccount?: string | number;
+  uploadedFileDetails?: FileDetails;
 }
 
 const initialState: CurrencyState = {
@@ -46,6 +53,7 @@ const initialState: CurrencyState = {
   firstName: "",
   lastName: "",
   bankAccount: "",
+  uploadedFileDetails: undefined,
 };
 
 const currencySlice = createSlice({
@@ -154,6 +162,9 @@ const currencySlice = createSlice({
     setBankAccount: (state, action: PayloadAction<string | number>) => {
       state.bankAccount = action.payload;
     },
+    setUploadedFileDetails: (state, action: PayloadAction<FileDetails | undefined>) => {
+      state.uploadedFileDetails = action.payload;
+    },
 
     // ... другие редьюсеры для обновления состояния
   },
@@ -169,6 +180,7 @@ export const {
   setStep,
   setName,
   setBankAccount,
+  setUploadedFileDetails,
 } = currencySlice.actions;
 
 // export const {currencyGive} = currencySlice.

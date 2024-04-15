@@ -11,7 +11,8 @@ import {
   setInputError,
   setStep,
   setName,
-  setBankAccount
+  setBankAccount,
+  setUploadedFileDetails,
 } from "./store/slices/currencySlice";
 import "./fonts/fonts.css";
 import "./App.css";
@@ -34,14 +35,14 @@ function App() {
     idr: ["mega"],
   };
 
-  const { instances, sumGive, sumReceive, step } = useSelector(
+  const { instances, sumGive, sumReceive, step, firstName, lastName, bankAccount } = useSelector(
     (state: RootState) => state.currency
   );
 
   const appDispatch = useAppDispatch();
 
   const isCurrencyNextDisabled = sumGive > 0 && sumReceive > 0 && step === 1;
-  const isDetailsNextDisabled = sumGive > 0 && sumReceive > 0 && step > 1;
+  const isDetailsNextDisabled = firstName.length > 0 && lastName.length > 0 && step > 1 && bankAccount;
 
   const setError = useCallback(
     (id: string, errMessage: string) => {
@@ -205,6 +206,21 @@ function App() {
     appDispatch(setBankAccount(e.target.value))
   }, [appDispatch])
 
+  const handleFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>)=> {
+    const file = event.target.files ? event.target.files[0] : undefined;
+    console.log(file);
+    if (file) {
+      const fileDetails = {
+        name: file.name,
+        size: file.size,
+        lastModified: file.lastModified
+      };
+      appDispatch(setUploadedFileDetails(fileDetails));
+    } else {
+      appDispatch(setUploadedFileDetails(undefined));
+    }
+  }, [appDispatch])
+
   return (
     <div className="App">
       <Header />
@@ -253,10 +269,12 @@ function App() {
               {(step === 2 || step === 3) && (
                 <PaymentDetails
                   handleNextStep={handleNextStep}
-                  isDisabled={isDetailsNextDisabled}
+                  isDisabled={!isDetailsNextDisabled}
                   handleChangeFirstName={handleChangeFirstName}
                   handleChangeLastName={handleChangeLastName}
                   handleChangeBankAccount={handleChangeBankAccount}
+                  handleFileChange={handleFileChange}
+                 
                 />
               )}
             </Main>

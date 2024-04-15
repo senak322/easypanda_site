@@ -14,10 +14,18 @@ interface PaymentDetailsProps {
   handleChangeFirstName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleChangeLastName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleChangeBankAccount: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function PaymentDetails({ isDisabled, handleNextStep, handleChangeFirstName, handleChangeLastName, handleChangeBankAccount }: PaymentDetailsProps) {
-  const { instances, firstName, lastName, bankAccount } = useSelector(
+function PaymentDetails({
+  isDisabled,
+  handleNextStep,
+  handleChangeFirstName,
+  handleChangeLastName,
+  handleChangeBankAccount,
+  handleFileChange,
+}: PaymentDetailsProps) {
+  const { instances, firstName, lastName, bankAccount, uploadedFileDetails } = useSelector(
     (state: RootState) => state.currency
   );
 
@@ -78,7 +86,9 @@ function PaymentDetails({ isDisabled, handleNextStep, handleChangeFirstName, han
                 onChange={handleChangeBankAccount}
               />
             )}
-            {accountData && accountData !== "Номер карты" && <p className="payment__or">или</p>}
+            {accountData && accountData !== "Номер карты" && (
+              <p className="payment__or">или</p>
+            )}
             {instances.receive.selectedCurrency === "CNY" && (
               <Button
                 component="label"
@@ -88,9 +98,16 @@ function PaymentDetails({ isDisabled, handleNextStep, handleChangeFirstName, han
                 startIcon={<CloudUploadIcon />}
               >
                 Загрузить QR
-                <VisuallyHiddenInput type="file" />
+                <VisuallyHiddenInput type="file" onChange={handleFileChange} />
               </Button>
+              
             )}
+            {uploadedFileDetails && (
+                <div className="file-details">
+                  <p>Имя файла: {uploadedFileDetails.name}</p>
+                  <p>Размер файла: {uploadedFileDetails.size} байт</p>
+                </div>
+              )}
           </div>
         </div>
         <Rools
