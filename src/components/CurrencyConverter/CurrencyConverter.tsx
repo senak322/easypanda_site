@@ -7,22 +7,35 @@ interface CurrencyConverterProps {
   children: React.ReactNode;
   handleNextStep: () => void;
   isDisabled: boolean;
+  step: number;
+  handleBackStep: () => void;
 }
 
 function CurrencyConverter({
   children,
   handleNextStep,
   isDisabled,
+  step,
+  handleBackStep
 }: CurrencyConverterProps) {
   return (
     <section className="converter">
       <div className="converter__wrapper">{children} </div>
       <Rools title="Правила обмена" list={roolsLi} />
-      <NextStepBtn
-        handleNextStep={handleNextStep}
-        isDisabled={isDisabled}
-        title="Следующий шаг"
-      />
+      <div className="converter__btn-container">
+        <NextStepBtn
+          handleNextStep={handleNextStep}
+          isDisabled={isDisabled}
+          title="Следующий шаг"
+          color="primary"
+        />
+        <NextStepBtn
+          handleNextStep={handleBackStep}
+          isDisabled={step === 1}
+          title="Изменить детали"
+          color="success"
+        />
+      </div>
     </section>
   );
 }

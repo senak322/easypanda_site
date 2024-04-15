@@ -6,6 +6,7 @@ interface CurrencySelectProps {
   onCurrencyChange: (value: string) => void;
   allCurrencies: string[];
   disabledCurrency: string;
+  step: number
 }
 
 function CurrencySelect({
@@ -13,9 +14,13 @@ function CurrencySelect({
   onCurrencyChange,
   allCurrencies,
   disabledCurrency,
+  step
 }: CurrencySelectProps) {
   const isDisabledCurrency = (currency: string): boolean => {
     // Условие для невозможности выбора RUB и UAH друг для друга
+    if(step > 1) {
+      return true
+    }
     if (
       (selectedCurrency === "CNY")
     ) {

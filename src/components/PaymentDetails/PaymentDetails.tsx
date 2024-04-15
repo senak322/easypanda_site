@@ -7,6 +7,7 @@ import { styled } from "@mui/material/styles";
 import NextStepBtn from "../NextStepBtn/NextStepBtn";
 import Rools from "../Rools/Rools";
 import { paymentLi } from "../../utils/config";
+import DoneIcon from "@mui/icons-material/Done";
 
 interface PaymentDetailsProps {
   isDisabled: boolean;
@@ -25,9 +26,15 @@ function PaymentDetails({
   handleChangeBankAccount,
   handleFileChange,
 }: PaymentDetailsProps) {
-  const { instances, firstName, lastName, bankAccount, uploadedFileDetails, alertMessage, alertSeverity } = useSelector(
-    (state: RootState) => state.currency
-  );
+  const {
+    instances,
+    firstName,
+    lastName,
+    bankAccount,
+    uploadedFileDetails,
+    alertMessage,
+    alertSeverity,
+  } = useSelector((state: RootState) => state.currency);
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -100,17 +107,23 @@ function PaymentDetails({
                 Загрузить QR
                 <VisuallyHiddenInput type="file" onChange={handleFileChange} />
               </Button>
-              
             )}
-            
           </div>
           {uploadedFileDetails && (
-                <div className="payment__file-details">
-                  <p>Имя файла: {uploadedFileDetails.name}</p>
-                  <p>Размер файла: {uploadedFileDetails.size} байт</p>
-                </div>
-              )}
-              {alertMessage && <Alert severity={alertSeverity}>{alertMessage}</Alert>}
+            <div className="payment__file-details">
+              <div className="payment__done">
+                <DoneIcon />
+              </div>
+              <div className="my-2">
+                <h5>Файл загружен:</h5>
+                <p className="m-0">Имя файла: {uploadedFileDetails.name}</p>
+                <p className="m-0">Размер файла: {uploadedFileDetails.size} байт</p>
+              </div>
+            </div>
+          )}
+          {alertMessage && (
+            <Alert severity={alertSeverity}>{alertMessage}</Alert>
+          )}
         </div>
         <Rools
           title="Примечание"
@@ -130,6 +143,7 @@ function PaymentDetails({
           handleNextStep={handleNextStep}
           isDisabled={isDisabled}
           title="Создать заявку"
+          color="primary"
         />
       </div>
     </section>

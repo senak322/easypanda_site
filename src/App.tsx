@@ -29,10 +29,7 @@ import { Banks } from "./types/types";
 import { getExchangeRate } from "./utils/api";
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from "./utils/config";
 
-
-
 function App() {
-  
   const banks: Banks = {
     rub: ["sber"],
     cny: ["alipay", "wechat"],
@@ -198,6 +195,10 @@ function App() {
     appDispatch(setStep(step + 1));
   }, [appDispatch, step]);
 
+  const handleBackStep = useCallback(() => {
+    appDispatch(setStep(step - 1));
+  }, [appDispatch, step]);
+
   const handleChangeFirstName = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const valueFromInput = String(e.target.value);
@@ -227,18 +228,25 @@ function App() {
       console.log(file);
       if (file) {
         if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-          appDispatch(setAlert({
-            message: "Недопустимый формат файла. Поддерживаются только PNG, JPEG и JPG.",
-            severity: "error",
-          }))
+          appDispatch(
+            setAlert({
+              message:
+                "Недопустимый формат файла. Поддерживаются только PNG, JPEG и JPG.",
+              severity: "error",
+            })
+          );
           appDispatch(setUploadedFileDetails(undefined));
           return;
         }
         if (file.size > MAX_FILE_SIZE) {
-          appDispatch(setAlert({
-            message: `Файл слишком большой. Максимальный размер файла: ${MAX_FILE_SIZE / 1024 / 1024} MB.`,
-            severity: "error",
-          }))
+          appDispatch(
+            setAlert({
+              message: `Файл слишком большой. Максимальный размер файла: ${
+                MAX_FILE_SIZE / 1024 / 1024
+              } MB.`,
+              severity: "error",
+            })
+          );
           appDispatch(setUploadedFileDetails(undefined));
           return;
         }
@@ -247,10 +255,9 @@ function App() {
           size: file.size,
           lastModified: file.lastModified,
         };
-        appDispatch(setAlert({message: "", severity: "success",}))
+        appDispatch(setAlert({ message: "", severity: "success" }));
         appDispatch(setUploadedFileDetails(fileDetails));
       } else {
-        
         appDispatch(setUploadedFileDetails(undefined));
       }
     },
@@ -268,6 +275,8 @@ function App() {
               <CurrencyConverter
                 isDisabled={!isCurrencyNextDisabled}
                 handleNextStep={handleNextStep}
+                step={step}
+                handleBackStep={handleBackStep}
               >
                 <Currency
                   title="You give"
@@ -280,11 +289,13 @@ function App() {
                   banks={banks}
                   selectedBank={instances.give.selectedBank}
                   onBankChange={onGiveBankChange}
+                  step={step}
                 />
                 <button
                   onClick={reverseCurrency}
                   className="main__arrow-btn"
                   type="button"
+                  disabled={step > 1}
                 >
                   <SwapOutlined />
                 </button>
@@ -299,6 +310,7 @@ function App() {
                   banks={banks}
                   selectedBank={instances.receive.selectedBank}
                   onBankChange={onReceiveBankChange}
+                  step={step}
                 />
               </CurrencyConverter>
 
@@ -317,7 +329,6 @@ function App() {
         />
         {/* <Route path="/payment-details" element={<PaymentDetails />} /> */}
       </Routes>
-      
     </div>
   );
 }

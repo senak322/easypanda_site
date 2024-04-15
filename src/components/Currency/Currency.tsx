@@ -20,6 +20,7 @@ interface CurrencyProps {
   banks: Banks;
   onBankChange: (value: string) => void;
   selectedBank: string;
+  step: number
 }
 
 function Currency({
@@ -30,6 +31,7 @@ function Currency({
   sum,
   changeSum,
   onBankChange,
+  step
 }: CurrencyProps) {
   const windowWidth = useWindowWidth();
   const { instances } = useSelector((state: RootState) => state.currency);
@@ -65,6 +67,7 @@ function Currency({
               onCurrencyChange={onCurrencyChange}
               allCurrencies={allCurrencies}
               disabledCurrency={disabledCurrency}
+              step={step}
             />
           </>
         ) : windowWidth >= 700 ? (
@@ -74,6 +77,7 @@ function Currency({
               onCurrencyChange={onCurrencyChange}
               allCurrencies={allCurrencies}
               disabledCurrency={disabledCurrency}
+              step={step}
             />
             <CurrencyTitle title={title} />
           </>
@@ -85,6 +89,7 @@ function Currency({
               onCurrencyChange={onCurrencyChange}
               allCurrencies={allCurrencies}
               disabledCurrency={disabledCurrency}
+              step={step}
             />
           </>
         )}
@@ -95,6 +100,7 @@ function Currency({
           className="mx-1 currency__input"
           value={sum}
           onChange={handleChangeSum}
+          disabled={step > 1}
           prefix={
             selectedCurrency === "RUB"
               ? "₽"
@@ -110,6 +116,7 @@ function Currency({
           }
         />
         <Select
+        disabled={step > 1}
           value={selectedBank}
           onChange={onBankChange}
           options={correctBanks.map((bank: string) => ({
