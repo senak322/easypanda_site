@@ -65,7 +65,7 @@ function PaymentDetails({
   return (
     <section className="payment">
       <div className="payment__container">
-        <h4 className="mb-4">Укажите реквизиты получателя</h4>
+        <h2 className="mb-4">Укажите реквизиты получателя</h2>
         <div className="payment__wrapper">
           {/* <div className="payment__input-container"> */}
           <TextField
@@ -82,7 +82,6 @@ function PaymentDetails({
             value={lastName}
             onChange={handleChangeLastName}
           />
-          {/* </div> */}
           <div className="payment__input-container">
             {accountData && (
               <TextField
@@ -117,7 +116,9 @@ function PaymentDetails({
               <div className="my-2">
                 <h5>Файл загружен:</h5>
                 <p className="m-0">Имя файла: {uploadedFileDetails.name}</p>
-                <p className="m-0">Размер файла: {uploadedFileDetails.size} байт</p>
+                <p className="m-0">
+                  Размер файла: {uploadedFileDetails.size} байт
+                </p>
               </div>
             </div>
           )}

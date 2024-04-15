@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { RootState } from "./store/store";
 import { useAppDispatch } from "./hooks/useAppDispatch";
 import {
   setCurrency,
@@ -24,10 +25,10 @@ import Main from "./components/Main/Main";
 import PaymentDetails from "./components/PaymentDetails/PaymentDetails";
 import CurrencyConverter from "./components/CurrencyConverter/CurrencyConverter";
 import Currency from "./components/Currency/Currency";
-import { RootState } from "./store/store";
 import { Banks } from "./types/types";
 import { getExchangeRate } from "./utils/api";
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from "./utils/config";
+import CreateOrder from "./components/CreateOrder/CreateOrder";
 
 function App() {
   const banks: Banks = {
@@ -45,13 +46,14 @@ function App() {
     firstName,
     lastName,
     bankAccount,
+    uploadedFileDetails
   } = useSelector((state: RootState) => state.currency);
 
   const appDispatch = useAppDispatch();
 
   const isCurrencyNextDisabled = sumGive > 0 && sumReceive > 0 && step === 1;
   const isDetailsNextDisabled =
-    firstName.length > 0 && lastName.length > 0 && step > 1 && bankAccount;
+    firstName.length > 0 && lastName.length > 0 && step > 1 && (bankAccount || uploadedFileDetails !== undefined);
 
   const setError = useCallback(
     (id: string, errMessage: string) => {
@@ -197,6 +199,12 @@ function App() {
 
   const handleBackStep = useCallback(() => {
     appDispatch(setStep(step - 1));
+    appDispatch(
+      setAlert({
+        message: "",
+        severity: "error",
+      })
+    );
   }, [appDispatch, step]);
 
   const handleChangeFirstName = useCallback(
@@ -264,6 +272,10 @@ function App() {
     [appDispatch]
   );
 
+  const handleCloseOrder = useCallback(() => {
+
+  }, [])
+
   return (
     <div className="App">
       <Header />
@@ -322,6 +334,12 @@ function App() {
                   handleChangeLastName={handleChangeLastName}
                   handleChangeBankAccount={handleChangeBankAccount}
                   handleFileChange={handleFileChange}
+                />
+              )}
+              {(step === 3) && (
+                <CreateOrder
+                  handleCloseOrder={handleCloseOrder}
+                  
                 />
               )}
             </Main>

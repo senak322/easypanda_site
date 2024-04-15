@@ -1,0 +1,8 @@
+.order {
+    display: flex;
+    margin-top: 5rem;
+    flex-direction: column;
+    &__info {
+        list-style-type: none;
+    }
+}

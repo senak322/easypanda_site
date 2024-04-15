@@ -169,7 +169,7 @@ const currencySlice = createSlice({
     setUploadedFileDetails: (state, action: PayloadAction<FileDetails | undefined>) => {
       state.uploadedFileDetails = action.payload;
     },
-    setAlert: (state, action: PayloadAction<{message: string, severity: "error" | "info" | "success" | "warning"}>) => {
+    setAlert: (state, action: PayloadAction<{message: string, severity?: "error" | "info" | "success" | "warning"}>) => {
       state.alertMessage = action.payload.message;
       state.alertSeverity = action.payload.severity;
     },
