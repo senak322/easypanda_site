@@ -31,7 +31,7 @@ function PaymentDetails({
     firstName,
     lastName,
     bankAccount,
-    uploadedFileDetails,
+    uploadedReceiveFileDetails,
     alertMessage,
     alertSeverity,
   } = useSelector((state: RootState) => state.currency);
@@ -108,16 +108,16 @@ function PaymentDetails({
               </Button>
             )}
           </div>
-          {uploadedFileDetails && (
+          {uploadedReceiveFileDetails && (
             <div className="payment__file-details">
               <div className="payment__done">
                 <DoneIcon />
               </div>
               <div className="my-2">
                 <h5>Файл загружен:</h5>
-                <p className="m-0">Имя файла: {uploadedFileDetails.name}</p>
+                <p className="m-0">Имя файла: {uploadedReceiveFileDetails.name}</p>
                 <p className="m-0">
-                  Размер файла: {uploadedFileDetails.size} байт
+                  Размер файла: {uploadedReceiveFileDetails.size} байт
                 </p>
               </div>
             </div>

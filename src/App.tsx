@@ -13,7 +13,7 @@ import {
   setStep,
   setName,
   setBankAccount,
-  setUploadedFileDetails,
+  setUploadedReceiveFileDetails,
   setAlert,
 } from "./store/slices/currencySlice";
 import "./fonts/fonts.css";
@@ -46,7 +46,7 @@ function App() {
     firstName,
     lastName,
     bankAccount,
-    uploadedFileDetails,
+    uploadedReceiveFileDetails,
   } = useSelector((state: RootState) => state.currency);
 
   const appDispatch = useAppDispatch();
@@ -56,7 +56,7 @@ function App() {
     firstName.length > 0 &&
     lastName.length > 0 &&
     step > 1 &&
-    (bankAccount || uploadedFileDetails !== undefined);
+    (bankAccount || uploadedReceiveFileDetails !== undefined);
 
   const setError = useCallback(
     (id: string, errMessage: string) => {
@@ -190,7 +190,6 @@ function App() {
 
         appDispatch(setSumGive(Math.floor(receiveSum)));
       }
-
     },
     [appDispatch, instances, howMuchComission, setError]
   );
@@ -206,8 +205,8 @@ function App() {
         severity: "error",
       })
     );
-    appDispatch(setUploadedFileDetails(undefined))
-    appDispatch(setBankAccount(""))
+    appDispatch(setUploadedReceiveFileDetails(undefined));
+    appDispatch(setBankAccount(""));
   }, [appDispatch, step]);
 
   const handleChangeFirstName = useCallback(
@@ -246,7 +245,7 @@ function App() {
               severity: "error",
             })
           );
-          appDispatch(setUploadedFileDetails(undefined));
+          appDispatch(setUploadedReceiveFileDetails(undefined));
           return;
         }
         if (file.size > MAX_FILE_SIZE) {
@@ -258,7 +257,7 @@ function App() {
               severity: "error",
             })
           );
-          appDispatch(setUploadedFileDetails(undefined));
+          appDispatch(setUploadedReceiveFileDetails(undefined));
           return;
         }
         const fileDetails = {
@@ -267,13 +266,15 @@ function App() {
           lastModified: file.lastModified,
         };
         appDispatch(setAlert({ message: "", severity: "success" }));
-        appDispatch(setUploadedFileDetails(fileDetails));
+        appDispatch(setUploadedReceiveFileDetails(fileDetails));
       } else {
-        appDispatch(setUploadedFileDetails(undefined));
+        appDispatch(setUploadedReceiveFileDetails(undefined));
       }
     },
     [appDispatch]
   );
+
+  const handlePaidOrder = useCallback(() => {}, []);
 
   const handleCloseOrder = useCallback(() => {}, []);
 
@@ -338,7 +339,10 @@ function App() {
                 />
               )}
               {step === 3 && (
-                <CreateOrder handleCloseOrder={handleCloseOrder} />
+                <CreateOrder
+                  handlePaidOrder={handlePaidOrder}
+                  handleCloseOrder={handleCloseOrder}
+                />
               )}
             </Main>
           }

@@ -9,7 +9,7 @@ interface RoolsProps {
 function Rools({ title, list, account }: RoolsProps) {
   return (
     <section className="rools">
-      <h3 className="rools__title mx-3">{title}</h3>
+      <h4 className="rools__title mx-3">{title}</h4>
       <ul className="rools__container">
         {list.map((el, index) => {
           return (
