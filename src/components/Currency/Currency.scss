@@ -19,6 +19,14 @@
     border-radius: 10px;
     background-color: #e9e9e9;
   }
+
+  &__option-img {
+    width: 18px;
+    border-radius: 50%;
+    margin: 0 .2rem .2rem 0;
+    // margin-right: 0.2rem;
+    // margin-bottom: 0.2rem;
+  }
   &__input-error {
     visibility: visible;
     opacity: 1;

@@ -120,7 +120,7 @@ function Currency({
         >
           {correctBanks?.map((bank) => (
             <Select.Option key={bank.name} value={bank.name}>
-              <img src={bank.icon} alt={bank.name} style={{ width: 20 }} />
+              <img src={bank.icon} alt={bank.name} className="currency__option-img" />
               {bank.name}
             </Select.Option>
           ))}

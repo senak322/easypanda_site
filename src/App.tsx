@@ -191,8 +191,6 @@ function App() {
         appDispatch(setSumGive(Math.floor(receiveSum)));
       }
 
-      // const sumWithComission =
-      //   initialReceiveSum + initialReceiveSum * comission;
     },
     [appDispatch, instances, howMuchComission, setError]
   );
@@ -208,6 +206,8 @@ function App() {
         severity: "error",
       })
     );
+    appDispatch(setUploadedFileDetails(undefined))
+    appDispatch(setBankAccount(""))
   }, [appDispatch, step]);
 
   const handleChangeFirstName = useCallback(
