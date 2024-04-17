@@ -46,14 +46,17 @@ function App() {
     firstName,
     lastName,
     bankAccount,
-    uploadedFileDetails
+    uploadedFileDetails,
   } = useSelector((state: RootState) => state.currency);
 
   const appDispatch = useAppDispatch();
 
   const isCurrencyNextDisabled = sumGive > 0 && sumReceive > 0 && step === 1;
   const isDetailsNextDisabled =
-    firstName.length > 0 && lastName.length > 0 && step > 1 && (bankAccount || uploadedFileDetails !== undefined);
+    firstName.length > 0 &&
+    lastName.length > 0 &&
+    step > 1 &&
+    (bankAccount || uploadedFileDetails !== undefined);
 
   const setError = useCallback(
     (id: string, errMessage: string) => {
@@ -272,9 +275,7 @@ function App() {
     [appDispatch]
   );
 
-  const handleCloseOrder = useCallback(() => {
-
-  }, [])
+  const handleCloseOrder = useCallback(() => {}, []);
 
   return (
     <div className="App">
@@ -336,11 +337,8 @@ function App() {
                   handleFileChange={handleFileChange}
                 />
               )}
-              {(step === 3) && (
-                <CreateOrder
-                  handleCloseOrder={handleCloseOrder}
-                  
-                />
+              {step === 3 && (
+                <CreateOrder handleCloseOrder={handleCloseOrder} />
               )}
             </Main>
           }

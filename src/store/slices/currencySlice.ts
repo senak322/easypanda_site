@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { banks } from "../../utils/config";
 // import { Banks } from "../../types/types";
+import { Bank } from "../../types/types";
 
 interface FileDetails {
   name: string;
@@ -12,8 +13,9 @@ export interface CurrencyState {
   instances: {
     [key: string]: {
       selectedCurrency: string;
-      correctBanks: string[];
+      correctBanks: Bank[];
       selectedBank: string;
+      selectedBankIcon: string;
       limitFrom: number;
       limitTo: number;
       inputError: string;
@@ -26,8 +28,8 @@ export interface CurrencyState {
   lastName: string;
   bankAccount?: string | number;
   uploadedFileDetails?: FileDetails;
-  alertMessage?: string
-  alertSeverity?: 'error' | 'info' | 'success' | 'warning'
+  alertMessage?: string;
+  alertSeverity?: "error" | "info" | "success" | "warning";
 }
 
 const initialState: CurrencyState = {
@@ -35,7 +37,8 @@ const initialState: CurrencyState = {
     give: {
       selectedCurrency: "RUB",
       correctBanks: banks.rub,
-      selectedBank: "SBER",
+      selectedBank: banks.rub[0].name,
+      selectedBankIcon: banks.rub[0].icon,
       limitFrom: 5000,
       limitTo: 300000,
       inputError: "",
@@ -43,7 +46,8 @@ const initialState: CurrencyState = {
     receive: {
       selectedCurrency: "CNY",
       correctBanks: banks.cny,
-      selectedBank: "AliPay",
+      selectedBank: banks.cny[0].name,
+      selectedBankIcon: banks.cny[0].icon,
       limitFrom: 400,
       limitTo: 25000,
       inputError: "",
@@ -57,7 +61,7 @@ const initialState: CurrencyState = {
   bankAccount: "",
   uploadedFileDetails: undefined,
   alertMessage: "",
-  alertSeverity: "error"
+  alertSeverity: "error",
 };
 
 const currencySlice = createSlice({
@@ -77,7 +81,8 @@ const currencySlice = createSlice({
         // Проверка на наличие ключа
         instance.selectedCurrency = currency;
         instance.correctBanks = banks[lowerCurrency];
-        instance.selectedBank = instance.correctBanks[0];
+        instance.selectedBank = instance.correctBanks[0].name;
+        instance.selectedBankIcon = instance.correctBanks[0].icon;
         instance.limitFrom =
           currency === "RUB"
             ? 5000
@@ -166,10 +171,19 @@ const currencySlice = createSlice({
     setBankAccount: (state, action: PayloadAction<string | number>) => {
       state.bankAccount = action.payload;
     },
-    setUploadedFileDetails: (state, action: PayloadAction<FileDetails | undefined>) => {
+    setUploadedFileDetails: (
+      state,
+      action: PayloadAction<FileDetails | undefined>
+    ) => {
       state.uploadedFileDetails = action.payload;
     },
-    setAlert: (state, action: PayloadAction<{message: string, severity?: "error" | "info" | "success" | "warning"}>) => {
+    setAlert: (
+      state,
+      action: PayloadAction<{
+        message: string;
+        severity?: "error" | "info" | "success" | "warning";
+      }>
+    ) => {
       state.alertMessage = action.payload.message;
       state.alertSeverity = action.payload.severity;
     },

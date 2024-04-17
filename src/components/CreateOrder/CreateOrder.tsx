@@ -6,7 +6,7 @@ interface CreateOrderProps {
   handleCloseOrder: () => void;
 }
 
-function CreateOrder({ handleCloseOrder }: CreateOrderProps) {
+function CreateOrder({ handleCloseOrder }: CreateOrderProps): JSX.Element {
   const {
     instances,
     sumGive,
@@ -20,19 +20,6 @@ function CreateOrder({ handleCloseOrder }: CreateOrderProps) {
     <section className="order">
       <h2>Ордер № создан</h2>
       <div>
-        {/* <ul className="order__info">
-          <li>
-            Вы отправляете: {sumGive} {instances.give.selectedCurrency} на{" "}
-            {instances.give.selectedBank}
-          </li>
-          
-          <li>
-            Банк: {instances.receive.selectedBank}{" "}
-            {uploadedFileDetails
-              ? "Данные получателя отправлены в формате фото"
-              : bankAccount}
-          </li>
-        </ul> */}
         <ul className="order__info">
           <li>
             Вы отправляете: {sumGive} {instances.give.selectedCurrency} на{" "}

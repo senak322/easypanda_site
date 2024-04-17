@@ -2,18 +2,24 @@ import { Button } from "@mui/material";
 import "./NextStepBtn.scss";
 
 interface NextStepBtnProps {
-  
   handleNextStep: () => void;
-  isDisabled: boolean
-  title: string
-  color: "error" | "info" | "success" | "warning" | "inherit" | "primary" | "secondary"
+  isDisabled: boolean;
+  title: string;
+  color:
+    | "error"
+    | "info"
+    | "success"
+    | "warning"
+    | "inherit"
+    | "primary"
+    | "secondary";
 }
 
 function NextStepBtn({
   handleNextStep,
   isDisabled,
   title,
-  color
+  color,
 }: NextStepBtnProps) {
   return (
     <Button
@@ -24,7 +30,7 @@ function NextStepBtn({
       onClick={handleNextStep}
       title="Следующий шаг"
     >
-     {title}
+      {title}
     </Button>
   );
 }

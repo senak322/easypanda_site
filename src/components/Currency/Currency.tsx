@@ -5,7 +5,7 @@ import { Select, Input } from "antd";
 import CurrencyTitle from "../CurrencyTitle/CurrencyTitle";
 import CurrencySelect from "../CurrencySelect/CurrencySelect";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
-import { Banks } from "../../types/types";
+import { Bank, Banks } from "../../types/types";
 import { RootState } from "../../store/store";
 import { allCurrencies } from "../../utils/config";
 
@@ -20,7 +20,7 @@ interface CurrencyProps {
   banks: Banks;
   onBankChange: (value: string) => void;
   selectedBank: string;
-  step: number
+  step: number;
 }
 
 function Currency({
@@ -31,16 +31,14 @@ function Currency({
   sum,
   changeSum,
   onBankChange,
-  step
+  step,
 }: CurrencyProps) {
   const windowWidth = useWindowWidth();
   const { instances } = useSelector((state: RootState) => state.currency);
   const selectedCurrency = instances[instanceId].selectedCurrency;
   const selectedBank = instances[instanceId].selectedBank;
-  const correctBanks: string[] = instances[instanceId].correctBanks;
+  const correctBanks: Bank[] = instances[instanceId].correctBanks;
 
-  // console.log(instances[instanceId].inputError);
-  
   const handleChangeSum = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       // Получаем значение из инпута
@@ -116,18 +114,25 @@ function Currency({
           }
         />
         <Select
-        disabled={step > 1}
+          disabled={step > 1}
           value={selectedBank}
           onChange={onBankChange}
-          options={correctBanks.map((bank: string) => ({
-            key: bank,
-            value: bank,
-            label: bank,
-          }))}
-        ></Select>
-        
+        >
+          {correctBanks?.map((bank) => (
+            <Select.Option key={bank.name} value={bank.name}>
+              <img src={bank.icon} alt={bank.name} style={{ width: 20 }} />
+              {bank.name}
+            </Select.Option>
+          ))}
+        </Select>
       </div>
-      <span className={`currency__input-error ${instances[instanceId].inputError ? 'currency__input-error_show' : 'currency__input-error_hide'}`}>
+      <span
+        className={`currency__input-error ${
+          instances[instanceId].inputError
+            ? "currency__input-error_show"
+            : "currency__input-error_hide"
+        }`}
+      >
         {instances[instanceId].inputError}
       </span>
     </div>

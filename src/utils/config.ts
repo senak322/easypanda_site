@@ -1,9 +1,13 @@
-export const banks: {
-  [key in "rub" | "cny" | "uah"]: string[];
-} = {
-  rub: ["SBER"],
-  cny: ["WeChat", "AliPay"],
-  uah: ["Mono"],
+// import sber from "../images/sber.png"
+import { Bank, Currency } from "../types/types";
+
+export const banks: Record<Currency, Bank[]> = {
+  rub: [{ name: "SBER", icon: process.env.PUBLIC_URL + "/images/sber.png" }],
+  cny: [
+    { name: "WeChat", icon: process.env.PUBLIC_URL + "/images/wechat.png" },
+    { name: "AliPay", icon: process.env.PUBLIC_URL + "/images/alipay.png" },
+  ],
+  uah: [{ name: "Mono", icon: process.env.PUBLIC_URL + "/images/mono.png" }],
   // gel: ["BOG"],
   // idr: ["Mega"],
 };

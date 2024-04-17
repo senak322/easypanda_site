@@ -6,8 +6,8 @@ export async function getExchangeRate(
   receiveCurrency: string
 ) {
   try {
-    const toLowerSend = sendCurrency.toLowerCase()
-    const toLowerReceive = receiveCurrency.toLowerCase()
+    const toLowerSend = sendCurrency.toLowerCase();
+    const toLowerReceive = receiveCurrency.toLowerCase();
     const response = await axios.get(`${baseCurrencyUrl + toLowerSend}.json`);
     const rate = response.data[toLowerSend][toLowerReceive];
     return rate;

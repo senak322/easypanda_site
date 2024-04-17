@@ -16,7 +16,7 @@ function CurrencyConverter({
   handleNextStep,
   isDisabled,
   step,
-  handleBackStep
+  handleBackStep,
 }: CurrencyConverterProps) {
   return (
     <section className="converter">

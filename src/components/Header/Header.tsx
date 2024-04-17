@@ -1,9 +1,7 @@
 import "./Header.scss";
-import logo from "../../images/panda_logo.jpg";
 import { Select } from "antd";
 import { MailOutlined } from "@ant-design/icons";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
-import tg from "../../images/tg.svg";
 
 function Header() {
   const windowWidth = useWindowWidth();
@@ -13,7 +11,11 @@ function Header() {
       <header className="header">
         <div className="header__wrapper">
           <div className="header__logo">
-            <img className="header__img" src={logo} alt="easypandamoney logo" />
+            <img
+              className="header__img"
+              src={process.env.PUBLIC_URL + "/images/panda_logo.jpg"}
+              alt="easypandamoney logo"
+            />
           </div>
           <h2 className="header__title">Easy Panda Money</h2>
         </div>
@@ -41,7 +43,7 @@ function Header() {
                 >
                   <img
                     className="header__contact_tg-img"
-                    src={tg}
+                    src={process.env.PUBLIC_URL + "/images/tg.svg"}
                     alt="Написать в Telegram"
                   />
                 </a>
