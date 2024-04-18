@@ -1,3 +1,4 @@
+import React from 'react';
 import "./CurrencySelect.scss";
 import { Select } from "antd";
 

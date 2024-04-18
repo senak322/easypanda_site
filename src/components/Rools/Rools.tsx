@@ -1,3 +1,4 @@
+import React from 'react';
 import "./Rools.scss";
 
 interface RoolsProps {

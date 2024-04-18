@@ -19,7 +19,6 @@ import {
 import "./fonts/fonts.css";
 import "./App.scss";
 import { SwapOutlined } from "@ant-design/icons";
-// import Button from "@mui/material/Button";
 import Header from "./components/Header/Header";
 import Main from "./components/Main/Main";
 import PaymentDetails from "./components/PaymentDetails/PaymentDetails";
@@ -278,6 +277,8 @@ function App() {
 
   const handleCloseOrder = useCallback(() => {}, []);
 
+  const handleAddOrderFile = useCallback(() => {}, []);
+
   return (
     <div className="App">
       <Header />
@@ -342,6 +343,7 @@ function App() {
                 <CreateOrder
                   handlePaidOrder={handlePaidOrder}
                   handleCloseOrder={handleCloseOrder}
+                  handleAddOrderFile={handleAddOrderFile}
                 />
               )}
             </Main>

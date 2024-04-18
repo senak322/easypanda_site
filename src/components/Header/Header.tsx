@@ -1,3 +1,4 @@
+import React from 'react';
 import "./Header.scss";
 import { Select } from "antd";
 import { MailOutlined } from "@ant-design/icons";
@@ -13,7 +14,7 @@ function Header() {
           <div className="header__logo">
             <img
               className="header__img"
-              src={process.env.PUBLIC_URL + "/images/panda_logo.jpg"}
+              src={"../../images/panda_logo.jpg"}
               alt="easypandamoney logo"
             />
           </div>

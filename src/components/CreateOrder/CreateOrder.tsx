@@ -1,3 +1,4 @@
+import React from 'react';
 import "./CreateOrder.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
@@ -11,11 +12,13 @@ import { Button } from "@mui/material";
 interface CreateOrderProps {
   handlePaidOrder: () => void;
   handleCloseOrder: () => void;
+  handleAddOrderFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function CreateOrder({
   handlePaidOrder,
   handleCloseOrder,
+  handleAddOrderFile
 }: CreateOrderProps): JSX.Element {
   const {
     instances,
@@ -100,8 +103,8 @@ function CreateOrder({
         <h4>Реквизиты для оплаты</h4>
         <p>Тут номер карты</p>
       </div>
-      <div>
-        <h4>Прикрепите чек об оплате</h4>
+      <div className="d-flex align-items-center" >
+        <h4 className="mx-3 my-0">Прикрепите чек об оплате</h4>
         <Button
           component="label"
           role={undefined}
@@ -110,7 +113,7 @@ function CreateOrder({
           startIcon={<CloudUploadIcon />}
         >
           Загрузить чек
-          <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+          <VisuallyHiddenInput type="file" onChange={handleAddOrderFile} />
         </Button>
       </div>
       <Rools title="Важно" list={orderLi} />

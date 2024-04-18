@@ -2,12 +2,12 @@
 import { Bank, Currency } from "../types/types";
 
 export const banks: Record<Currency, Bank[]> = {
-  rub: [{ name: "SBER", icon: process.env.PUBLIC_URL + "/images/sber.png" }],
+  rub: [{ name: "SBER", icon: "../../images/sber.png" }],
   cny: [
-    { name: "AliPay", icon: process.env.PUBLIC_URL + "/images/alipay.png" },
-    { name: "WeChat", icon: process.env.PUBLIC_URL + "/images/wechat.png" },
+    { name: "AliPay", icon: "../../images/alipay.png" },
+    { name: "WeChat", icon: "../../images/wechat.png" },
   ],
-  uah: [{ name: "Mono", icon: process.env.PUBLIC_URL + "/images/mono.png" }],
+  uah: [{ name: "Mono", icon: "../../images/mono.png" }],
   // gel: ["BOG"],
   // idr: ["Mega"],
 };

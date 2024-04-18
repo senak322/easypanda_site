@@ -1,3 +1,4 @@
+import React from 'react';
 import NextStepBtn from "../NextStepBtn/NextStepBtn";
 import Rools from "../Rools/Rools";
 import "./CurrencyConverter.scss";
