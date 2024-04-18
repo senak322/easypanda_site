@@ -10,7 +10,7 @@ import { styled } from "@mui/material/styles";
 import { Button } from "@mui/material";
 import { IBankData } from "../../types/types";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { setUploadedPaidFileDetails } from "../../store/slices/currencySlice";
+// import { setUploadedPaidFileDetails } from "../../store/slices/currencySlice";
 
 // interface CreateOrderProps {
 
@@ -64,8 +64,8 @@ function CreateOrder(): JSX.Element {
     payData[instances.give.selectedBank.toLocaleLowerCase()];
 
   const handlePaidOrder = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      appDispatch(setUploadedPaidFileDetails())
+    () => {
+      // appDispatch(setUploadedPaidFileDetails())
     },
     []
   );
