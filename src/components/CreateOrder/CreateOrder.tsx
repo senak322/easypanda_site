@@ -1,4 +1,4 @@
-import React from "react";
+import { useCallback } from "react";
 import "./CreateOrder.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
@@ -9,18 +9,15 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import { Button } from "@mui/material";
 import { IBankData } from "../../types/types";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { setUploadedPaidFileDetails } from "../../store/slices/currencySlice";
 
-interface CreateOrderProps {
-  handlePaidOrder: () => void;
-  handleCloseOrder: () => void;
-  handleAddOrderFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+// interface CreateOrderProps {
 
-function CreateOrder({
-  handlePaidOrder,
-  handleCloseOrder,
-  handleAddOrderFile,
-}: CreateOrderProps): JSX.Element {
+//   // handleAddOrderFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
+// }
+
+function CreateOrder(): JSX.Element {
   const {
     instances,
     sumGive,
@@ -30,6 +27,8 @@ function CreateOrder({
     bankAccount,
     uploadedReceiveFileDetails,
   } = useSelector((state: RootState) => state.currency);
+
+  const appDispatch = useAppDispatch()
 
   const accountData =
     instances.receive.selectedCurrency === "RUB" ||
@@ -63,6 +62,17 @@ function CreateOrder({
 
   const dataForPay: IBankData =
     payData[instances.give.selectedBank.toLocaleLowerCase()];
+
+  const handlePaidOrder = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      appDispatch(setUploadedPaidFileDetails())
+    },
+    []
+  );
+
+  const handleCloseOrder = useCallback(() => {}, []);
+
+  const handleAddOrderFile = useCallback(() => {}, []);
 
   return (
     <section className="order">
@@ -135,7 +145,7 @@ function CreateOrder({
             ) : (
               <>
                 <p className="m-0">{`${accountGiveData}:`}</p>
-                <span className="order__span">{dataForPay.card}</span>
+                <span className="order__span">&nbsp;{dataForPay.card}</span>
               </>
             )}
           </li>
@@ -152,7 +162,9 @@ function CreateOrder({
         </ul>
       </div>
       <div className="d-flex align-items-center order__file-container">
-        <h4 className="mx-3 my-0 order__file-header">Прикрепите чек об оплате</h4>
+        <h4 className="mx-3 my-2 order__file-header">
+          Прикрепите чек об оплате
+        </h4>
         <Button
           component="label"
           role={undefined}

@@ -234,7 +234,6 @@ function App() {
   const handleFileChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files ? event.target.files[0] : undefined;
-      console.log(file);
       if (file) {
         if (!ALLOWED_FILE_TYPES.includes(file.type)) {
           appDispatch(
@@ -272,12 +271,6 @@ function App() {
     },
     [appDispatch]
   );
-
-  const handlePaidOrder = useCallback(() => {}, []);
-
-  const handleCloseOrder = useCallback(() => {}, []);
-
-  const handleAddOrderFile = useCallback(() => {}, []);
 
   return (
     <div className="App">
@@ -339,13 +332,7 @@ function App() {
                   handleFileChange={handleFileChange}
                 />
               )}
-              {step === 3 && (
-                <CreateOrder
-                  handlePaidOrder={handlePaidOrder}
-                  handleCloseOrder={handleCloseOrder}
-                  handleAddOrderFile={handleAddOrderFile}
-                />
-              )}
+              {step === 3 && <CreateOrder />}
             </Main>
           }
         />

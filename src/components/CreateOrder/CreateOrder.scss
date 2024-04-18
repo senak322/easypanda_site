@@ -45,9 +45,10 @@
     width: 300px;
   }
   &__file-container {
-    @include respond-to(medium) {
-      flex-direction: column;
-    }
+    flex-direction: column;
+    // @include respond-to(medium) {
+    //   flex-direction: column;
+    // }
   }
   &__file-header {
     @include respond-to(medium) {
