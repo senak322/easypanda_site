@@ -1,4 +1,5 @@
 @import "../../styles/variables";
+@import "../../styles/mixins";
 
 .order {
   display: flex;
@@ -14,6 +15,9 @@
     background-color: $bg-grey;
     border-radius: 10px;
     margin-bottom: 3rem;
+    @include respond-to(medium) {
+      padding: 1rem;
+    }
   }
   &__currency-img {
     width: 20px;
@@ -21,11 +25,13 @@
     margin: 0 0.2rem 0.2rem 0;
   }
   &__data-container {
-    // border: 1px solid black;
     border-radius: 10px;
     background-color: white;
     padding: 1rem;
     list-style-type: none;
+    @include respond-to(medium) {
+        padding: .5rem;
+      }
   }
   &__span {
     font-weight: 600;
@@ -34,5 +40,19 @@
     display: flex;
     width: 100%;
     justify-content: space-between;
+  }
+  &__img-qr {
+    width: 300px;
+  }
+  &__file-container {
+    @include respond-to(medium) {
+      flex-direction: column;
+    }
+  }
+  &__file-header {
+    @include respond-to(medium) {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
   }
 }

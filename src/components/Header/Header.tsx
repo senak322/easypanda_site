@@ -44,7 +44,7 @@ function Header() {
                 >
                   <img
                     className="header__contact_tg-img"
-                    src={process.env.PUBLIC_URL + "/images/tg.svg"}
+                    src={"../../images/tg.svg"}
                     alt="Написать в Telegram"
                   />
                 </a>

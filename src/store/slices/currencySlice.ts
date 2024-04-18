@@ -114,13 +114,13 @@ const currencySlice = createSlice({
       const giveLimitFrom = state.instances.give.limitFrom;
       const giveLimitTO = state.instances.give.limitTo;
 
-
       // Обновляем инстанс "give" значениями из инстанса "receive"
       state.instances.give.selectedCurrency =
         state.instances.receive.selectedCurrency;
       state.instances.give.correctBanks = state.instances.receive.correctBanks;
       state.instances.give.selectedBank = state.instances.receive.selectedBank;
-      state.instances.give.selectedBankIcon = state.instances.receive.selectedBankIcon;
+      state.instances.give.selectedBankIcon =
+        state.instances.receive.selectedBankIcon;
       state.instances.give.limitFrom = state.instances.receive.limitFrom;
       state.instances.give.limitTo = state.instances.receive.limitTo;
       state.instances.give.inputError = "";
@@ -142,8 +142,12 @@ const currencySlice = createSlice({
       state,
       action: PayloadAction<{ instanceId: string; bank: string }>
     ) => {
-      state.instances[action.payload.instanceId].selectedBank =
-        action.payload.bank;
+      const { instanceId, bank } = action.payload;
+      const bankName = state.instances[instanceId].correctBanks.find(
+        (b) => b.name === bank
+      );
+      state.instances[instanceId].selectedBank = bank;
+      state.instances[instanceId].selectedBankIcon = bankName.icon;
     },
 
     setSumGive: (state, action: PayloadAction<number>) => {

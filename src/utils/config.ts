@@ -44,11 +44,11 @@ export const payData: IPayData = {
     card: "2202206296854099",
     owner: "Александр В.",
   },
-  aliPay: {
+  alipay: {
     card: "13136022300",
-    owner: "C YURII или CHERNIAIEV YURII, если нужно ввести фамилию полностью",
+    owner: "C. YURII или CHERNIAIEV YURII, если нужно ввести фамилию полностью",
   },
-  weChat: {
+  wechat: {
     card: "QR",
     owner: "CHERNIAIEV YURII",
   },

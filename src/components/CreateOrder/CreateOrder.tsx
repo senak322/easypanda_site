@@ -40,7 +40,7 @@ function CreateOrder({
       ? "Аккаунт Alipay"
       : "";
 
-      const accountGiveData =
+  const accountGiveData =
     instances.give.selectedCurrency === "RUB" ||
     instances.give.selectedCurrency === "UAH"
       ? "Номер карты"
@@ -102,7 +102,7 @@ function CreateOrder({
           </span>
         </li>
         <li>
-          {accountData} получателя:{" "}
+          {accountData && `${accountData} получателя: `}
           <span className="order__span">
             {uploadedReceiveFileDetails
               ? "Данные получателя отправлены в формате фото"
@@ -116,23 +116,43 @@ function CreateOrder({
       <div className="order__info d-flex align-items-center flex-column">
         <h4 className="mb-4">Реквизиты для оплаты</h4>
         <ul className="order__data-container">
-          <li className="order__span m-0">
+          <li className="m-0">
             Банк:{" "}
             <img
               src={instances.give.selectedBankIcon}
               alt={instances.give.selectedBank}
               className="order__currency-img"
             />
-            {instances.give.selectedBank}
+            <span className="order__span">{instances.give.selectedBank}</span>
           </li>
-          <li className="order__span m-0">
-            {accountGiveData}: {dataForPay.card}
+          <li className="m-0 d-flex">
+            {dataForPay.card === "QR" ? (
+              <img
+                src={"../../images/qrwechat.jpg"}
+                alt={dataForPay.card}
+                className="order__img-qr"
+              />
+            ) : (
+              <>
+                <p className="m-0">{`${accountGiveData}:`}</p>
+                <span className="order__span">{dataForPay.card}</span>
+              </>
+            )}
           </li>
-          <li className="order__span m-0">{dataForPay.owner && "Получатель: "}{dataForPay.owner}</li>
+          <li className="m-0">
+            {dataForPay.owner && "Получатель: "}
+            <span className="order__span">{dataForPay.owner}</span>
+          </li>
+          <li className="m-0">
+            {dataForPay.owner && "Сумма к оплате: "}
+            <span className="order__span">
+              {sumGive} {instances.give.selectedCurrency}
+            </span>
+          </li>
         </ul>
       </div>
-      <div className="d-flex align-items-center">
-        <h4 className="mx-3 my-0">Прикрепите чек об оплате</h4>
+      <div className="d-flex align-items-center order__file-container">
+        <h4 className="mx-3 my-0 order__file-header">Прикрепите чек об оплате</h4>
         <Button
           component="label"
           role={undefined}
