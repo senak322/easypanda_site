@@ -1,5 +1,5 @@
 // import sber from "../images/sber.png"
-import { Bank, Currency } from "../types/types";
+import { Bank, Currency, IPayData } from "../types/types";
 
 export const banks: Record<Currency, Bank[]> = {
   rub: [{ name: "SBER", icon: "../../images/sber.png" }],
@@ -28,8 +28,8 @@ export const orderLi = [
   "Комментарий не писать",
   "Время на оплату 30 минут, если заказ не будет оплачен заявка автоматически закрывается",
   `После оплаты прикрепите чек и нажмите кнопку "Заказ оплачен"`,
-  "Далее после того, как вы оплатите заказ мы переведем средства на Ваш счет"
-]
+  "Далее после того, как вы оплатите заказ мы переведем средства на Ваш счет",
+];
 
 export const allCurrencies = ["RUB", "CNY", "UAH"];
 
@@ -38,3 +38,22 @@ export const baseCurrencyUrl =
 
 export const ALLOWED_FILE_TYPES = ["image/png", "image/jpeg", "image/jpg"];
 export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+
+export const payData: IPayData = {
+  sber: {
+    card: "2202206296854099",
+    owner: "Александр В.",
+  },
+  aliPay: {
+    card: "13136022300",
+    owner: "C YURII или CHERNIAIEV YURII, если нужно ввести фамилию полностью",
+  },
+  weChat: {
+    card: "QR",
+    owner: "CHERNIAIEV YURII",
+  },
+  mono: {
+    card: "5375411508576258",
+    owner: "",
+  },
+};

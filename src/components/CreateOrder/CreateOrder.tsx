@@ -1,13 +1,14 @@
-import React from 'react';
+import React from "react";
 import "./CreateOrder.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import Rools from "../Rools/Rools";
-import { orderLi } from "../../utils/config";
+import { orderLi, payData } from "../../utils/config";
 import NextStepBtn from "../NextStepBtn/NextStepBtn";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import { Button } from "@mui/material";
+import { IBankData } from "../../types/types";
 
 interface CreateOrderProps {
   handlePaidOrder: () => void;
@@ -18,7 +19,7 @@ interface CreateOrderProps {
 function CreateOrder({
   handlePaidOrder,
   handleCloseOrder,
-  handleAddOrderFile
+  handleAddOrderFile,
 }: CreateOrderProps): JSX.Element {
   const {
     instances,
@@ -39,6 +40,15 @@ function CreateOrder({
       ? "Аккаунт Alipay"
       : "";
 
+      const accountGiveData =
+    instances.give.selectedCurrency === "RUB" ||
+    instances.give.selectedCurrency === "UAH"
+      ? "Номер карты"
+      : instances.give.selectedCurrency === "CNY" &&
+        instances.give.selectedBank === "AliPay"
+      ? "Аккаунт Alipay"
+      : "";
+
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
     clipPath: "inset(50%)",
@@ -50,6 +60,10 @@ function CreateOrder({
     whiteSpace: "nowrap",
     width: 1,
   });
+
+  const dataForPay: IBankData =
+    payData[instances.give.selectedBank.toLocaleLowerCase()];
+
   return (
     <section className="order">
       <h2 className="mb-3">Ордер № создан</h2>
@@ -99,11 +113,25 @@ function CreateOrder({
       <div>
         <p>Таймер</p>
       </div>
-      <div>
-        <h4>Реквизиты для оплаты</h4>
-        <p>Тут номер карты</p>
+      <div className="order__info d-flex align-items-center flex-column">
+        <h4 className="mb-4">Реквизиты для оплаты</h4>
+        <ul className="order__data-container">
+          <li className="order__span m-0">
+            Банк:{" "}
+            <img
+              src={instances.give.selectedBankIcon}
+              alt={instances.give.selectedBank}
+              className="order__currency-img"
+            />
+            {instances.give.selectedBank}
+          </li>
+          <li className="order__span m-0">
+            {accountGiveData}: {dataForPay.card}
+          </li>
+          <li className="order__span m-0">{dataForPay.owner && "Получатель: "}{dataForPay.owner}</li>
+        </ul>
       </div>
-      <div className="d-flex align-items-center" >
+      <div className="d-flex align-items-center">
         <h4 className="mx-3 my-0">Прикрепите чек об оплате</h4>
         <Button
           component="label"

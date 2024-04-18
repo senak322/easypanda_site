@@ -8,3 +8,12 @@ export interface Bank {
 }
 
 export type Currency = "rub" | "cny" | "uah";
+
+export interface IBankData {
+  card: string
+  owner: string
+}
+
+export interface IPayData {
+  [key: string]: IBankData
+}
