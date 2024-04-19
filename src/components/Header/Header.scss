@@ -18,6 +18,11 @@ $panda-bg-color: #f11d28;
     width: fit-content;
   }
 
+  &__link {
+    display: flex;
+    color: black;
+  }
+
   &__title {
     font-family: $font-stack;
     font-weight: 200;

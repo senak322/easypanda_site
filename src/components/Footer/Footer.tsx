@@ -1,16 +1,31 @@
+import { MailOutlined } from "@ant-design/icons";
 import "./Footer.scss";
+import { Link } from "react-router-dom";
+
 function Footer() {
   return (
     <footer className="footer">
       <div className="footer__wrapper">
         <ul className="footer__container">
           <span className="fw-semibold">Информация</span>
-          <li className="my-2">Политика безопасности</li>
-          <li className="my-2">Правила обмена</li>
-          <li className="my-2">Политика KYT</li>
+          <li className="my-2">
+            <Link to="/rools" className="footer__link">
+              Правила обмена
+            </Link>
+          </li>
+          <li className="my-2">
+            <Link to="/kyt" className="footer__link">
+              Политика KYT
+            </Link>
+          </li>
+          <li className="my-2">
+            <Link to="/safety" className="footer__link">
+              Политика безопасности
+            </Link>
+          </li>
         </ul>
         <ul className="footer__container">
-        <span className="fw-semibold">График работы без выходных</span>
+          <span className="fw-semibold">График работы без выходных</span>
           <li className="footer__time-container">
             <p>Пекин:</p>
             <p>9:00 - 23:00</p>
@@ -25,19 +40,28 @@ function Footer() {
           </li>
         </ul>
         <ul className="footer__container">
-        <span className="fw-semibold">Контакты</span>
-            <li className="my-2">
-                Телега
-            </li>
-            <li className="my-2">
-                Почта
-            </li>
-            <li className="my-2">
-                Группа
-            </li>
+          <span className="fw-semibold">Контакты</span>
+
+          <li className="my-2">
+            <a
+              className="footer__link"
+              href="tg://resolve?domain=easypandamoney/"
+            >
+              <img
+                className="footer__contact_tg-img"
+                src={"../../images/tg.svg"}
+                alt="Написать в Telegram"
+              />
+            </a>
+          </li>
+          <li className="my-2">
+            <a className="footer__link" href="mailto:easypanda247@gmail.com">
+              <MailOutlined className="footer__contact_tg-img" />
+            </a>
+          </li>
         </ul>
       </div>
-      <p className="mb-0 align-self-center py-2">EasyPandaMoney © 2024</p>
+      <p className="mb-0 align-self-center py-1">EasyPandaMoney © 2024</p>
     </footer>
   );
 }

@@ -23,9 +23,26 @@ ul p {
     margin: 1rem 0;
     padding: 0;
   }
+  
   &__time-container {
     display: flex;
     justify-content: space-between;
     margin: 0.5rem 0;
+  }
+  &__link {
+    color: black;
+    text-decoration: none;
+  }
+  &__link:hover {
+    text-decoration:underline;
+  }
+  &__contact_tg-img {
+    width: 20px;
+    height: 20px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
   }
 }

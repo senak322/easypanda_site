@@ -1,8 +1,8 @@
-import React from 'react';
 import "./Header.scss";
-import { Select } from "antd";
+// import { Select } from "antd";
 import { MailOutlined } from "@ant-design/icons";
 import { useWindowWidth } from "../../hooks/useWindowWidth";
+import { Link } from "react-router-dom";
 
 function Header() {
   const windowWidth = useWindowWidth();
@@ -11,14 +11,16 @@ function Header() {
     <>
       <header className="header">
         <div className="header__wrapper">
-          <div className="header__logo">
-            <img
-              className="header__img"
-              src={"../../images/panda_logo.jpg"}
-              alt="easypandamoney logo"
-            />
-          </div>
-          <h2 className="header__title">Easy Panda Money</h2>
+          <Link className="header__link" to="/">
+            <div className="header__logo">
+              <img
+                className="header__img"
+                src={"../../images/panda_logo.jpg"}
+                alt="easypandamoney logo"
+              />
+            </div>
+            <h2 className="header__title">Easy Panda Money</h2>
+          </Link>
         </div>
         <div className="header__container">
           <ul className="header__list">
@@ -60,13 +62,13 @@ function Header() {
               </li>
             )}
           </ul>
-          <Select
+          {/* <Select
             defaultValue={"ru"}
             options={[
               { value: "ru", label: "RU" },
               { value: "eng", label: "ENG" },
             ]}
-          ></Select>
+          ></Select> */}
         </div>
       </header>
     </>

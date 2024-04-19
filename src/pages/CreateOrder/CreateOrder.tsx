@@ -2,14 +2,14 @@ import { useCallback } from "react";
 import "./CreateOrder.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import Rools from "../Rools/Rools";
+import Rools from "../../components/Rools/Rools";
 import { orderLi, payData } from "../../utils/config";
-import NextStepBtn from "../NextStepBtn/NextStepBtn";
+import NextStepBtn from "../../components/NextStepBtn/NextStepBtn";
 import { Alert } from "@mui/material";
 import { IBankData } from "../../types/types";
-// import { useAppDispatch } from "../../hooks/useAppDispatch";
-import AddFileBtn from "../AddFileBtn/AddFileBtn";
-import FileInfo from "../FileInfo/FileInfo";
+import AddFileBtn from "../../components/AddFileBtn/AddFileBtn";
+import FileInfo from "../../components/FileInfo/FileInfo";
+import { useNavigate } from "react-router-dom";
 
 function CreateOrder(): JSX.Element {
   const {
@@ -21,8 +21,10 @@ function CreateOrder(): JSX.Element {
     bankAccount,
     uploadedPaidFileDetails,
     uploadedReceiveFileDetails,
-    alert, 
+    alert,
   } = useSelector((state: RootState) => state.currency);
+
+  const navigate = useNavigate();
 
   // const appDispatch = useAppDispatch()
 
@@ -44,23 +46,15 @@ function CreateOrder(): JSX.Element {
       ? "Аккаунт Alipay"
       : "";
 
-
   const dataForPay: IBankData =
     payData[instances.give.selectedBank.toLocaleLowerCase()];
 
-  const handlePaidOrder = useCallback(
-    () => {
-      
-    },
-    []
-  );
+  const handlePaidOrder = useCallback(() => {}, []);
 
-  const handleCloseOrder = useCallback(() => {}, []);
+  const handleCloseOrder = useCallback(() => {
+    navigate("/");
+  }, [navigate]);
 
-  // const handleAddOrderFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-
-  //   // appDispatch(setUploadedPaidFileDetails())
-  // }, []);
 
   return (
     <section className="order">
@@ -154,14 +148,18 @@ function CreateOrder(): JSX.Element {
           Прикрепите чек об оплате
         </h4>
         <AddFileBtn instanceId="paid" isDisabled={false} />
-        {uploadedPaidFileDetails && <FileInfo details={uploadedPaidFileDetails}/>}
-        {alert.paid.message && <Alert severity={alert.paid.severity}>{alert.paid.message}</Alert>}
+        {uploadedPaidFileDetails && (
+          <FileInfo details={uploadedPaidFileDetails} />
+        )}
+        {alert.paid.message && (
+          <Alert severity={alert.paid.severity}>{alert.paid.message}</Alert>
+        )}
       </div>
       <Rools title="Важно" list={orderLi} />
       <div className="order__btn-container">
         <NextStepBtn
           handleNextStep={handlePaidOrder}
-          isDisabled={false}
+          isDisabled={!uploadedPaidFileDetails}
           title="Заказ оплачен"
           color="success"
         />

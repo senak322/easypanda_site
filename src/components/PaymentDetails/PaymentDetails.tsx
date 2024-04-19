@@ -11,7 +11,7 @@ import FileInfo from "../FileInfo/FileInfo";
 
 interface PaymentDetailsProps {
   isDisabled: boolean;
-  handleNextStep: () => void;
+  handleCreateOrder: () => void;
   handleBackStep: () => void;
   handleChangeFirstName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleChangeLastName: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -22,7 +22,7 @@ interface PaymentDetailsProps {
 
 function PaymentDetails({
   isDisabled,
-  handleNextStep,
+  handleCreateOrder,
   handleChangeFirstName,
   handleChangeLastName,
   handleChangeBankAccount,
@@ -36,7 +36,7 @@ function PaymentDetails({
     lastName,
     bankAccount,
     uploadedReceiveFileDetails,
-    alert
+    alert,
   } = useSelector((state: RootState) => state.currency);
 
   const accountData =
@@ -90,14 +90,16 @@ function PaymentDetails({
               <p className="payment__or">или</p>
             )}
             {instances.receive.selectedCurrency === "CNY" && (
-              <AddFileBtn instanceId="receive" isDisabled={step > 2}/>
+              <AddFileBtn instanceId="receive" isDisabled={step > 2} />
             )}
           </div>
           {uploadedReceiveFileDetails && (
-            <FileInfo details={uploadedReceiveFileDetails}/>
+            <FileInfo details={uploadedReceiveFileDetails} />
           )}
           {alert.receive.message && (
-            <Alert severity={alert.receive.severity}>{alert.receive.message}</Alert>
+            <Alert severity={alert.receive.severity}>
+              {alert.receive.message}
+            </Alert>
           )}
         </div>
         <Rools
@@ -115,7 +117,7 @@ function PaymentDetails({
         />
         <div className="payment__btn-container">
           <NextStepBtn
-            handleNextStep={handleNextStep}
+            handleNextStep={handleCreateOrder}
             isDisabled={isDisabled || step > 2}
             title="Создать заявку"
             color="primary"
