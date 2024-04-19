@@ -1,13 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { banks } from "../../utils/config";
 // import { Banks } from "../../types/types";
-import { Bank } from "../../types/types";
-
-interface FileDetails {
-  name: string;
-  size: number;
-  lastModified: number;
-}
+import { Bank, FileDetails } from "../../types/types";
+// import { message } from "antd";
 
 export interface CurrencyState {
   instances: {
@@ -28,9 +23,15 @@ export interface CurrencyState {
   lastName: string;
   bankAccount?: string | number;
   uploadedReceiveFileDetails?: FileDetails;
-  alertMessage?: string;
-  alertSeverity?: "error" | "info" | "success" | "warning";
+  // alertMessage?: string;
+  // alertSeverity?: "error" | "info" | "success" | "warning";
   uploadedPaidFileDetails?: FileDetails;
+  alert: {
+    [key in "paid" | "receive"]: {
+      message: string
+      severity: "error" | "info" | "success" | "warning";
+    }
+  }
 }
 
 const initialState: CurrencyState = {
@@ -61,9 +62,19 @@ const initialState: CurrencyState = {
   lastName: "",
   bankAccount: "",
   uploadedReceiveFileDetails: undefined,
-  alertMessage: "",
-  alertSeverity: "error",
+  // alertMessage: "",
+  // alertSeverity: "error",
   uploadedPaidFileDetails: undefined,
+  alert: {
+    paid: {
+      message: "",
+      severity: "error"
+    },
+    receive: {
+      message: "",
+      severity: "error"
+    }
+  }
 };
 
 const currencySlice = createSlice({
@@ -181,29 +192,38 @@ const currencySlice = createSlice({
     setBankAccount: (state, action: PayloadAction<string | number>) => {
       state.bankAccount = action.payload;
     },
-    setUploadedReceiveFileDetails: (
+
+    setUploadedFileDetails: (
       state,
-      action: PayloadAction<FileDetails | undefined>
+      action: PayloadAction<{
+        fileDetails: FileDetails | undefined;
+        instanceId: "receive" | "paid";
+      }>
     ) => {
-      
-      state.uploadedReceiveFileDetails = action.payload;
-    },
-    setUploadedPaidFileDetails: (
-      state,
-      action: PayloadAction<FileDetails | undefined>
-    ) => {
-      
-      state.uploadedPaidFileDetails = action.payload;
+      const { instanceId, fileDetails } = action.payload;
+      if (instanceId === "receive") {
+        state.uploadedReceiveFileDetails = fileDetails;
+      } else if (instanceId === "paid") {
+        state.uploadedPaidFileDetails = fileDetails;
+      }
     },
     setAlert: (
       state,
       action: PayloadAction<{
         message: string;
         severity?: "error" | "info" | "success" | "warning";
-      }>
+        instanceId: "receive" | "paid"
+      }>,
+      
     ) => {
-      state.alertMessage = action.payload.message;
-      state.alertSeverity = action.payload.severity;
+      if(action.payload.instanceId === "receive") {
+        state.alert.receive.message = action.payload.message
+        state.alert.receive.severity = action.payload.severity
+      } else if (action.payload.instanceId === "paid") {
+        state.alert.paid.message = action.payload.message
+        state.alert.paid.severity = action.payload.severity
+      }
+      
     },
     // ... другие редьюсеры для обновления состояния
   },
@@ -219,9 +239,8 @@ export const {
   setStep,
   setName,
   setBankAccount,
-  setUploadedReceiveFileDetails,
+  setUploadedFileDetails,
   setAlert,
-  
 } = currencySlice.actions;
 
 // export const {currencyGive} = currencySlice.

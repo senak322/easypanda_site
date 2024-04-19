@@ -1,0 +1,20 @@
+@import "../../styles/variables";
+
+.file-info {
+    background-color: $bg-blue;
+    font-size: 0.8rem;
+    display: flex;
+    // flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin: auto;
+    padding: 0.5rem;
+    border-radius: 5px;
+    &__done {
+        border: 3px solid #10ff10;;
+        border-radius: 50%;
+        background-color: white;
+        margin: 1rem;
+    }
+}

@@ -5,17 +5,11 @@ import { RootState } from "../../store/store";
 import Rools from "../Rools/Rools";
 import { orderLi, payData } from "../../utils/config";
 import NextStepBtn from "../NextStepBtn/NextStepBtn";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { styled } from "@mui/material/styles";
-import { Button } from "@mui/material";
+import { Alert } from "@mui/material";
 import { IBankData } from "../../types/types";
-import { useAppDispatch } from "../../hooks/useAppDispatch";
-// import { setUploadedPaidFileDetails } from "../../store/slices/currencySlice";
-
-// interface CreateOrderProps {
-
-//   // handleAddOrderFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
-// }
+// import { useAppDispatch } from "../../hooks/useAppDispatch";
+import AddFileBtn from "../AddFileBtn/AddFileBtn";
+import FileInfo from "../FileInfo/FileInfo";
 
 function CreateOrder(): JSX.Element {
   const {
@@ -25,10 +19,12 @@ function CreateOrder(): JSX.Element {
     firstName,
     lastName,
     bankAccount,
+    uploadedPaidFileDetails,
     uploadedReceiveFileDetails,
+    alert, 
   } = useSelector((state: RootState) => state.currency);
 
-  const appDispatch = useAppDispatch()
+  // const appDispatch = useAppDispatch()
 
   const accountData =
     instances.receive.selectedCurrency === "RUB" ||
@@ -48,31 +44,23 @@ function CreateOrder(): JSX.Element {
       ? "Аккаунт Alipay"
       : "";
 
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
 
   const dataForPay: IBankData =
     payData[instances.give.selectedBank.toLocaleLowerCase()];
 
   const handlePaidOrder = useCallback(
     () => {
-      // appDispatch(setUploadedPaidFileDetails())
+      
     },
     []
   );
 
   const handleCloseOrder = useCallback(() => {}, []);
 
-  const handleAddOrderFile = useCallback(() => {}, []);
+  // const handleAddOrderFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+
+  //   // appDispatch(setUploadedPaidFileDetails())
+  // }, []);
 
   return (
     <section className="order">
@@ -165,16 +153,9 @@ function CreateOrder(): JSX.Element {
         <h4 className="mx-3 my-2 order__file-header">
           Прикрепите чек об оплате
         </h4>
-        <Button
-          component="label"
-          role={undefined}
-          variant="contained"
-          tabIndex={-1}
-          startIcon={<CloudUploadIcon />}
-        >
-          Загрузить чек
-          <VisuallyHiddenInput type="file" onChange={handleAddOrderFile} />
-        </Button>
+        <AddFileBtn instanceId="paid" isDisabled={false} />
+        {uploadedPaidFileDetails && <FileInfo details={uploadedPaidFileDetails}/>}
+        {alert.paid.message && <Alert severity={alert.paid.severity}>{alert.paid.message}</Alert>}
       </div>
       <Rools title="Важно" list={orderLi} />
       <div className="order__btn-container">

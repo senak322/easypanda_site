@@ -17,6 +17,7 @@
     margin-bottom: 3rem;
     @include respond-to(medium) {
       padding: 1rem;
+      width: 100%;
     }
   }
   &__currency-img {
@@ -30,8 +31,9 @@
     padding: 1rem;
     list-style-type: none;
     @include respond-to(medium) {
-        padding: .5rem;
-      }
+      padding: 0.5rem;
+      width: 100%;
+    }
   }
   &__span {
     font-weight: 600;
@@ -46,10 +48,16 @@
   }
   &__file-container {
     flex-direction: column;
-    // @include respond-to(medium) {
-    //   flex-direction: column;
-    // }
+    gap: 1rem;
+    border: 1px solid #619cfd;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #84b2ff;
   }
+  // @include respond-to(medium) {
+  //   flex-direction: column;
+  // }
+  //   }
   &__file-header {
     @include respond-to(medium) {
       font-size: 1.2rem;

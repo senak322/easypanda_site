@@ -17,3 +17,9 @@ export interface IBankData {
 export interface IPayData {
   [key: string]: IBankData
 }
+
+export interface FileDetails {
+  name: string;
+  size: number;
+  lastModified: number;
+}

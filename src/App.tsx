@@ -13,7 +13,7 @@ import {
   setStep,
   setName,
   setBankAccount,
-  setUploadedReceiveFileDetails,
+  setUploadedFileDetails,
   setAlert,
 } from "./store/slices/currencySlice";
 import "./fonts/fonts.css";
@@ -26,7 +26,6 @@ import CurrencyConverter from "./components/CurrencyConverter/CurrencyConverter"
 import Currency from "./components/Currency/Currency";
 import { Banks } from "./types/types";
 import { getExchangeRate } from "./utils/api";
-import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from "./utils/config";
 import CreateOrder from "./components/CreateOrder/CreateOrder";
 
 function App() {
@@ -202,9 +201,10 @@ function App() {
       setAlert({
         message: "",
         severity: "error",
+        instanceId: "receive"
       })
     );
-    appDispatch(setUploadedReceiveFileDetails(undefined));
+    appDispatch(setUploadedFileDetails({fileDetails: undefined, instanceId: "receive"}));
     appDispatch(setBankAccount(""));
   }, [appDispatch, step]);
 
@@ -231,46 +231,7 @@ function App() {
     [appDispatch]
   );
 
-  const handleFileChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files ? event.target.files[0] : undefined;
-      if (file) {
-        if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-          appDispatch(
-            setAlert({
-              message:
-                "Недопустимый формат файла. Поддерживаются только PNG, JPEG и JPG.",
-              severity: "error",
-            })
-          );
-          appDispatch(setUploadedReceiveFileDetails(undefined));
-          return;
-        }
-        if (file.size > MAX_FILE_SIZE) {
-          appDispatch(
-            setAlert({
-              message: `Файл слишком большой. Максимальный размер файла: ${
-                MAX_FILE_SIZE / 1024 / 1024
-              } MB.`,
-              severity: "error",
-            })
-          );
-          appDispatch(setUploadedReceiveFileDetails(undefined));
-          return;
-        }
-        const fileDetails = {
-          name: file.name,
-          size: file.size,
-          lastModified: file.lastModified,
-        };
-        appDispatch(setAlert({ message: "", severity: "success" }));
-        appDispatch(setUploadedReceiveFileDetails(fileDetails));
-      } else {
-        appDispatch(setUploadedReceiveFileDetails(undefined));
-      }
-    },
-    [appDispatch]
-  );
+  
 
   return (
     <div className="App">
@@ -283,8 +244,6 @@ function App() {
               <CurrencyConverter
                 isDisabled={!isCurrencyNextDisabled}
                 handleNextStep={handleNextStep}
-                step={step}
-                handleBackStep={handleBackStep}
               >
                 <Currency
                   title="You give"
@@ -329,7 +288,9 @@ function App() {
                   handleChangeFirstName={handleChangeFirstName}
                   handleChangeLastName={handleChangeLastName}
                   handleChangeBankAccount={handleChangeBankAccount}
-                  handleFileChange={handleFileChange}
+                  // handleFileChange={handleFileChange}
+                  handleBackStep={handleBackStep}
+                  step={step}
                 />
               )}
               {step === 3 && <CreateOrder />}

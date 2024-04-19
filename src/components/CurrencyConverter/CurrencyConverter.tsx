@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import NextStepBtn from "../NextStepBtn/NextStepBtn";
 import Rools from "../Rools/Rools";
 import "./CurrencyConverter.scss";
@@ -8,16 +8,12 @@ interface CurrencyConverterProps {
   children: React.ReactNode;
   handleNextStep: () => void;
   isDisabled: boolean;
-  step: number;
-  handleBackStep: () => void;
 }
 
 function CurrencyConverter({
   children,
   handleNextStep,
   isDisabled,
-  step,
-  handleBackStep,
 }: CurrencyConverterProps) {
   return (
     <section className="converter">
@@ -29,12 +25,6 @@ function CurrencyConverter({
           isDisabled={isDisabled}
           title="Следующий шаг"
           color="primary"
-        />
-        <NextStepBtn
-          handleNextStep={handleBackStep}
-          isDisabled={step === 1}
-          title="Изменить детали"
-          color="success"
         />
       </div>
     </section>
