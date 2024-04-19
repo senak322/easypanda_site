@@ -1,0 +1,31 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+ul p {
+  margin: 0;
+}
+
+.footer {
+  background-color: $bg-grey;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  &__wrapper {
+    display: flex;
+    justify-content: space-around;
+    @include respond-to(medium) {
+      flex-direction: inherit;
+      margin: 0 1rem;
+    }
+  }
+  &__container {
+    list-style: none;
+    margin: 1rem 0;
+    padding: 0;
+  }
+  &__time-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 0;
+  }
+}

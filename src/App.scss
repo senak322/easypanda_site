@@ -1,5 +1,8 @@
 .App {
     font-family: 'Montserrat', sans-serif, Arial, Helvetica;
-
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 

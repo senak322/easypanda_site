@@ -27,6 +27,7 @@ import Currency from "./components/Currency/Currency";
 import { Banks } from "./types/types";
 import { getExchangeRate } from "./utils/api";
 import CreateOrder from "./components/CreateOrder/CreateOrder";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   const banks: Banks = {
@@ -201,10 +202,12 @@ function App() {
       setAlert({
         message: "",
         severity: "error",
-        instanceId: "receive"
+        instanceId: "receive",
       })
     );
-    appDispatch(setUploadedFileDetails({fileDetails: undefined, instanceId: "receive"}));
+    appDispatch(
+      setUploadedFileDetails({ fileDetails: undefined, instanceId: "receive" })
+    );
     appDispatch(setBankAccount(""));
   }, [appDispatch, step]);
 
@@ -230,8 +233,6 @@ function App() {
     },
     [appDispatch]
   );
-
-  
 
   return (
     <div className="App">
@@ -299,6 +300,7 @@ function App() {
         />
         {/* <Route path="/payment-details" element={<PaymentDetails />} /> */}
       </Routes>
+      <Footer />
     </div>
   );
 }
