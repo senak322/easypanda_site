@@ -23,8 +23,6 @@ export interface CurrencyState {
   lastName: string;
   bankAccount?: string | number;
   uploadedReceiveFileDetails?: FileDetails;
-  // alertMessage?: string;
-  // alertSeverity?: "error" | "info" | "success" | "warning";
   uploadedPaidFileDetails?: FileDetails;
   alert: {
     [key in "paid" | "receive"]: {

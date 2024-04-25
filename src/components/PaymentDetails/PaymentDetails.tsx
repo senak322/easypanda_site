@@ -11,6 +11,7 @@ import { useCallback } from "react";
 import { useCreateOrderMutation } from "../../services/api";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { sha256 } from "js-sha256";
 
 interface PaymentDetailsProps {
   isDisabled: boolean;
@@ -60,10 +61,9 @@ function PaymentDetails({
     accountData === "Аккаунт Alipay"
       ? "12345678 (номер Alipay) или example@live.cn (почта Alipay)"
       : "9876543217654321";
-
+  const hash = sha256(new Date().toISOString()).substring(0, 6).toUpperCase();
   const handleCreateOrder = useCallback(async () => {
     const orderDetails = {
-      userCookies: "",
       sendCurrency: instances.give.selectedCurrency,
       receiveCurrency: instances.receive.selectedCurrency,
       sendAmount: sumGive,
@@ -71,10 +71,9 @@ function PaymentDetails({
       sendBank: instances.give.selectedBank,
       receiveBank: instances.receive.selectedBank,
       ownerName: firstName + " " + lastName,
-      ownerData: bankAccount
-        ? bankAccount
-        : "Данные получателя отправлены в формате фото",
+      ownerData: bankAccount,
       qrCodeFileData: uploadedReceiveFileDetails,
+      hash: hash,
     };
     if (orderDetails) {
       await createOrder(orderDetails).then((res) => {
@@ -93,6 +92,7 @@ function PaymentDetails({
     sumGive,
     sumReceive,
     uploadedReceiveFileDetails,
+    hash,
   ]);
 
   if (isLoading) return <LoadingOutlined />;
