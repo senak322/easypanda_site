@@ -23,3 +23,15 @@ export interface FileDetails {
   size: number;
   lastModified: number;
 }
+
+export interface Order {
+
+}
+
+export interface OrderResponse {
+
+}
+
+export interface CreateOrderRequest {
+  
+}

@@ -41,24 +41,25 @@ function Footer() {
         </ul>
         <ul className="footer__container">
           <span className="fw-semibold">Контакты</span>
-
-          <li className="my-2">
-            <a
-              className="footer__link"
-              href="tg://resolve?domain=easypandamoney/"
-            >
-              <img
-                className="footer__contact_tg-img"
-                src={"../../images/tg.svg"}
-                alt="Написать в Telegram"
-              />
-            </a>
-          </li>
-          <li className="my-2">
-            <a className="footer__link" href="mailto:easypanda247@gmail.com">
-              <MailOutlined className="footer__contact_tg-img" />
-            </a>
-          </li>
+          <div className="d-flex ">
+            <li className="footer__contact">
+              <a
+                className="footer__link"
+                href="tg://resolve?domain=easypandamoney/"
+              >
+                <img
+                  className="footer__contact_tg-img"
+                  src={"../../images/tg.svg"}
+                  alt="Написать в Telegram"
+                />
+              </a>
+            </li>
+            <li className="footer__contact">
+              <a className="footer__link" href="mailto:easypanda247@gmail.com">
+                <MailOutlined className="footer__contact_tg-img" />
+              </a>
+            </li>
+          </div>
         </ul>
       </div>
       <p className="mb-0 align-self-center py-1">EasyPandaMoney © 2024</p>

@@ -1,4 +1,3 @@
-import React from "react";
 import "./PaymentDetails.scss";
 import { Alert, TextField } from "@mui/material";
 import { useSelector } from "react-redux";
@@ -8,10 +7,14 @@ import Rools from "../Rools/Rools";
 import { paymentLi } from "../../utils/config";
 import AddFileBtn from "../AddFileBtn/AddFileBtn";
 import FileInfo from "../FileInfo/FileInfo";
+import { useCallback } from "react";
+import { useCreateOrderMutation } from "../../services/api";
+import { LoadingOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 interface PaymentDetailsProps {
   isDisabled: boolean;
-  handleCreateOrder: () => void;
+  // handleCreateOrder: () => void;
   handleBackStep: () => void;
   handleChangeFirstName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleChangeLastName: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -22,7 +25,7 @@ interface PaymentDetailsProps {
 
 function PaymentDetails({
   isDisabled,
-  handleCreateOrder,
+  // handleCreateOrder,
   handleChangeFirstName,
   handleChangeLastName,
   handleChangeBankAccount,
@@ -37,7 +40,12 @@ function PaymentDetails({
     bankAccount,
     uploadedReceiveFileDetails,
     alert,
+    sumGive,
+    sumReceive,
   } = useSelector((state: RootState) => state.currency);
+  const navigate = useNavigate();
+  const [createOrder, { isLoading, isSuccess, isError, error }] =
+    useCreateOrderMutation();
 
   const accountData =
     instances.receive.selectedCurrency === "RUB" ||
@@ -52,6 +60,47 @@ function PaymentDetails({
     accountData === "Аккаунт Alipay"
       ? "12345678 (номер Alipay) или example@live.cn (почта Alipay)"
       : "9876543217654321";
+
+  const handleCreateOrder = useCallback(async () => {
+    const orderDetails = {
+      userCookies: "",
+      sendCurrency: instances.give.selectedCurrency,
+      receiveCurrency: instances.receive.selectedCurrency,
+      sendAmount: sumGive,
+      receiveAmount: sumReceive,
+      sendBank: instances.give.selectedBank,
+      receiveBank: instances.receive.selectedBank,
+      ownerName: firstName + " " + lastName,
+      ownerData: bankAccount
+        ? bankAccount
+        : "Данные получателя отправлены в формате фото",
+      qrCodeFileData: uploadedReceiveFileDetails,
+    };
+    if (orderDetails) {
+      await createOrder(orderDetails).then((res) => {
+        console.log(res);
+      });
+    }
+  }, [
+    bankAccount,
+    createOrder,
+    firstName,
+    instances.give.selectedBank,
+    instances.give.selectedCurrency,
+    instances.receive.selectedBank,
+    instances.receive.selectedCurrency,
+    lastName,
+    sumGive,
+    sumReceive,
+    uploadedReceiveFileDetails,
+  ]);
+
+  if (isLoading) return <LoadingOutlined />;
+  if (isSuccess) {
+    navigate("/order");
+  }
+
+  if (isError) return <p>Error: {error.toString()}</p>;
 
   return (
     <section className="payment">

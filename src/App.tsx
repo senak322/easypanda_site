@@ -28,13 +28,14 @@ import { Banks } from "./types/types";
 import { getExchangeRate } from "./utils/api";
 import CreateOrder from "./pages/CreateOrder/CreateOrder";
 import Footer from "./components/Footer/Footer";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import RoolsPage from "./pages/RoolsPage/RoolsPage";
 import KytPage from "./pages/KytPage/KytPage";
 import SafetyPage from "./pages/SafetyPage/SafetyPage";
+// import { useCreateOrderMutation } from "./services/api";
 
 function App() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const banks: Banks = {
     rub: ["sber"],
     cny: ["alipay", "wechat"],
@@ -239,10 +240,6 @@ function App() {
     [appDispatch]
   );
 
-  const handleCreateOrder = useCallback(()=> {
-    navigate('/order');
-  }, [navigate])
-
   return (
     <div className="App">
       <Header />
@@ -293,7 +290,6 @@ function App() {
 
               {(step === 2 || step === 3) && (
                 <PaymentDetails
-                handleCreateOrder={handleCreateOrder}
                   isDisabled={!isDetailsNextDisabled}
                   handleChangeFirstName={handleChangeFirstName}
                   handleChangeLastName={handleChangeLastName}

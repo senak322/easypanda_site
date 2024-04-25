@@ -12,6 +12,10 @@ $panda-bg-color: #f11d28;
   padding: 1rem 2rem;
   max-height: 5rem;
   align-items: center;
+  @include respond-to(small) {
+    padding: 1rem;
+    gap: 0.5rem;
+  }
 
   &__wrapper {
     display: flex;
@@ -98,11 +102,11 @@ $panda-bg-color: #f11d28;
       height: 100%;
     }
   }
-  @include respond-to(small) {
-    .header {
-      padding: 1rem;
-    }
-  }
+
+  // &__search {
+  //   margin: 0 0 0 0.5rem;
+  //   @include respond-to(small) {
+  //     font-size: 0.9rem;
+  //   }
+  // }
 }
-
-
