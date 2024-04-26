@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/store";
 import { useAppDispatch } from "./hooks/useAppDispatch";
@@ -55,6 +55,7 @@ function App() {
   } = useSelector((state: RootState) => state.currency);
 
   const appDispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const isCurrencyNextDisabled = sumGive > 0 && sumReceive > 0 && step === 1;
   const isDetailsNextDisabled =

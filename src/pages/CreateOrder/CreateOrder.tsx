@@ -26,7 +26,6 @@ function CreateOrder(): JSX.Element {
   const { data: orderResponse, isLoading, error } = useGetOrderQuery(hash);
   console.log(orderResponse);
   
-  
 
   const handlePaidOrder = useCallback(() => {}, []);
 
@@ -45,7 +44,7 @@ function CreateOrder(): JSX.Element {
   if (!orderResponse) return <div>Order not found</div>; 
 
   const order = orderResponse.order;
-  console.log(order);
+  // console.log(order);
   // const sendBank = order.sendBank.toLowerCase();
   
 

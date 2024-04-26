@@ -9,6 +9,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { useCallback, useEffect, useState } from "react";
 import { useGetOrderQuery, useGetOrderStatusQuery } from "../../services/api";
+import { IconButton } from "@mui/material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -19,27 +20,29 @@ const Search = styled("div")(({ theme }) => ({
   },
   marginLeft: 0,
   width: "100%",
+  display: "flex", // Добавлено для выравнивания
+  alignItems: "center", // Добавлено для выравнивания
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(1),
     width: "auto",
   },
 }));
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
+// const SearchIconWrapper = styled("div")(({ theme }) => ({
+//   padding: theme.spacing(0, 2),
+//   height: "100%",
+//   position: "absolute",
+//   pointerEvents: "none",
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "center",
+// }));
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   width: "100%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    paddingLeft: `calc(1em + ${theme.spacing(1)})`,
     transition: theme.transitions.create("width"),
     [theme.breakpoints.up("sm")]: {
       width: "12ch",
@@ -62,24 +65,23 @@ function Header() {
     skip: searchHash.length !== 6, // Пропускаем запрос, если хеш не полный
   });
 
-  useEffect(() => {
-    if (order && !isFetching) {
-      navigate(`/order/${searchHash}`);
-
-    } else if (error) {
-      setSearchError("Заявка не найдена");
-    }
-  }, [order, isFetching, error, searchHash, navigate]);
-
-  // const handleSearch = useCallback(() => {
+  // useEffect(() => {
   //   if (order && !isFetching) {
-  //     navigate(`/order/${searchHash}`);
-  //     setSearchHash("")
-  //     setSearchError("")
+  //     navigate(`/order/:${searchHash}`);
   //   } else if (error) {
   //     setSearchError("Заявка не найдена");
   //   }
-  // }, [error, order, isFetching, searchHash, navigate])
+  // }, [order, isFetching, error, searchHash, navigate]);
+
+  const handleSearchClick = useCallback(() => {
+    if (order && !isFetching) {
+      navigate(`/order/${searchHash}`);
+      setSearchHash("");
+      setSearchError("");
+    } else if (error) {
+      setSearchError("Заявка не найдена");
+    }
+  }, [error, order, isFetching, searchHash, navigate]);
 
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,15 +108,19 @@ function Header() {
         </div>
         <div className="header__container">
           <Search>
-            <SearchIconWrapper>
-              <SearchIcon/>
-            </SearchIconWrapper>
+            {/* <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper> */}
             <StyledInputBase
               placeholder="Найти заявку"
               inputProps={{ "aria-label": "search" }}
+              value={searchHash}
               onChange={handleSearchChange}
-              value={searchHash || ""}
             />
+            <IconButton onClick={handleSearchClick} aria-label="search">
+              <SearchIcon />
+            </IconButton>
+            {searchError && <div>{searchError}</div>}
           </Search>
           {searchError && <p>searchError</p>}
           {/* <p className="header__search">Найти заявку</p> */}
