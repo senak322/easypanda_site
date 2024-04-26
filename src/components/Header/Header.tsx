@@ -65,10 +65,21 @@ function Header() {
   useEffect(() => {
     if (order && !isFetching) {
       navigate(`/order/${searchHash}`);
+
     } else if (error) {
       setSearchError("Заявка не найдена");
     }
   }, [order, isFetching, error, searchHash, navigate]);
+
+  // const handleSearch = useCallback(() => {
+  //   if (order && !isFetching) {
+  //     navigate(`/order/${searchHash}`);
+  //     setSearchHash("")
+  //     setSearchError("")
+  //   } else if (error) {
+  //     setSearchError("Заявка не найдена");
+  //   }
+  // }, [error, order, isFetching, searchHash, navigate])
 
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,7 +107,7 @@ function Header() {
         <div className="header__container">
           <Search>
             <SearchIconWrapper>
-              <SearchIcon />
+              <SearchIcon/>
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Найти заявку"

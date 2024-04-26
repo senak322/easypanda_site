@@ -69,7 +69,7 @@ function CreateOrder(): JSX.Element {
 
   return (
     <section className="order">
-      <h2 className="mb-3">Ордер № {hash} создан</h2>
+      <h2 className="mb-3">Ордер <span className="order__span">{hash}</span> создан</h2>
 
       <ul className="order__info">
         <li>
@@ -144,9 +144,9 @@ function CreateOrder(): JSX.Element {
             <span className="order__span">{dataForPay.owner}</span>
           </li>
           <li className="m-0">
-          <p className="m-0">Сумма к оплате: </p>
+          Сумма к оплате:&nbsp;
             <span className="order__span">
-              {order.sendAmount} {order.sendCurrency}
+            {order.sendAmount} {order.sendCurrency}
             </span>
           </li>
         </ul>
