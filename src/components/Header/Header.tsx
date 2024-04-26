@@ -3,51 +3,80 @@ import "./Header.scss";
 // import { MailOutlined } from "@ant-design/icons";
 // import { useWindowWidth } from "../../hooks/useWindowWidth";
 import { styled, alpha } from "@mui/material/styles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import { Search } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
-import InputBase from '@mui/material/InputBase';
+import InputBase from "@mui/material/InputBase";
+import { useCallback, useEffect, useState } from "react";
+import { useGetOrderQuery, useGetOrderStatusQuery } from "../../services/api";
 
-function Header() {
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 1),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.8),
-    },
-    marginLeft: 0,
-    width: "100%",
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 1),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.8),
+  },
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(1),
+    width: "auto",
+  },
+}));
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  width: "100%",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
     [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
+      width: "12ch",
+      "&:focus": {
+        width: "20ch",
       },
     },
-  }));  
+  },
+}));
+
+function Header() {
+  const navigate = useNavigate();
+  const [searchError, setSearchError] = useState("");
+  const [searchHash, setSearchHash] = useState("");
+  const {
+    data: order,
+    isFetching,
+    error,
+  } = useGetOrderQuery(searchHash, {
+    skip: searchHash.length !== 6, // Пропускаем запрос, если хеш не полный
+  });
+
+  useEffect(() => {
+    if (order && !isFetching) {
+      navigate(`/order/${searchHash}`);
+    } else if (error) {
+      setSearchError("Заявка не найдена");
+    }
+  }, [order, isFetching, error, searchHash, navigate]);
+
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newHash = e.target.value.trim();
+      setSearchHash(newHash);
+    },
+    []
+  );
 
   return (
     <>
@@ -70,10 +99,13 @@ function Header() {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Найти заявку"  
+              placeholder="Найти заявку"
               inputProps={{ "aria-label": "search" }}
+              onChange={handleSearchChange}
+              value={searchHash || ""}
             />
           </Search>
+          {searchError && <p>searchError</p>}
           {/* <p className="header__search">Найти заявку</p> */}
           {/* <Select
             defaultValue={"ru"}

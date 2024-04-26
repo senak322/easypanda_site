@@ -11,6 +11,7 @@ import AddFileBtn from "../../components/AddFileBtn/AddFileBtn";
 import FileInfo from "../../components/FileInfo/FileInfo";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetOrderQuery } from "../../services/api";
+import { LoadingOutlined } from "@ant-design/icons";
 
 function CreateOrder(): JSX.Element {
   const {
@@ -39,7 +40,7 @@ function CreateOrder(): JSX.Element {
     }
   }, [orderResponse]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingOutlined />;
   if (error) return <div>Error: {error.toString()}</div>;
   if (!orderResponse) return <div>Order not found</div>; 
 
@@ -143,7 +144,7 @@ function CreateOrder(): JSX.Element {
             <span className="order__span">{dataForPay.owner}</span>
           </li>
           <li className="m-0">
-            {dataForPay.owner && "Сумма к оплате: "}
+          <p className="m-0">Сумма к оплате: </p>
             <span className="order__span">
               {order.sendAmount} {order.sendCurrency}
             </span>

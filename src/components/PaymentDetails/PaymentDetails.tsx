@@ -111,9 +111,6 @@ function PaymentDetails({
   ]);
 
   if (isLoading) return <LoadingOutlined />;
-  // if (isSuccess) {
-  //   navigate("/order");
-  // }
 
   if (isError) return <p>Error: {error.toString()}</p>;
 

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 function Footer() {
   return (
     <footer className="footer">
-      <div className="footer__wrapper">
+      <nav className="footer__wrapper">
         <ul className="footer__container">
           <span className="fw-semibold">Информация</span>
           <li className="my-2">
@@ -61,7 +61,7 @@ function Footer() {
             </li>
           </div>
         </ul>
-      </div>
+      </nav>
       <p className="mb-0 align-self-center py-1">EasyPandaMoney © 2024</p>
     </footer>
   );
