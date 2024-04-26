@@ -302,7 +302,7 @@ function App() {
             </Main>
           }
         />
-        <Route path="order" element={<CreateOrder />} />
+        <Route path="order/:hash" element={<CreateOrder />} />
         <Route path="rools" element={<RoolsPage />} />
         <Route path="kyt" element={<KytPage />} />
         <Route path="safety" element={<SafetyPage />} />

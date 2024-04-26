@@ -21,7 +21,7 @@ export interface CurrencyState {
   step: number;
   firstName: string;
   lastName: string;
-  bankAccount?: string | number;
+  bankAccount?: string;
   uploadedReceiveFileDetails?: FileDetails;
   uploadedPaidFileDetails?: FileDetails;
   alert: {
@@ -188,7 +188,7 @@ const currencySlice = createSlice({
       }
     },
     setBankAccount: (state, action: PayloadAction<string | number>) => {
-      state.bankAccount = action.payload;
+      state.bankAccount = action.payload.toString();
     },
 
     setUploadedFileDetails: (

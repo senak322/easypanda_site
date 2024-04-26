@@ -12,6 +12,7 @@ import { useCreateOrderMutation } from "../../services/api";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { sha256 } from "js-sha256";
+import { useState, useEffect } from "react";
 
 interface PaymentDetailsProps {
   isDisabled: boolean;
@@ -34,6 +35,7 @@ function PaymentDetails({
   handleBackStep,
   step,
 }: PaymentDetailsProps) {
+  const [orderHash, setOrderHash] = useState<string>("");
   const {
     instances,
     firstName,
@@ -47,6 +49,12 @@ function PaymentDetails({
   const navigate = useNavigate();
   const [createOrder, { isLoading, isSuccess, isError, error }] =
     useCreateOrderMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate(`/order/${orderHash}`);
+    }
+  }, [isSuccess, navigate, orderHash]);
 
   const accountData =
     instances.receive.selectedCurrency === "RUB" ||
@@ -63,42 +71,49 @@ function PaymentDetails({
       : "9876543217654321";
   const hash = sha256(new Date().toISOString()).substring(0, 6).toUpperCase();
   const handleCreateOrder = useCallback(async () => {
-    const orderDetails = {
-      sendCurrency: instances.give.selectedCurrency,
-      receiveCurrency: instances.receive.selectedCurrency,
-      sendAmount: sumGive,
-      receiveAmount: sumReceive,
-      sendBank: instances.give.selectedBank,
-      receiveBank: instances.receive.selectedBank,
-      ownerName: firstName + " " + lastName,
-      ownerData: bankAccount,
-      qrCodeFileData: uploadedReceiveFileDetails,
-      hash: hash,
-    };
-    if (orderDetails) {
-      await createOrder(orderDetails).then((res) => {
-        console.log(res);
-      });
+    const formData = new FormData();
+    formData.append("sendCurrency", instances.give.selectedCurrency);
+    formData.append("receiveCurrency", instances.receive.selectedCurrency);
+    formData.append("sendAmount", sumGive.toString()); // конвертируем числа в строки
+    formData.append("receiveAmount", sumReceive.toString());
+    formData.append("sendBank", instances.give.selectedBank);
+    formData.append("receiveBank", instances.receive.selectedBank);
+    formData.append("ownerName", `${firstName} ${lastName}`);
+    formData.append(
+      "ownerData",
+      bankAccount ? bankAccount.toString() : "Данные не указаны"
+    );
+    if (uploadedReceiveFileDetails?.file) {
+      formData.append("qrCodeFileData", uploadedReceiveFileDetails.file);
+    }
+    formData.append("hash", hash);
+
+    try {
+      const response = await createOrder(formData).unwrap(); // Предполагаем, что createOrder возвращает hash в response
+      setOrderHash(response.hash); // Сохраняем hash в состоянии
+    } catch (err) {
+      console.error("Ошибка при создании заказа:", error);
     }
   }, [
     bankAccount,
     createOrder,
     firstName,
+    lastName,
     instances.give.selectedBank,
     instances.give.selectedCurrency,
     instances.receive.selectedBank,
     instances.receive.selectedCurrency,
-    lastName,
     sumGive,
     sumReceive,
     uploadedReceiveFileDetails,
     hash,
+    error,
   ]);
 
   if (isLoading) return <LoadingOutlined />;
-  if (isSuccess) {
-    navigate("/order");
-  }
+  // if (isSuccess) {
+  //   navigate("/order");
+  // }
 
   if (isError) return <p>Error: {error.toString()}</p>;
 
