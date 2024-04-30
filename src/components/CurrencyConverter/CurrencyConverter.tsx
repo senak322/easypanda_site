@@ -1,4 +1,4 @@
-import React from "react";
+// import React, { useImperativeHandle, useRef } from "react";
 import NextStepBtn from "../NextStepBtn/NextStepBtn";
 import Rools from "../Rools/Rools";
 import "./CurrencyConverter.scss";
@@ -15,6 +15,14 @@ function CurrencyConverter({
   handleNextStep,
   isDisabled,
 }: CurrencyConverterProps) {
+  // const nextSectionRef = useRef(null);
+  // useImperativeHandle(ref, () => ({
+  //   scrollTo: () => window.scrollTo({ top: ref.current.offsetTop, behavior: 'smooth' })
+  // }));
+  // const handleNextStepWithScroll = () => {
+  //   handleNextStep();
+  //   nextSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  // };
   return (
     <section className="converter">
       <div className="converter__wrapper">{children} </div>
@@ -27,6 +35,7 @@ function CurrencyConverter({
           color="primary"
         />
       </div>
+      {/* <div ref={nextSectionRef}></div> */}
     </section>
   );
 }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./CreateOrder.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
@@ -12,41 +12,46 @@ import FileInfo from "../../components/FileInfo/FileInfo";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetOrderQuery } from "../../services/api";
 import { LoadingOutlined } from "@ant-design/icons";
+import { Order } from "../../types/types";
+import Timer from "../../components/Timer/Timer";
 
 function CreateOrder(): JSX.Element {
-  const {
-    uploadedPaidFileDetails,
-    uploadedReceiveFileDetails,
-    alert,
-  } = useSelector((state: RootState) => state.currency);
- 
+  const { uploadedPaidFileDetails, uploadedReceiveFileDetails, alert } =
+    useSelector((state: RootState) => state.currency);
 
   const navigate = useNavigate();
   const { hash } = useParams();
-  const { data: orderResponse, isLoading, error } = useGetOrderQuery(hash);
+  const {
+    data: orderResponse,
+    isLoading,
+    error,
+  } = useGetOrderQuery(hash, {
+    skip: !hash, // Запрос не выполняется, если hash не задан
+  });
   console.log(orderResponse);
-  
 
   const handlePaidOrder = useCallback(() => {}, []);
 
   const handleCloseOrder = useCallback(() => {
     navigate("/");
   }, [navigate]);
-  
+
   useEffect(() => {
-    if (!orderResponse) {
-      console.error("Order not found");
+    if (orderResponse) {
+      console.log("Order found:", orderResponse);
+    } else if (!isLoading && error) {
+      console.error("Order not found:", error);
+      // alert("Заказ не найден");
     }
-  }, [orderResponse]);
+  }, [orderResponse, isLoading, error, alert]);
 
   if (isLoading) return <LoadingOutlined />;
   if (error) return <div>Error: {error.toString()}</div>;
-  if (!orderResponse) return <div>Order not found</div>; 
+  if (!orderResponse) return <div>Order not found</div>;
 
-  const order = orderResponse.order;
+  const order: Order = orderResponse.order;
   // console.log(order);
   // const sendBank = order.sendBank.toLowerCase();
-  
 
   const accountData =
     order.receiveCurrency === "RUB" || order.receiveCurrency === "UAH"
@@ -62,14 +67,43 @@ function CreateOrder(): JSX.Element {
       ? "Аккаунт Alipay"
       : "";
 
-  const dataForPay: IBankData =
-    payData[order.sendBank.toLowerCase()];
-  
+  const dataForPay: IBankData = payData[order.sendBank.toLowerCase()];
+
+  const bgColor =
+    order.status === "pending" || order.status === "waitingAccept"
+      ? "yellow"
+      : order.status === "cancelled" || order.status === "cancelledByTimer"
+      ? "red"
+      : "green";
+
+  const orderStatus =
+    order.status === "pending"
+      ? "Ожидает оплаты"
+      : order.status === "waitingAccept"
+      ? "Ожидает подтверждения"
+      : order.status === "completed"
+      ? "Завершен"
+      : order.status === "cancelled"
+      ? "Отменен"
+      : "Отменен по таймеру";
 
   return (
     <section className="order">
-      <h2 className="mb-3">Ордер <span className="order__span">{hash}</span> создан</h2>
-
+      <h2 className="mb-3">
+        Ордер <span className="order__span">{hash}</span> создан
+      </h2>
+      <p className="d-flex align-items-center gap-2">
+        Статус заказа:{" "}
+        <span
+          className="order__status"
+          style={{
+            backgroundColor: `${bgColor}`,
+            boxShadow: `0 0 8px ${bgColor}`,
+          }}
+        ></span>
+        <span className="fw-bolder">{orderStatus}</span>
+      </p>
+      <Timer order={order} />
       <ul className="order__info">
         <li>
           Вы отправляете:{" "}
@@ -109,9 +143,7 @@ function CreateOrder(): JSX.Element {
           </span>
         </li>
       </ul>
-      <div>
-        <p>Таймер</p>
-      </div>
+      
       <div className="order__info d-flex align-items-center flex-column">
         <h4 className="mb-4">Реквизиты для оплаты</h4>
         <ul className="order__data-container">
@@ -143,14 +175,13 @@ function CreateOrder(): JSX.Element {
             <span className="order__span">{dataForPay.owner}</span>
           </li>
           <li className="m-0">
-          Сумма к оплате:&nbsp;
+            Сумма к оплате:&nbsp;
             <span className="order__span">
-            {order.sendAmount} {order.sendCurrency}
+              {order.sendAmount} {order.sendCurrency}
             </span>
           </li>
         </ul>
       </div>
-      <p>Статус заказа: {order.status}</p>
       <div className="d-flex align-items-center order__file-container">
         <h4 className="mx-3 my-2 order__file-header">
           Прикрепите чек об оплате

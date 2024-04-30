@@ -27,15 +27,7 @@ const Search = styled("div")(({ theme }) => ({
     width: "auto",
   },
 }));
-// const SearchIconWrapper = styled("div")(({ theme }) => ({
-//   padding: theme.spacing(0, 2),
-//   height: "100%",
-//   position: "absolute",
-//   pointerEvents: "none",
-//   display: "flex",
-//   alignItems: "center",
-//   justifyContent: "center",
-// }));
+
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   width: "100%",
@@ -74,7 +66,7 @@ function Header() {
   // }, [order, isFetching, error, searchHash, navigate]);
 
   const handleSearchClick = useCallback(() => {
-    if (order && !isFetching) {
+    if (order && searchHash.length === 6 && !isFetching) {
       navigate(`/order/${searchHash}`);
       setSearchHash("");
       setSearchError("");

@@ -36,6 +36,9 @@ function PaymentDetails({
   step,
 }: PaymentDetailsProps) {
   const [orderHash, setOrderHash] = useState<string>("");
+  // const [firstNameError, setFirstNameError] = useState<string | null>(null);
+  // const [lastNameError, setLastNameError] = useState<string | null>(null);
+  // const [bankAccountError, setBankAccountError] = useState<string | null>(null);
   const {
     instances,
     firstName,

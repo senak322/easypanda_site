@@ -73,6 +73,7 @@ const initialState: CurrencyState = {
       severity: "error"
     }
   }
+  
 };
 
 const currencySlice = createSlice({

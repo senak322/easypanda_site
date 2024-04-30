@@ -36,8 +36,10 @@ export interface Order {
   ownerName: string; // Имя владельца заказа
   ownerData: string; // Данные владельца (номер счета или фото)
   qrCodeFileData?: FileDetails; // Детали файла QR-кода, если есть
-  status: string; // Статус заказа
+  status: "pending" | "waitingAccept" | "completed" | "cancelled" | "cancelledByTimer"; // Статус заказа
   hash: string;
+  createdAt: string; // Дата создания заказа
+  expiresAt: string; // Дата истечения заказа
 }
 
 // export interface OrderResponse {
