@@ -12,13 +12,13 @@ export const apiSlice = createApi({
         body: formData,
       }),
     }),
-    getOrderStatus: builder.query<Order, string>({
-      query: (orderId) => `orders/${orderId}`,
-    }),
+    // getOrderStatus: builder.query<Order, string>({
+    //   query: (hash) => `orders/${hash}`,
+    // }),
     getOrder: builder.query({
       query: (hash) => `orders/${hash}`,
     }),
   }),
 });
 
-export const { useCreateOrderMutation, useGetOrderStatusQuery, useGetOrderQuery } = apiSlice;
+export const { useCreateOrderMutation, useGetOrderQuery } = apiSlice;

@@ -25,10 +25,16 @@ function CreateOrder(): JSX.Element {
     data: orderResponse,
     isLoading,
     error,
+    refetch,
   } = useGetOrderQuery(hash, {
     skip: !hash, // Запрос не выполняется, если hash не задан
   });
-  console.log(orderResponse);
+  // console.log(orderResponse);
+  const [statusFromApi, setStatusFromApi] = useState(orderResponse?.order?.status || "");
+  // Инициируем запрос статуса
+  // const { data: statusData, refetch } = useGetOrderStatusQuery(hash, {
+  //   skip: !hash,
+  // });
 
   const handlePaidOrder = useCallback(() => {}, []);
 
@@ -44,6 +50,21 @@ function CreateOrder(): JSX.Element {
       // alert("Заказ не найден");
     }
   }, [orderResponse, isLoading, error, alert]);
+
+   // Обновление статуса заказа каждые 2 минуты
+   useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 120000); // 120000 миллисекунд = 2 минуты
+
+    return () => clearInterval(interval);
+  }, [refetch]);
+
+  useEffect(() => {
+    if (orderResponse?.order && orderResponse.order.status !== statusFromApi) {
+      setStatusFromApi(orderResponse.order.status);
+    }
+  }, [orderResponse?.order, statusFromApi]);
 
   if (isLoading) return <LoadingOutlined />;
   if (error) return <div>Error: {error.toString()}</div>;
@@ -77,13 +98,13 @@ function CreateOrder(): JSX.Element {
       : "green";
 
   const orderStatus =
-    order.status === "pending"
+    statusFromApi === "pending"
       ? "Ожидает оплаты"
-      : order.status === "waitingAccept"
+      : statusFromApi === "waitingAccept"
       ? "Ожидает подтверждения"
-      : order.status === "completed"
+      : statusFromApi === "completed"
       ? "Завершен"
-      : order.status === "cancelled"
+      : statusFromApi === "cancelled"
       ? "Отменен"
       : "Отменен по таймеру";
 
@@ -143,7 +164,7 @@ function CreateOrder(): JSX.Element {
           </span>
         </li>
       </ul>
-      
+
       <div className="order__info d-flex align-items-center flex-column">
         <h4 className="mb-4">Реквизиты для оплаты</h4>
         <ul className="order__data-container">
