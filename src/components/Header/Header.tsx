@@ -7,8 +7,8 @@ import { Link, useNavigate } from "react-router-dom";
 // import { Search } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-import { useCallback, useEffect, useState } from "react";
-import { useGetOrderQuery, useGetOrderStatusQuery } from "../../services/api";
+import { useCallback, useState } from "react";
+import { useGetOrderQuery } from "../../services/api";
 import { IconButton } from "@mui/material";
 
 const Search = styled("div")(({ theme }) => ({
