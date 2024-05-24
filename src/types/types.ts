@@ -60,3 +60,14 @@ export interface Order {
 //   qrCodeFileData?: FileDetails; // Детали файла QR-кода, если есть
 //   hash: string;
 // }
+
+export interface AuthState {
+  user: any | null; // Вы можете заменить `any` на ваш тип пользователя, если он у вас есть
+  token: string | null;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  error: string | null;
+}
+
+export interface RootState {
+  auth: AuthState;
+}
