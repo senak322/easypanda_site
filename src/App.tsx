@@ -32,6 +32,8 @@ import Footer from "./components/Footer/Footer";
 import RoolsPage from "./pages/RoolsPage/RoolsPage";
 import KytPage from "./pages/KytPage/KytPage";
 import SafetyPage from "./pages/SafetyPage/SafetyPage";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import AdminPanel from "./pages/AdminPanel/AdminPanel";
 // import { useCreateOrderMutation } from "./services/api";
 
 function App() {
@@ -307,6 +309,8 @@ function App() {
         <Route path="rools" element={<RoolsPage />} />
         <Route path="kyt" element={<KytPage />} />
         <Route path="safety" element={<SafetyPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
       </Routes>
       <Footer />
     </div>
