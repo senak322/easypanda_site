@@ -17,7 +17,7 @@ export const verifyToken = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: null,
+    // user: null,
     token: localStorage.getItem("jwtToken") || null,
     status: "idle", // 'idle' | 'loading' | 'succeeded' | 'failed'
     error: null,
@@ -29,9 +29,9 @@ const authSlice = createSlice({
       state.token = null;
     },
     setCredentials: (state, action) => {
-      const { user, token } = action.payload;
+      const { token } = action.payload;
       localStorage.setItem("jwtToken", token);
-      state.user = user;
+      // state.user = user;
       state.token = token;
     },
   },

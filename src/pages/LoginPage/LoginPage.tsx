@@ -3,18 +3,21 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../store/slices/authSlice";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/login", { username, password });
-      const { user, token } = response.data;
-      dispatch(setCredentials({ user, token }));
+      const response = await axios.post("http://localhost:3001/auth/login", { username, password });
+      const token = response.data.access_token;
+      dispatch(setCredentials({ token }));
+      navigate("/admin")
     } catch (error) {
       console.error("Ошибка входа:", error);
     }

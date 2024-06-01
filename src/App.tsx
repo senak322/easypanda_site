@@ -34,6 +34,7 @@ import KytPage from "./pages/KytPage/KytPage";
 import SafetyPage from "./pages/SafetyPage/SafetyPage";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import AdminPanel from "./pages/AdminPanel/AdminPanel";
+import LoginPage from "./pages/LoginPage/LoginPage";
 // import { useCreateOrderMutation } from "./services/api";
 
 function App() {

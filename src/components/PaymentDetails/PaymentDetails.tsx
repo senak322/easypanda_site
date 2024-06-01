@@ -8,7 +8,7 @@ import { paymentLi } from "../../utils/config";
 import AddFileBtn from "../AddFileBtn/AddFileBtn";
 import FileInfo from "../FileInfo/FileInfo";
 import { useCallback } from "react";
-import { useCreateOrderMutation } from "../../services/api";
+import { useCreateOrderMutation } from "../../store/slices/apiSlice";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { sha256 } from "js-sha256";

@@ -10,7 +10,7 @@ import { IBankData } from "../../types/types";
 import AddFileBtn from "../../components/AddFileBtn/AddFileBtn";
 import FileInfo from "../../components/FileInfo/FileInfo";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetOrderQuery } from "../../services/api";
+import { useGetOrderQuery } from "../../store/slices/apiSlice";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Order } from "../../types/types";
 import Timer from "../../components/Timer/Timer";

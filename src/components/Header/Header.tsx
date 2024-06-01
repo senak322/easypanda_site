@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { useCallback, useState } from "react";
-import { useGetOrderQuery } from "../../services/api";
+import { useGetOrderQuery } from "../../store/slices/apiSlice";
 import { IconButton } from "@mui/material";
 
 const Search = styled("div")(({ theme }) => ({
