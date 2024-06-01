@@ -25,7 +25,14 @@ export const apiSlice = createApi({
        
       }),
     }),
+    uploadFile: builder.mutation({
+      query: (formData) => ({
+        url: `orders/upload`,
+        method: "POST",
+        body: formData,
+      }),
+    }),
   }),
 });
 
-export const { useCreateOrderMutation, useGetOrderQuery, useCloseOrderMutation } = apiSlice;
+export const { useCreateOrderMutation, useGetOrderQuery, useCloseOrderMutation, useUploadFileMutation } = apiSlice;
