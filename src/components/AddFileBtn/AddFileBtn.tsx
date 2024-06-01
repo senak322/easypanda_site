@@ -103,7 +103,7 @@ function AddFileBtn({ instanceId, isDisabled }: AddFileBtnProps) {
       startIcon={<CloudUploadIcon />}
       disabled={isDisabled}
     >
-      Загрузить чек
+      Загрузить {instanceId === "paid" ? "чек" : "QR"}
       <VisuallyHiddenInput type="file" onChange={handleFileChange} />
     </Button>
   );

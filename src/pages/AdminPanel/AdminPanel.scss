@@ -1,0 +1,6 @@
+@import "../../styles/mixins";
+
+.admin {
+    @include flexCenter();
+    flex-direction: column;
+}

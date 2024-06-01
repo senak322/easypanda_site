@@ -18,7 +18,14 @@ export const apiSlice = createApi({
     getOrder: builder.query({
       query: (hash) => `orders/${hash}`,
     }),
+    closeOrder: builder.mutation({
+      query: (hash) => ({
+        url: `orders/${hash}/close`,
+        method: "PATCH",
+       
+      }),
+    }),
   }),
 });
 
-export const { useCreateOrderMutation, useGetOrderQuery } = apiSlice;
+export const { useCreateOrderMutation, useGetOrderQuery, useCloseOrderMutation } = apiSlice;

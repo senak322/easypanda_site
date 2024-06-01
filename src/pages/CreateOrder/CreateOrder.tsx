@@ -10,7 +10,11 @@ import { IBankData } from "../../types/types";
 import AddFileBtn from "../../components/AddFileBtn/AddFileBtn";
 import FileInfo from "../../components/FileInfo/FileInfo";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetOrderQuery } from "../../store/slices/apiSlice";
+import {
+  useCloseOrderMutation,
+  
+  useGetOrderQuery,
+} from "../../store/slices/apiSlice";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Order } from "../../types/types";
 import Timer from "../../components/Timer/Timer";
@@ -30,7 +34,11 @@ function CreateOrder(): JSX.Element {
     skip: !hash, // Запрос не выполняется, если hash не задан
   });
   // console.log(orderResponse);
-  const [statusFromApi, setStatusFromApi] = useState(orderResponse?.order?.status || "");
+  const [statusFromApi, setStatusFromApi] = useState(
+    orderResponse?.order?.status || ""
+  );
+
+  const [closeOrder] = useCloseOrderMutation()
   // Инициируем запрос статуса
   // const { data: statusData, refetch } = useGetOrderStatusQuery(hash, {
   //   skip: !hash,
@@ -38,9 +46,15 @@ function CreateOrder(): JSX.Element {
 
   const handlePaidOrder = useCallback(() => {}, []);
 
-  const handleCloseOrder = useCallback(() => {
-    navigate("/");
-  }, [navigate]);
+  const handleCloseOrder = async() => {
+    try {
+      await closeOrder(hash).unwrap();
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to close the order:", error);
+    }
+  };
+  // }, [navigate]);
 
   useEffect(() => {
     if (orderResponse) {
@@ -51,8 +65,8 @@ function CreateOrder(): JSX.Element {
     }
   }, [orderResponse, isLoading, error, alert]);
 
-   // Обновление статуса заказа каждые 2 минуты
-   useEffect(() => {
+  // Обновление статуса заказа каждые 2 минуты
+  useEffect(() => {
     const interval = setInterval(() => {
       refetch();
     }, 120000); // 120000 миллисекунд = 2 минуты
