@@ -23,7 +23,7 @@ export default function LoginPage() {
     }
   };
   return (
-    <div>
+    <div className="login">
       <h2>Вход</h2>
       <form onSubmit={handleLogin}>
         <div>

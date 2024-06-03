@@ -26,7 +26,7 @@ export interface FileDetails {
 }
 
 export interface Order {
-  id: string; // Уникальный идентификатор заказа
+  _id: string; // Уникальный идентификатор заказа
   sendCurrency: string; // Валюта отправки
   receiveCurrency: string; // Валюта получения
   sendAmount: number; // Сумма отправки
@@ -36,7 +36,7 @@ export interface Order {
   ownerName: string; // Имя владельца заказа
   ownerData: string; // Данные владельца (номер счета или фото)
   qrCodeFileData?: FileDetails; // Детали файла QR-кода, если есть
-  status: "pending" | "waitingAccept" | "completed" | "cancelled" | "cancelledByTimer"; // Статус заказа
+  status: "pending" | "waitingAccept" | "completed" | "closed" | "cancelledByTimer"; // Статус заказа
   hash: string;
   createdAt: string; // Дата создания заказа
   expiresAt: string; // Дата истечения заказа

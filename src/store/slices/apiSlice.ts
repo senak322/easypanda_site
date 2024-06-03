@@ -28,6 +28,15 @@ export const apiSlice = createApi({
         body: formData,
       }),
     }),
+    getWaitingOrders: builder.query({
+      query: () => ({
+        url: "orders/waitingApprove",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -35,5 +44,6 @@ export const {
   useCreateOrderMutation,
   useGetOrderQuery,
   useCloseOrderMutation,
-  useAcceptOrderMutation
+  useAcceptOrderMutation,
+  useGetWaitingOrdersQuery
 } = apiSlice;

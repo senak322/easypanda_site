@@ -9,6 +9,9 @@
   max-width: 1024px;
   width: 80%;
   align-self: center;
+  @include respond-to(medium) {
+    margin-top: 3rem;
+  }
   &__info {
     list-style-type: none;
     margin: 0;
@@ -19,6 +22,11 @@
     @include respond-to(medium) {
       padding: 1rem;
       width: 100%;
+    }
+  }
+  &__info:first-of-type {
+    @include respond-to(large) {
+      margin: 0;
     }
   }
   &__currency-img {
@@ -87,6 +95,9 @@
   }
   &__container {
     display: flex;
-    gap: 2rem
+    gap: 2rem;
+    @include respond-to(large) {
+      flex-direction: column;
+    }
   }
 }

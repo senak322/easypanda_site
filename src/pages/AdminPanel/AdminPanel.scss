@@ -1,6 +1,30 @@
-@import "../../styles/mixins";
-
-.admin {
-    @include flexCenter();
-    flex-direction: column;
-}
+.admin-panel {
+    padding: 20px;
+    h2 {
+      margin-bottom: 20px;
+    }
+    .order-list {
+      list-style-type: none;
+      padding: 0;
+      .order-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        .order-info {
+          flex-grow: 1;
+          p {
+            margin: 5px 0;
+          }
+        }
+        .order-actions {
+          button {
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
+  

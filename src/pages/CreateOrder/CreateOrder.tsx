@@ -73,6 +73,7 @@ function CreateOrder(): JSX.Element {
   const handleCloseOrder = async () => {
     try {
       await closeOrder(hash).unwrap();
+      setStatusFromApi("closed");
       navigate("/");
     } catch (error) {
       console.error("Failed to close the order:", error);
@@ -131,7 +132,7 @@ function CreateOrder(): JSX.Element {
   const bgColor =
     order.status === "pending" || order.status === "waitingAccept"
       ? "yellow"
-      : order.status === "cancelled" || order.status === "cancelledByTimer"
+      : order.status === "closed" || order.status === "cancelledByTimer"
       ? "red"
       : "green";
 
@@ -142,7 +143,7 @@ function CreateOrder(): JSX.Element {
       ? "Ожидает подтверждения"
       : statusFromApi === "completed"
       ? "Завершен"
-      : statusFromApi === "cancelled"
+      : statusFromApi === "closed"
       ? "Отменен"
       : "Отменен по таймеру";
 
