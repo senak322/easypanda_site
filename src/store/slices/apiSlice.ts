@@ -12,9 +12,6 @@ export const apiSlice = createApi({
         body: formData,
       }),
     }),
-    // getOrderStatus: builder.query<Order, string>({
-    //   query: (hash) => `orders/${hash}`,
-    // }),
     getOrder: builder.query({
       query: (hash) => `orders/${hash}`,
     }),
@@ -22,17 +19,21 @@ export const apiSlice = createApi({
       query: (hash) => ({
         url: `orders/${hash}/close`,
         method: "PATCH",
-       
       }),
     }),
-    uploadFile: builder.mutation({
-      query: (formData) => ({
-        url: `orders/upload`,
-        method: "POST",
+    acceptOrder: builder.mutation<any, { hash: string; formData: FormData }>({
+      query: ({hash, formData}) => ({
+        url: `orders/${hash}/accept`,
+        method: "PATCH",
         body: formData,
       }),
     }),
   }),
 });
 
-export const { useCreateOrderMutation, useGetOrderQuery, useCloseOrderMutation, useUploadFileMutation } = apiSlice;
+export const {
+  useCreateOrderMutation,
+  useGetOrderQuery,
+  useCloseOrderMutation,
+  useAcceptOrderMutation
+} = apiSlice;

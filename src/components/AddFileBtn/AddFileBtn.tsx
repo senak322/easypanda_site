@@ -9,16 +9,17 @@ import {
   setUploadedFileDetails,
 } from "../../store/slices/currencySlice";
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from "../../utils/config";
-import { useUploadFileMutation } from "../../store/slices/apiSlice"; // Импортируем наш хук для загрузки файла
+// import { useUploadFileMutation } from "../../store/slices/apiSlice"; // Импортируем наш хук для загрузки файла
 
 interface AddFileBtnProps {
   instanceId: "receive" | "paid";
   isDisabled: boolean;
+  onFileSelect: (file: File | null) => void; // Добавляем пропс для передачи файла в родительский компонент
 }
 
-function AddFileBtn({ instanceId, isDisabled }: AddFileBtnProps) {
+function AddFileBtn({ instanceId, isDisabled, onFileSelect }: AddFileBtnProps) {
   const appDispatch = useAppDispatch();
-  const [uploadFile] = useUploadFileMutation(); // Используем хук для загрузки файла
+  // const [uploadFile] = useUploadFileMutation(); // Используем хук для загрузки файла
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -33,8 +34,8 @@ function AddFileBtn({ instanceId, isDisabled }: AddFileBtnProps) {
   });
 
   const handleFileChange = useCallback(
-    async (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files ? event.target.files[0] : undefined;
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files ? event.target.files[0] : null;
       if (file) {
         if (!ALLOWED_FILE_TYPES.includes(file.type)) {
           appDispatch(
@@ -51,6 +52,7 @@ function AddFileBtn({ instanceId, isDisabled }: AddFileBtnProps) {
               instanceId: instanceId,
             })
           );
+          onFileSelect(null);
           return;
         }
         if (file.size > MAX_FILE_SIZE) {
@@ -69,36 +71,23 @@ function AddFileBtn({ instanceId, isDisabled }: AddFileBtnProps) {
               instanceId: instanceId,
             })
           );
+          onFileSelect(null);
           return;
         }
 
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("instanceId", instanceId);
-
-        try {
-          await uploadFile(formData).unwrap();
-          const fileDetails = {
-            name: file.name,
-            size: file.size,
-            lastModified: file.lastModified,
-          };
-          appDispatch(setAlert({ message: "", severity: "success", instanceId }));
-          appDispatch(
-            setUploadedFileDetails({
-              fileDetails: fileDetails,
-              instanceId: instanceId,
-            })
-          );
-        } catch (error) {
-          appDispatch(
-            setAlert({
-              message: "Ошибка при загрузке файла.",
-              severity: "error",
-              instanceId: instanceId,
-            })
-          );
-        }
+        const fileDetails = {
+          name: file.name,
+          size: file.size,
+          lastModified: file.lastModified,
+        };
+        appDispatch(setAlert({ message: "", severity: "success", instanceId }));
+        appDispatch(
+          setUploadedFileDetails({
+            fileDetails: fileDetails,
+            instanceId: instanceId,
+          })
+        );
+        onFileSelect(file);
       } else {
         appDispatch(
           setUploadedFileDetails({
@@ -106,9 +95,10 @@ function AddFileBtn({ instanceId, isDisabled }: AddFileBtnProps) {
             instanceId: instanceId,
           })
         );
+        onFileSelect(null);
       }
     },
-    [appDispatch, instanceId, uploadFile]
+    [appDispatch, instanceId, onFileSelect]
   );
 
   return (

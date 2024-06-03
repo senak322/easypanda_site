@@ -11,20 +11,24 @@ import AddFileBtn from "../../components/AddFileBtn/AddFileBtn";
 import FileInfo from "../../components/FileInfo/FileInfo";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  useAcceptOrderMutation,
   useCloseOrderMutation,
-  
   useGetOrderQuery,
 } from "../../store/slices/apiSlice";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Order } from "../../types/types";
 import Timer from "../../components/Timer/Timer";
+// import { useAppDispatch } from "../../hooks/useAppDispatch";
 
 function CreateOrder(): JSX.Element {
-  const { uploadedPaidFileDetails, uploadedReceiveFileDetails, alert } =
-    useSelector((state: RootState) => state.currency);
+  const { uploadedPaidFileDetails, alert } = useSelector(
+    (state: RootState) => state.currency
+  );
 
+  const [paidFile, setPaidFile] = useState<File | null>(null); // Добавляем состояние для файла чека
   const navigate = useNavigate();
   const { hash } = useParams();
+  // const appDispatch = useAppDispatch()
   const {
     data: orderResponse,
     isLoading,
@@ -33,20 +37,36 @@ function CreateOrder(): JSX.Element {
   } = useGetOrderQuery(hash, {
     skip: !hash, // Запрос не выполняется, если hash не задан
   });
+
   // console.log(orderResponse);
   const [statusFromApi, setStatusFromApi] = useState(
     orderResponse?.order?.status || ""
   );
 
-  const [closeOrder] = useCloseOrderMutation()
-  // Инициируем запрос статуса
-  // const { data: statusData, refetch } = useGetOrderStatusQuery(hash, {
-  //   skip: !hash,
-  // });
+  const [closeOrder] = useCloseOrderMutation();
+  const [acceptOrder] = useAcceptOrderMutation();
 
-  const handlePaidOrder = useCallback(() => {}, []);
+  const handleFileSelect = useCallback((file: File) => {
+    setPaidFile(file);
+  }, []);
 
-  const handleCloseOrder = async() => {
+  const handlePaidOrder = useCallback(async () => {
+    if (!paidFile) {
+      console.error("No file selected for payment proof");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("file", paidFile);
+    try {
+      const response = await acceptOrder({hash, formData}).unwrap();
+      
+      setStatusFromApi(response.status);
+    } catch (err) {
+      console.error("Failed to accept the order:", error);
+    }
+  }, [acceptOrder, paidFile, error, hash]);
+
+  const handleCloseOrder = async () => {
     try {
       await closeOrder(hash).unwrap();
       navigate("/");
@@ -114,7 +134,7 @@ function CreateOrder(): JSX.Element {
   const orderStatus =
     statusFromApi === "pending"
       ? "Ожидает оплаты"
-      : statusFromApi === "waitingAccept"
+      : statusFromApi === "waitingApprove"
       ? "Ожидает подтверждения"
       : statusFromApi === "completed"
       ? "Завершен"
@@ -221,7 +241,11 @@ function CreateOrder(): JSX.Element {
         <h4 className="mx-3 my-2 order__file-header">
           Прикрепите чек об оплате
         </h4>
-        <AddFileBtn instanceId="paid" isDisabled={false} />
+        <AddFileBtn
+          instanceId="paid"
+          isDisabled={false}
+          onFileSelect={handleFileSelect}
+        />
         {uploadedPaidFileDetails && (
           <FileInfo details={uploadedPaidFileDetails} />
         )}

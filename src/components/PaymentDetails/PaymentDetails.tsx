@@ -16,22 +16,18 @@ import { useState, useEffect } from "react";
 
 interface PaymentDetailsProps {
   isDisabled: boolean;
-  // handleCreateOrder: () => void;
   handleBackStep: () => void;
   handleChangeFirstName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleChangeLastName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleChangeBankAccount: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  // handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   step: number;
 }
 
 function PaymentDetails({
   isDisabled,
-  // handleCreateOrder,
   handleChangeFirstName,
   handleChangeLastName,
   handleChangeBankAccount,
-  // handleFileChange,
   handleBackStep,
   step,
 }: PaymentDetailsProps) {
@@ -39,6 +35,9 @@ function PaymentDetails({
   // const [firstNameError, setFirstNameError] = useState<string | null>(null);
   // const [lastNameError, setLastNameError] = useState<string | null>(null);
   // const [bankAccountError, setBankAccountError] = useState<string | null>(null);
+  const [receiveFile, setReceiveFile] = useState<File | null>(null); // Добавляем состояние для файла QR
+  
+
   const {
     instances,
     firstName,
@@ -59,6 +58,10 @@ function PaymentDetails({
     }
   }, [isSuccess, navigate, orderHash]);
 
+  const handleFileSelect = useCallback((file: File) => {
+    setReceiveFile(file)
+  }, [])
+
   const accountData =
     instances.receive.selectedCurrency === "RUB" ||
     instances.receive.selectedCurrency === "UAH"
@@ -77,7 +80,7 @@ function PaymentDetails({
     const formData = new FormData();
     formData.append("sendCurrency", instances.give.selectedCurrency);
     formData.append("receiveCurrency", instances.receive.selectedCurrency);
-    formData.append("sendAmount", sumGive.toString()); // конвертируем числа в строки
+    formData.append("sendAmount", sumGive.toString());
     formData.append("receiveAmount", sumReceive.toString());
     formData.append("sendBank", instances.give.selectedBank);
     formData.append("receiveBank", instances.receive.selectedBank);
@@ -86,14 +89,17 @@ function PaymentDetails({
       "ownerData",
       bankAccount ? bankAccount.toString() : "Данные не указаны"
     );
-    if (uploadedReceiveFileDetails?.file) {
-      formData.append("qrCodeFileData", uploadedReceiveFileDetails.file);
+    if (receiveFile) {
+      formData.append("files", receiveFile); // Добавляем файл QR, если он выбран
     }
+    // if (paidFile) {
+    //   formData.append("files", paidFile); // Добавляем файл чека, если он выбран
+    // }
     formData.append("hash", hash);
 
     try {
-      const response = await createOrder(formData).unwrap(); // Предполагаем, что createOrder возвращает hash в response
-      setOrderHash(response.hash); // Сохраняем hash в состоянии
+      const response = await createOrder(formData).unwrap();
+      setOrderHash(response.hash);
     } catch (err) {
       console.error("Ошибка при создании заказа:", error);
     }
@@ -108,7 +114,8 @@ function PaymentDetails({
     instances.receive.selectedCurrency,
     sumGive,
     sumReceive,
-    uploadedReceiveFileDetails,
+    receiveFile,
+    
     hash,
     error,
   ]);
@@ -154,7 +161,7 @@ function PaymentDetails({
               <p className="payment__or">или</p>
             )}
             {instances.receive.selectedCurrency === "CNY" && (
-              <AddFileBtn instanceId="receive" isDisabled={step > 2} />
+              <AddFileBtn instanceId="receive" isDisabled={step > 2} onFileSelect={handleFileSelect} />
             )}
           </div>
           {uploadedReceiveFileDetails && (
