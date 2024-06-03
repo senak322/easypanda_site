@@ -36,7 +36,6 @@ function PaymentDetails({
   // const [lastNameError, setLastNameError] = useState<string | null>(null);
   // const [bankAccountError, setBankAccountError] = useState<string | null>(null);
   const [receiveFile, setReceiveFile] = useState<File | null>(null); // Добавляем состояние для файла QR
-  
 
   const {
     instances,
@@ -59,8 +58,8 @@ function PaymentDetails({
   }, [isSuccess, navigate, orderHash]);
 
   const handleFileSelect = useCallback((file: File) => {
-    setReceiveFile(file)
-  }, [])
+    setReceiveFile(file);
+  }, []);
 
   const accountData =
     instances.receive.selectedCurrency === "RUB" ||
@@ -89,13 +88,13 @@ function PaymentDetails({
       "ownerData",
       bankAccount ? bankAccount.toString() : "Данные не указаны"
     );
+    formData.append("hash", hash);
     if (receiveFile) {
       formData.append("files", receiveFile); // Добавляем файл QR, если он выбран
     }
     // if (paidFile) {
     //   formData.append("files", paidFile); // Добавляем файл чека, если он выбран
     // }
-    formData.append("hash", hash);
 
     try {
       const response = await createOrder(formData).unwrap();
@@ -115,7 +114,7 @@ function PaymentDetails({
     sumGive,
     sumReceive,
     receiveFile,
-    
+
     hash,
     error,
   ]);
@@ -161,7 +160,11 @@ function PaymentDetails({
               <p className="payment__or">или</p>
             )}
             {instances.receive.selectedCurrency === "CNY" && (
-              <AddFileBtn instanceId="receive" isDisabled={step > 2} onFileSelect={handleFileSelect} />
+              <AddFileBtn
+                instanceId="receive"
+                isDisabled={step > 2}
+                onFileSelect={handleFileSelect}
+              />
             )}
           </div>
           {uploadedReceiveFileDetails && (

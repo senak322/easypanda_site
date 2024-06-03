@@ -58,13 +58,17 @@ function CreateOrder(): JSX.Element {
     const formData = new FormData();
     formData.append("file", paidFile);
     try {
-      const response = await acceptOrder({hash, formData}).unwrap();
-      
-      setStatusFromApi(response.status);
+      const response = await acceptOrder({ hash, formData }).unwrap();
+      console.log("Order accepted response:", response);
+      if (response && response.status) {
+        setStatusFromApi(response.status);
+      }
+
+      refetch();
     } catch (err) {
-      console.error("Failed to accept the order:", error);
+      console.error("Failed to accept the order:", err);
     }
-  }, [acceptOrder, paidFile, error, hash]);
+  }, [acceptOrder, paidFile, hash, refetch]);
 
   const handleCloseOrder = async () => {
     try {
@@ -92,7 +96,7 @@ function CreateOrder(): JSX.Element {
     }, 120000); // 120000 миллисекунд = 2 минуты
 
     return () => clearInterval(interval);
-  }, [refetch]);
+  }, [refetch, statusFromApi]);
 
   useEffect(() => {
     if (orderResponse?.order && orderResponse.order.status !== statusFromApi) {
@@ -159,97 +163,106 @@ function CreateOrder(): JSX.Element {
         <span className="fw-bolder">{orderStatus}</span>
       </p>
       <Timer order={order} />
-      <ul className="order__info">
-        <li>
-          Вы отправляете:{" "}
-          <span className="order__span">
-            {order.sendAmount} {order.sendCurrency}
-          </span>{" "}
-          на{" "}
-          <img
-            src={`../images/${order.sendBank.toLowerCase()}.png`}
-            alt={order.sendBank}
-            className="order__currency-img"
-          />
-          {order.sendBank}
-        </li>
-        <li>
-          Вы получаете:{" "}
-          <span className="order__span">
-            {order.receiveAmount} {order.receiveCurrency}
-          </span>{" "}
-          на{" "}
-          <img
-            src={`../images/${order.receiveBank.toLowerCase()}.png`}
-            alt={order.receiveBank}
-            className="order__currency-img"
-          />
-          {order.receiveBank}
-        </li>
-        <li>
-          Получатель: <span className="order__span">{order.ownerName}</span>
-        </li>
-        <li>
-          {accountData && `${accountData} получателя: `}
-          <span className="order__span">
-            {order.qrCodeFileData
-              ? "Данные получателя отправлены в формате фото"
-              : order.ownerData}
-          </span>
-        </li>
-      </ul>
-
-      <div className="order__info d-flex align-items-center flex-column">
-        <h4 className="mb-4">Реквизиты для оплаты</h4>
-        <ul className="order__data-container">
-          <li className="m-0">
-            Банк:{" "}
-            <img
-              src={`../images/${order.sendBank.toLowerCase()}.png`}
-              alt={order.sendBank}
-              className="order__currency-img"
-            />
-            <span className="order__span">{order.sendBank}</span>
-          </li>
-          <li className="m-0 d-flex">
-            {dataForPay.card === "QR" ? (
+      <div className="order__container">
+        <div className="order__info">
+          <h4 className="mb-4">Данные ордера</h4>
+          <ul className="order__data-container">
+            <li>
+              Вы отправляете:{" "}
+              <span className="order__span">
+                {order.sendAmount} {order.sendCurrency}
+              </span>{" "}
+              на{" "}
               <img
-                src={"../../images/qrwechat.jpg"}
-                alt={dataForPay.card}
-                className="order__img-qr"
+                src={`../images/${order.sendBank.toLowerCase()}.png`}
+                alt={order.sendBank}
+                className="order__currency-img"
               />
-            ) : (
-              <>
-                <p className="m-0">{`${accountGiveData}:`}</p>
-                <span className="order__span">&nbsp;{dataForPay.card}</span>
-              </>
-            )}
-          </li>
-          <li className="m-0">
-            {dataForPay.owner && "Получатель: "}
-            <span className="order__span">{dataForPay.owner}</span>
-          </li>
-          <li className="m-0">
-            Сумма к оплате:&nbsp;
-            <span className="order__span">
-              {order.sendAmount} {order.sendCurrency}
-            </span>
-          </li>
-        </ul>
+              {order.sendBank}
+            </li>
+            <li>
+              Вы получаете:{" "}
+              <span className="order__span">
+                {order.receiveAmount} {order.receiveCurrency}
+              </span>{" "}
+              на{" "}
+              <img
+                src={`../images/${order.receiveBank.toLowerCase()}.png`}
+                alt={order.receiveBank}
+                className="order__currency-img"
+              />
+              {order.receiveBank}
+            </li>
+            <li>
+              Получатель: <span className="order__span">{order.ownerName}</span>
+            </li>
+            <li>
+              {accountData && `${accountData} получателя: `}
+              <span className="order__span">
+                {order.qrCodeFileData
+                  ? "Данные получателя отправлены в формате фото"
+                  : order.ownerData}
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div className="order__info d-flex align-items-center flex-column">
+          <h4 className="mb-4">Реквизиты для оплаты</h4>
+          <ul className="order__data-container">
+            <li className="m-0">
+              Банк:{" "}
+              <img
+                src={`../images/${order.sendBank.toLowerCase()}.png`}
+                alt={order.sendBank}
+                className="order__currency-img"
+              />
+              <span className="order__span">{order.sendBank}</span>
+            </li>
+            <li className="m-0 d-flex">
+              {dataForPay.card === "QR" ? (
+                <img
+                  src={"../../images/qrwechat.jpg"}
+                  alt={dataForPay.card}
+                  className="order__img-qr"
+                />
+              ) : (
+                <>
+                  <p className="m-0">{`${accountGiveData}:`}</p>
+                  <span className="order__span">&nbsp;{dataForPay.card}</span>
+                </>
+              )}
+            </li>
+            <li className="m-0">
+              {dataForPay.owner && "Получатель: "}
+              <span className="order__span">{dataForPay.owner}</span>
+            </li>
+            <li className="m-0">
+              Сумма к оплате:&nbsp;
+              <span className="order__span">
+                {order.sendAmount} {order.sendCurrency}
+              </span>
+            </li>
+          </ul>
+        </div>
       </div>
       <div className="d-flex align-items-center order__file-container">
         <h4 className="mx-3 my-2 order__file-header">
-          Прикрепите чек об оплате
+          {orderStatus === "Ожидает оплаты"
+            ? "Прикрепите чек об оплате"
+            : `Чек получен.
+Заказ будет завершён после подтверждения администратором`}
         </h4>
-        <AddFileBtn
-          instanceId="paid"
-          isDisabled={false}
-          onFileSelect={handleFileSelect}
-        />
-        {uploadedPaidFileDetails && (
+        {orderStatus === "Ожидает оплаты" && (
+          <AddFileBtn
+            instanceId="paid"
+            isDisabled={false}
+            onFileSelect={handleFileSelect}
+          />
+        )}
+        {uploadedPaidFileDetails && orderStatus === "Ожидает оплаты" && (
           <FileInfo details={uploadedPaidFileDetails} />
         )}
-        {alert.paid.message && (
+        {alert.paid.message && orderStatus === "Ожидает оплаты" && (
           <Alert severity={alert.paid.severity}>{alert.paid.message}</Alert>
         )}
       </div>
