@@ -72,18 +72,17 @@ const AdminPanel: React.FC = () => {
                   {order.files && order.files.length > 0 && (
                     <div>
                       <p>Документы по заявке:</p>
-                      <ul>
+                      <ul className="order-files">
                         {order.fileUrls.map((file, index) => (
-                          <li key={index}>
+                          <li className="order-li" key={index}>
+                            <img className="order-img" src={file} alt="фото" />
                             <a
                               href={file}
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              {/* {file.split('/').pop()} */}
-                              Ссылка на файл
+                              Ссылка
                             </a>
-                            <img className="order-img" src={file} alt="фото" />
                           </li>
                         ))}
                       </ul>
@@ -113,6 +112,8 @@ const AdminPanel: React.FC = () => {
       ) : (
         <p>Нет заявок, ожидающих подтверждения.</p>
       )}
+      <h2>Подтвержденные заявки</h2>
+      <button>Получить подтвержденные заявки</button>
     </div>
   );
 };

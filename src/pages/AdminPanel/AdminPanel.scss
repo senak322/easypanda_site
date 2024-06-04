@@ -19,8 +19,8 @@
             margin: 5px 0;
           }
           .order-img {
-            width: 50px;
-            height: 50px;
+            width: 150px;
+            // height: 50px;
           }
         }
         .order-actions {
@@ -29,6 +29,17 @@
           }
         }
       }
+    }
+    .order-files {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      gap: 2rem;
+      padding: 0;
+    }
+    .order-li {
+      display: flex;
+      flex-direction: column;
     }
   }
   
