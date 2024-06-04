@@ -1,19 +1,28 @@
-import React, { useEffect } from 'react';
-import { useGetWaitingOrdersQuery, useCloseOrderMutation, useAcceptOrderMutation } from '../../store/slices/apiSlice';
-import { useNavigate } from 'react-router-dom';
-import { Button, Alert, CircularProgress } from '@mui/material';
-import './AdminPanel.scss';
-import { Order } from '../../types/types';
+import React, { useEffect } from "react";
+import {
+  useGetWaitingOrdersQuery,
+  useCloseOrderMutation,
+  useAcceptOrderMutation,
+} from "../../store/slices/apiSlice";
+import { useNavigate } from "react-router-dom";
+import { Button, Alert, CircularProgress } from "@mui/material";
+import "./AdminPanel.scss";
+import { Order } from "../../types/types";
 
 const AdminPanel: React.FC = () => {
-  const { data: waitingOrders, error, isLoading, refetch } = useGetWaitingOrdersQuery({});
+  const {
+    data: waitingOrders,
+    error,
+    isLoading,
+    refetch,
+  } = useGetWaitingOrdersQuery({});
   const [closeOrder] = useCloseOrderMutation();
   // const [acceptOrder] = useAcceptOrderMutation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     if (error) {
-      console.error('Failed to fetch waiting orders:', error);
+      console.error("Failed to fetch waiting orders:", error);
     }
   }, [error]);
 
@@ -31,7 +40,7 @@ const AdminPanel: React.FC = () => {
       await closeOrder(hash).unwrap();
       refetch();
     } catch (err) {
-      console.error('Failed to close order:', err);
+      console.error("Failed to close order:", err);
     }
   };
 
@@ -47,9 +56,40 @@ const AdminPanel: React.FC = () => {
             <li key={order._id} className="order-item">
               <div className="order-info">
                 <p>Hash: {order.hash}</p>
-                <p>Send Amount: {order.sendAmount} {order.sendCurrency}</p>
-                <p>Receive Amount: {order.receiveAmount} {order.receiveCurrency}</p>
-                <p>Status: {order.status}</p>
+                <p>Дата создания: {order.createdAt}</p>
+                <p>
+                  К отправке: {order.sendAmount} {order.sendCurrency} на{" "}
+                  {order.sendBank}
+                </p>
+                <p>
+                  К получению: {order.receiveAmount} {order.receiveCurrency} на{" "}
+                  {order.receiveBank}
+                </p>
+                <p>Статус: {order.status}</p>
+                <p>Получатель: {order.ownerName}</p>
+                <p>Реквизиты получателя: {order.ownerData}</p>
+                <div>
+                  {order.files && order.files.length > 0 && (
+                    <div>
+                      <p>Документы по заявке:</p>
+                      <ul>
+                        {order.fileUrls.map((file, index) => (
+                          <li key={index}>
+                            <a
+                              href={file}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {/* {file.split('/').pop()} */}
+                              Ссылка на файл
+                            </a>
+                            <img className="order-img" src={file} alt="фото" />
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="order-actions">
                 <Button
@@ -78,4 +118,3 @@ const AdminPanel: React.FC = () => {
 };
 
 export default AdminPanel;
-

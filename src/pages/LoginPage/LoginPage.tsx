@@ -16,6 +16,8 @@ export default function LoginPage() {
     try {
       const response = await axios.post("http://localhost:3001/auth/login", { username, password });
       const token = response.data.access_token;
+      console.log(token);
+      
       dispatch(setCredentials({ token }));
       navigate("/admin")
     } catch (error) {

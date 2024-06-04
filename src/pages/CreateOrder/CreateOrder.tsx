@@ -271,7 +271,7 @@ function CreateOrder(): JSX.Element {
       <div className="order__btn-container">
         <NextStepBtn
           handleNextStep={handlePaidOrder}
-          isDisabled={!uploadedPaidFileDetails}
+          isDisabled={!uploadedPaidFileDetails || orderStatus !== "Ожидает оплаты"}
           title="Заказ оплачен"
           color="success"
         />

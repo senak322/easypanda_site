@@ -36,10 +36,17 @@ export interface Order {
   ownerName: string; // Имя владельца заказа
   ownerData: string; // Данные владельца (номер счета или фото)
   qrCodeFileData?: FileDetails; // Детали файла QR-кода, если есть
-  status: "pending" | "waitingAccept" | "completed" | "closed" | "cancelledByTimer"; // Статус заказа
+  status:
+    | "pending"
+    | "waitingAccept"
+    | "completed"
+    | "closed"
+    | "cancelledByTimer"; // Статус заказа
   hash: string;
   createdAt: string; // Дата создания заказа
   expiresAt: string; // Дата истечения заказа
+  files: string[]
+  fileUrls: string[]
 }
 
 // export interface OrderResponse {
@@ -62,10 +69,9 @@ export interface Order {
 // }
 
 export interface AuthState {
-  user: any | null; // Вы можете заменить `any` на ваш тип пользователя, если он у вас есть
-  token: string | null;
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  error: string | null;
+  isAuthenticated: boolean;
+  tokenChecked: boolean;
+  token: string;
 }
 
 export interface RootState {
