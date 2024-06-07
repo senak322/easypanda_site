@@ -141,7 +141,7 @@ function CreateOrder(): JSX.Element {
       ? "Ожидает оплаты"
       : statusFromApi === "waitingApprove"
       ? "Ожидает подтверждения"
-      : statusFromApi === "completed"
+      : statusFromApi === "approved"
       ? "Завершен"
       : statusFromApi === "closed"
       ? "Отменен"
