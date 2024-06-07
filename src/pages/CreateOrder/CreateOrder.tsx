@@ -59,7 +59,7 @@ function CreateOrder(): JSX.Element {
     formData.append("file", paidFile);
     try {
       const response = await acceptOrder({ hash, formData }).unwrap();
-      console.log("Order accepted response:", response);
+      // console.log("Order accepted response:", response);
       if (response && response.status) {
         setStatusFromApi(response.status);
       }
@@ -81,14 +81,14 @@ function CreateOrder(): JSX.Element {
   };
   // }, [navigate]);
 
-  useEffect(() => {
-    if (orderResponse) {
-      console.log("Order found:", orderResponse);
-    } else if (!isLoading && error) {
-      console.error("Order not found:", error);
-      // alert("Заказ не найден");
-    }
-  }, [orderResponse, isLoading, error, alert]);
+  // useEffect(() => {
+  //   if (orderResponse) {
+  //     // console.log("Order found:", orderResponse);
+  //   } else if (!isLoading && error) {
+  //     console.error("Order not found:", error);
+  //     // alert("Заказ не найден");
+  //   }
+  // }, [orderResponse, isLoading, error, alert]);
 
   // Обновление статуса заказа каждые 2 минуты
   useEffect(() => {
