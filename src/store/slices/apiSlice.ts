@@ -22,7 +22,7 @@ export const apiSlice = createApi({
       }),
     }),
     acceptOrder: builder.mutation<any, { hash: string; formData: FormData }>({
-      query: ({hash, formData}) => ({
+      query: ({ hash, formData }) => ({
         url: `orders/${hash}/accept`,
         method: "PATCH",
         body: formData,
@@ -37,6 +37,24 @@ export const apiSlice = createApi({
         },
       }),
     }),
+    approveOrder: builder.mutation<any, { id: string }>({
+      query: (id) => ({
+        url: `orders/${id}/approve`,
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+        },
+      }),
+    }),
+    getApprovedOrders: builder.mutation<any, any>({
+      query: () => ({
+        url: "orders/approved",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -45,5 +63,7 @@ export const {
   useGetOrderQuery,
   useCloseOrderMutation,
   useAcceptOrderMutation,
-  useGetWaitingOrdersQuery
+  useGetWaitingOrdersQuery,
+  useApproveOrderMutation,
+  useGetApprovedOrdersMutation
 } = apiSlice;

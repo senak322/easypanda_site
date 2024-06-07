@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useGetWaitingOrdersQuery,
   useCloseOrderMutation,
-  useAcceptOrderMutation,
+  useApproveOrderMutation,
+  useGetApprovedOrdersMutation,
 } from "../../store/slices/apiSlice";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { Button, Alert, CircularProgress } from "@mui/material";
 import "./AdminPanel.scss";
 import { Order } from "../../types/types";
@@ -17,7 +18,9 @@ const AdminPanel: React.FC = () => {
     refetch,
   } = useGetWaitingOrdersQuery({});
   const [closeOrder] = useCloseOrderMutation();
-  // const [acceptOrder] = useAcceptOrderMutation();
+  const [approveOrder] = useApproveOrderMutation();
+  const [getApprovedOrders] = useGetApprovedOrdersMutation();
+  const [approvedOrders, setApprovedOrders] = useState([]);
   // const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,14 +29,16 @@ const AdminPanel: React.FC = () => {
     }
   }, [error]);
 
-  // const handleAcceptOrder = async (hash: string) => {
-  //   try {
-  //     await acceptOrder({ hash }).unwrap();
-  //     refetch();
-  //   } catch (err) {
-  //     console.error('Failed to accept order:', err);
-  //   }
-  // };
+  const handleApproveOrder = async (id: any) => {
+    try {
+      // console.log(order._id);
+
+      await approveOrder(id).unwrap();
+      refetch();
+    } catch (err) {
+      console.error("Failed to accept order:", err);
+    }
+  };
 
   const handleCloseOrder = async (hash: string) => {
     try {
@@ -42,6 +47,27 @@ const AdminPanel: React.FC = () => {
     } catch (err) {
       console.error("Failed to close order:", err);
     }
+  };
+
+  const handleGetApprovedOrders = async () => {
+    try {
+      const orders = await getApprovedOrders({}).unwrap();
+      setApprovedOrders(orders);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    };
+    return new Date(dateString).toLocaleString("ru-RU", options);
   };
 
   if (isLoading) return <CircularProgress />;
@@ -94,7 +120,7 @@ const AdminPanel: React.FC = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  // onClick={() => handleAcceptOrder(order.hash)}
+                  onClick={() => handleApproveOrder(order._id)}
                 >
                   Подтвердить
                 </Button>
@@ -113,7 +139,47 @@ const AdminPanel: React.FC = () => {
         <p>Нет заявок, ожидающих подтверждения.</p>
       )}
       <h2>Подтвержденные заявки</h2>
-      <button>Получить подтвержденные заявки</button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleGetApprovedOrders}
+        className="mb-3"
+      >
+        Получить подтвержденные заявки
+      </Button>
+
+      {approvedOrders && (
+        <ul className="order-list">
+          {approvedOrders.map((order, index) => {
+            // const date = new Date(order.createdAt).getTime()
+            return (
+              <li key={order._id} className="order-item">
+                <div className="order-info">
+                  <p>№ {index + 1}</p>
+                  <p>Hash: {order.hash}</p>
+                  <p>Дата создания: {formatDate(order.createdAt)}</p>
+                  <p>
+                    К отправке: {order.sendAmount} {order.sendCurrency} на{" "}
+                    {order.sendBank}
+                  </p>
+                  <p>
+                    К получению: {order.receiveAmount} {order.receiveCurrency}{" "}
+                    на {order.receiveBank}
+                  </p>
+                  <p>Статус: {order.status}</p>{" "}
+                  <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => handleCloseOrder(order.hash)}
+                >
+                  Закрыть
+                </Button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </div>
   );
 };
