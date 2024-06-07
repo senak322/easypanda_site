@@ -45,7 +45,9 @@ function Footer() {
             <li className="footer__contact">
               <a
                 className="footer__link"
-                href="tg://resolve?domain=easypandamoney/"
+                href="https://t.me/easypandamoney"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <img
                   className="footer__contact_tg-img"
