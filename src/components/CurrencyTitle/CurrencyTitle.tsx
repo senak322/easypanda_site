@@ -6,7 +6,7 @@ interface CurrencyTitleProps {
 }
 
 function CurrencyTitle({ title }: CurrencyTitleProps) {
-  return <h3 className="title fw-light mx-3">{title}</h3>;
+  return <h2 className="title fw-light mx-3">{title}</h2>;
 }
 
 export default CurrencyTitle;

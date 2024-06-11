@@ -39,9 +39,9 @@ function Footer() {
             <p>3:00 - 17:00</p>
           </li>
         </ul>
-        <ul className="footer__container">
+        <div className="footer__container">
           <span className="fw-semibold">Контакты</span>
-          <div className="d-flex ">
+          <ul className="d-flex px-0">
             <li className="footer__contact">
               <a
                 className="footer__link"
@@ -61,8 +61,8 @@ function Footer() {
                 <MailOutlined className="footer__contact_tg-img" />
               </a>
             </li>
-          </div>
-        </ul>
+          </ul>
+        </div>
       </nav>
       <p className="mb-0 align-self-center py-1">EasyPandaMoney © 2024</p>
     </footer>
