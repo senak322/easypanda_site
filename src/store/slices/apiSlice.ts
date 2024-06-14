@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // debugger
 export const apiSlice = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://easypandamoney.com/api" }),
   endpoints: (builder) => ({
     createOrder: builder.mutation<any, FormData>({
       query: (formData) => ({
