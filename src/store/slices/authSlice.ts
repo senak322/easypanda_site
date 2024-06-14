@@ -17,7 +17,7 @@ export const checkTokenValidity = createAsyncThunk('auth/checkTokenValidity', as
   }
 
   try {
-    const response = await fetch('http://localhost:3001/auth/check-token', {
+    const response = await fetch('https://easypandamoney.com/api/auth/check-token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
