@@ -58,7 +58,7 @@ function App() {
   } = useSelector((state: RootState) => state.currency);
 
   const appDispatch = useAppDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const isCurrencyNextDisabled = sumGive > 0 && sumReceive > 0 && step === 1;
   const isDetailsNextDisabled =

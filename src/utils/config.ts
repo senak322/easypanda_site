@@ -2,7 +2,7 @@
 import { Bank, Currency, IPayData } from "../types/types";
 
 export const banks: Record<Currency, Bank[]> = {
-  rub: [{ name: "SBER", icon: "../../images/sber.png" }],
+  rub: [{ name: "SBP", icon: "../../images/sbp.png" }],
   cny: [
     { name: "AliPay", icon: "../../images/alipay.png" },
     { name: "WeChat", icon: "../../images/wechat.png" },
@@ -41,7 +41,7 @@ export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
 export const payData: IPayData = {
   sber: {
-    card: "2202206296854099",
+    card: "+79779477191 Яндекс банк",
     owner: "Александр В.",
   },
   alipay: {
