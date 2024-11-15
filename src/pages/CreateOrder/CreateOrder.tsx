@@ -220,7 +220,7 @@ function CreateOrder(): JSX.Element {
               <span className="order__span">{order.sendBank}</span>
             </li>
             <li className="m-0 d-flex">
-              {dataForPay.card === "QR" ? (
+              {dataForPay?.card === "QR" ? (
                 <img
                   src={"../../images/qrwechat.jpg"}
                   alt={dataForPay.card}
