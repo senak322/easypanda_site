@@ -2,12 +2,12 @@
 import { Bank, Currency, IPayData } from "../types/types";
 
 export const banks: Record<Currency, Bank[]> = {
-  rub: [{ name: "SBP", icon: "../../images/sbp.png" }],
+  rub: [{ name: "SBP", icon: "/images/sbp.png" }],
   cny: [
-    { name: "AliPay", icon: "../../images/alipay.png" },
-    { name: "WeChat", icon: "../../images/wechat.png" },
+    { name: "AliPay", icon: "/images/alipay.png" },
+    { name: "WeChat", icon: "/images/wechat.png" },
   ],
-  uah: [{ name: "Mono", icon: "../../images/mono.png" }],
+  uah: [{ name: "Mono", icon: "/images/mono.png" }],
   // gel: ["BOG"],
   // idr: ["Mega"],
 };
@@ -40,8 +40,8 @@ export const ALLOWED_FILE_TYPES = ["image/png", "image/jpeg", "image/jpg"];
 export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
 export const payData: IPayData = {
-  sber: {
-    card: "+79779477191 Яндекс банк",
+  sbp: {
+    card: "+79779477191 ОТП банк",
     owner: "Александр В.",
   },
   alipay: {

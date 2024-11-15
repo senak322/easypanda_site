@@ -16,9 +16,12 @@
     list-style-type: none;
     margin: 0;
     padding: 2rem;
-    background-color: $bg-grey;
+    background-color: #c7f9ef;
     border-radius: 10px;
     margin-bottom: 3rem;
+    &:first-of-type {
+      background-color: #ffe4e4;
+    }
     @include respond-to(medium) {
       padding: 1rem;
       width: 100%;

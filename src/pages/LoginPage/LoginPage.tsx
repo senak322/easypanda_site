@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { setCredentials } from "../../store/slices/authSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { postLogin } from "../../utils/api";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -14,10 +15,12 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3001/auth/login", { username, password });
-      const token = response.data.access_token;
+      const response = await postLogin(username, password);
+      const token = response;
+      console.log(token);
+      
       dispatch(setCredentials({ token }));
-      console.log("ya tut");
+      // console.log("ya tut");
       
       navigate("/admin")
     } catch (error) {

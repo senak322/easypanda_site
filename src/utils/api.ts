@@ -1,6 +1,9 @@
 import axios from "axios";
 import { baseCurrencyUrl } from "./config";
 
+const baseURL =
+  process.env.NODE_ENV === "development" ? "http://localhost:3001/api" : "";
+
 export async function getExchangeRate(
   sendCurrency: string,
   receiveCurrency: string
@@ -15,3 +18,16 @@ export async function getExchangeRate(
     console.error("Error fetching exchange rate:", error);
   }
 }
+
+export const postLogin = async (username: string, password: string) => {
+  try {
+    const response = await axios.post(`${baseURL}/auth/login`, {
+      username,
+      password,
+    });
+    const token = response.data.access_token;
+    return token;
+  } catch (error) {
+    console.error("Ошибка входа:", error);
+  }
+};

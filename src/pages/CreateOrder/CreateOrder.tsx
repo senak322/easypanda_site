@@ -175,7 +175,7 @@ function CreateOrder(): JSX.Element {
               </span>{" "}
               на{" "}
               <img
-                src={`../images/${order.sendBank.toLowerCase()}.png`}
+                src={`/images/${order.sendBank.toLowerCase()}.png`}
                 alt={order.sendBank}
                 className="order__currency-img"
               />
@@ -188,7 +188,7 @@ function CreateOrder(): JSX.Element {
               </span>{" "}
               на{" "}
               <img
-                src={`../images/${order.receiveBank.toLowerCase()}.png`}
+                src={`/images/${order.receiveBank.toLowerCase()}.png`}
                 alt={order.receiveBank}
                 className="order__currency-img"
               />
@@ -213,16 +213,16 @@ function CreateOrder(): JSX.Element {
             <li className="m-0">
               Банк:{" "}
               <img
-                src={`../images/${order.sendBank.toLowerCase()}.png`}
+                src={`/images/${order.sendBank.toLowerCase()}.png`}
                 alt={order.sendBank}
                 className="order__currency-img"
               />
               <span className="order__span">{order.sendBank}</span>
             </li>
             <li className="m-0 d-flex">
-              {dataForPay?.card === "QR" ? (
+              {dataForPay.card && dataForPay?.card === "QR" ? (
                 <img
-                  src={"../../images/qrwechat.jpg"}
+                  src={"/images/qrwechat.jpg"}
                   alt={dataForPay.card}
                   className="order__img-qr"
                 />
