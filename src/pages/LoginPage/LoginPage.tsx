@@ -2,7 +2,6 @@ import "./LoginPage.scss";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../store/slices/authSlice";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { postLogin } from "../../utils/api";
 
