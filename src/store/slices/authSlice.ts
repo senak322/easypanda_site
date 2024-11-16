@@ -8,7 +8,8 @@ const initialState: AuthState = {
   token: ""
 };
 
-
+const baseURL =
+  process.env.NODE_ENV === "development" ? "http://localhost:3001" : "";
 
 export const checkTokenValidity = createAsyncThunk('auth/checkTokenValidity', async (_, thunkAPI) => {
   const token = localStorage.getItem('jwtToken');
@@ -17,7 +18,7 @@ export const checkTokenValidity = createAsyncThunk('auth/checkTokenValidity', as
   }
 
   try {
-    const response = await fetch('https://easypandamoney.com/api/auth/check-token', {
+    const response = await fetch(`${baseURL}/api/auth/check-token`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

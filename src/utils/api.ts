@@ -2,7 +2,7 @@ import axios from "axios";
 import { baseCurrencyUrl } from "./config";
 
 const baseURL =
-  process.env.NODE_ENV === "development" ? "http://localhost:3001/api" : "";
+  process.env.NODE_ENV === "development" ? "http://localhost:3001" : "";
 
 export async function getExchangeRate(
   sendCurrency: string,
