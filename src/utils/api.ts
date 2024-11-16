@@ -21,7 +21,7 @@ export async function getExchangeRate(
 
 export const postLogin = async (username: string, password: string) => {
   try {
-    const response = await axios.post(`${baseURL}/auth/login`, {
+    const response = await axios.post(`${baseURL}/api/auth/login`, {
       username,
       password,
     });
