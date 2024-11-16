@@ -11,6 +11,7 @@
   align-self: center;
   @include respond-to(medium) {
     margin-top: 3rem;
+    width: 90%;
   }
   &__info {
     list-style-type: none;
@@ -21,6 +22,7 @@
     margin-bottom: 3rem;
     &:first-of-type {
       background-color: #ffe4e4;
+      height: fit-content;
     }
     @include respond-to(medium) {
       padding: 1rem;
@@ -79,7 +81,7 @@
   }
   &__status {
     display: block;
-    width: 10px;
+    min-width: 10px;
     height: 10px;
     border-radius: 50%;
     animation: pulse 1s infinite;
@@ -97,10 +99,12 @@
     }
   }
   &__container {
-    display: flex;
+    display: grid;
     gap: 2rem;
-    @include respond-to(large) {
-      flex-direction: column;
+    grid-template-columns: 1fr 1fr;
+    @include respond-to(small) {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr;
     }
   }
 }

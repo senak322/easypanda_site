@@ -18,6 +18,7 @@ import {
 import { LoadingOutlined } from "@ant-design/icons";
 import { Order } from "../../types/types";
 import Timer from "../../components/Timer/Timer";
+import SupportBtn from "../../components/SupportBtn/SupportBtn";
 // import { useAppDispatch } from "../../hooks/useAppDispatch";
 
 function CreateOrder(): JSX.Element {
@@ -115,14 +116,14 @@ function CreateOrder(): JSX.Element {
 
   const accountData =
     order.receiveCurrency === "RUB" || order.receiveCurrency === "UAH"
-      ? "Номер карты"
+      ? "Реквизиты"
       : order.receiveCurrency === "CNY" && order.receiveBank === "AliPay"
       ? "Аккаунт Alipay"
       : "";
 
   const accountGiveData =
     order.sendCurrency === "RUB" || order.sendCurrency === "UAH"
-      ? "Номер карты"
+      ? "Реквизиты"
       : order.sendCurrency === "CNY" && order.sendBank === "AliPay"
       ? "Аккаунт Alipay"
       : "";
@@ -165,7 +166,7 @@ function CreateOrder(): JSX.Element {
       </p>
       <Timer order={order} />
       <div className="order__container">
-        <div className="order__info">
+        <div className="order__info d-flex align-items-center flex-column">
           <h4 className="mb-4">Данные ордера</h4>
           <ul className="order__data-container">
             <li>
@@ -219,7 +220,7 @@ function CreateOrder(): JSX.Element {
               />
               <span className="order__span">{order.sendBank}</span>
             </li>
-            <li className="m-0 d-flex">
+            <li className="m-0 d-flex flex-wrap">
               {dataForPay.card && dataForPay?.card === "QR" ? (
                 <img
                   src={"/images/qrwechat.jpg"}
@@ -267,11 +268,14 @@ function CreateOrder(): JSX.Element {
           <Alert severity={alert.paid.severity}>{alert.paid.message}</Alert>
         )}
       </div>
+      <SupportBtn />
       <Rools title="Важно" list={orderLi} />
       <div className="order__btn-container">
         <NextStepBtn
           handleNextStep={handlePaidOrder}
-          isDisabled={!uploadedPaidFileDetails || orderStatus !== "Ожидает оплаты"}
+          isDisabled={
+            !uploadedPaidFileDetails || orderStatus !== "Ожидает оплаты"
+          }
           title="Заказ оплачен"
           color="success"
         />

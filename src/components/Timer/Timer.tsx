@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Order } from "../../types/types"; // импортируем тип Order
+import "./Timer.scss";
 
 interface TimerProps {
   order: Order;
@@ -36,7 +37,7 @@ export default function Timer({ order }: TimerProps) {
   return (
     <div>
       {order?.status === "pending" && timeLeft !== 0 && (
-        <p>Оставшееся время для оплаты: <span className="fw-semibold">{formatTimeLeft()}</span></p>
+        <p className="timer">Оставшееся время для оплаты: <span className="fw-semibold align-self-center">{formatTimeLeft()}</span></p>
       )}
     </div>
   );
